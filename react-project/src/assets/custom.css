@@ -1,0 +1,23 @@
+@media (min-width: 1025px) {
+    .pc-sidebar ~ .pc-header {
+        transition: left 0.15s ease;
+        top: 0;
+    }
+}
+
+.sidebarMenu{
+    position: relative;
+    top: -350px;
+    z-index: 1090;
+}
+
+.container-custom{
+    background: #000 !important;
+    color: red;
+    position: relative;
+    top:0 !important;
+    justify-content: baseline;
+    align-items: baseline;
+    min-width: 1200px;
+    
+}

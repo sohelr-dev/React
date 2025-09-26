@@ -1,0 +1,13 @@
+.layout-wrapper {
+  display: flex;
+}
+
+.content-wrapper {
+  margin-left: 260px;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.collapsed ~ .content-wrapper {
+  margin-left: 0;
+}
