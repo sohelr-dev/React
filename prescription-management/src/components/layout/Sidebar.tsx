@@ -1,10 +1,14 @@
 import './sidebar.css'
 import Profile from '../../assets/img/sohel.jpg'
+import { Link } from 'react-router-dom'
+
 
 function Sidebar() {
     return (
         <>
             <input type="checkbox" id="sidebar-toggle" className='d-none' />
+            <label htmlFor="sidebar-toggle" className="bg-layer"></label>
+
             <div id='sidebar'>
                 <span className='fs-2 d-md-none ' id='close-btn'><label htmlFor='sidebar-toggle'><i className="fa-regular fa-circle-left fa-beat-fade"></i></label></span>
 
@@ -16,8 +20,17 @@ function Sidebar() {
                 </div>
                 <nav className='navber'>
                     <ul className="nav flex-column">
-                        <li className="nav-item">
-                            <a href="" className="nav-link text-light link-navbar"><i className="fa-regular fa-chart-bar fa-fade me-2"></i> Dashboard</a>
+                        <li className="nav-item active">
+                            <Link to="/dashboard" className="nav-link  trans text-light link-navbar">
+                                <i className="fa-regular fa-chart-bar fa-fade me-2"></i>
+                                Dashboard
+                            </Link>
+                        </li>
+                        <li className="nav-item active">
+                            <Link to="/users" className="nav-link  trans text-light link-navbar">
+                                <i className="fa-regular fa-user fa-fade me-2"></i>
+                                Users
+                            </Link>
                         </li>
                     </ul>
                 </nav>
