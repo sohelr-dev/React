@@ -32,6 +32,13 @@ function Sidebar() {
                                 Users
                             </Link>
                         </li>
+                        <li className="nav-item active">
+                            <Link to="/createPrescription" className="nav-link  trans text-light link-navbar">
+                                <i className="fa-solid fa-prescription me-2"></i>
+                                {/* <i className="fa-regular fa-user fa-fade me-2"></i> */}
+                                Create Prescription
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
             </div>
