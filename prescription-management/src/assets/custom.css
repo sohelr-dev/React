@@ -8,3 +8,29 @@
      
 }
 
+/* dashboard card hover */
+.card-hover {
+  transition: all 0.3s ease-in-out;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(25, 0, 0, 0.1);
+}
+
+/* 404 page  */
+
+.pageNotFound{
+     display: block;
+     justify-content: center;
+     align-items: center;
+     margin-top: 250px;
+     text-align: center;
+}
+.pageNotFound h1{
+     font-weight: 900;
+     font-size: 5rem;
+}
+.pageNotFound .number{
+     font-weight: bolder;
+     font-size: 8rem;
+}
