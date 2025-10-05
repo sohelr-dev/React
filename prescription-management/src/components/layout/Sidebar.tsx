@@ -156,6 +156,15 @@ function Sidebar() {
                                 Prescription History
                             </NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink
+                                to="/users"
+                                className={({ isActive }) =>
+                                    isActive ? 'nav-link text-light link-navbar active' : 'nav-link text-light link-navbar'}>
+                                <FaUsers className="me-2 fa-lg" />
+                                Users
+                            </NavLink>
+                        </li>
 
                     </ul>
                 </nav>

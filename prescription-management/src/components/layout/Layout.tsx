@@ -11,7 +11,7 @@ function Layout() {
         <Sidebar />
         <div className="main w-100">
           <Topbar />
-          <div className="container mt-2">
+          <div className="container mt-4">
             <Outlet/>
           </div>
         </div>

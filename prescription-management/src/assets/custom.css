@@ -34,3 +34,14 @@
      font-weight: bolder;
      font-size: 8rem;
 }
+/* @media (min-width: 576px) {
+    .container, .container-sm {
+        width: 100% !important;
+    }
+} */
+
+/* @media (min-width: 576px) {
+    .container, .container-sm {
+        min-width: 100% !important;
+    }
+} */
