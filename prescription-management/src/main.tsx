@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App.tsx'
 import Users from './components/pages/users/Users.tsx';
+import CreateUser from './components/pages/users/CreateUser.tsx';
 // import Dashboard from './components/pages/Dashboard.tsx';
 import CreatePrescription from './components/pages/doctors/CreatePrescriptions.tsx';
 import DoctorsDashboard from './components/pages/doctors/DoctorsDashboard.tsx';
@@ -15,7 +16,7 @@ import DoctorAppointmentHistory from './components/pages/doctors/appointments/Do
 import DoctorMedicine from './components/pages/doctors/DoctorMedicine.tsx';
 import Tests from './components/pages/doctors/Tests.tsx';
 import DoctorPrescriptionHistory from './components/pages/doctors/DoctorPrescriptionHistory.tsx';
-import CreateUser from './components/pages/users/createUser.tsx';
+import UpdateUser from './components/pages/users/UpdateUser.tsx';
 
 const AppRouter =createBrowserRouter([
   {path:"/" ,element:<App/>,
@@ -23,6 +24,7 @@ const AppRouter =createBrowserRouter([
       {path:"/dashboard" ,element: <DoctorsDashboard/>},
       {path:"/users" ,element: <Users/>},
       {path:"/create-user" ,element: <CreateUser/>},
+      {path:"/user/edit/:id" ,element: <UpdateUser/>},
       {path:"/createPrescription" ,element: <CreatePrescription/>},
       {path:"/patients/patient-list" ,element: <PatientsList/>},
       {path:"/patients/patient-medical-history" ,element: <MedicalHistory/>},

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2025 at 09:39 PM
+-- Generation Time: Oct 06, 2025 at 11:05 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `rx-power`
+-- Database: `rx_power`
 --
 
 -- --------------------------------------------------------
@@ -58,17 +58,17 @@ CREATE TABLE `doctors` (
   `chamber_name` varchar(100) DEFAULT NULL,
   `chamber_address` text DEFAULT NULL,
   `bmdc_reg_no` varchar(50) DEFAULT NULL,
-  `phone` varchar(20) DEFAULT NULL
+  `photo` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `doctors`
 --
 
-INSERT INTO `doctors` (`id`, `user_id`, `specialization`, `chamber_name`, `chamber_address`, `bmdc_reg_no`, `phone`) VALUES
-(1, 2, 'Cardiology', 'Heart Care', 'Banani, Dhaka', 'BMDC12345', '01711000001'),
-(2, 3, 'General Medicine', 'Health Point', 'Uttara, Dhaka', 'BMDC23456', '01711000002'),
-(3, 6, 'Dermatology', 'Skin Plus', 'Mirpur, Dhaka', 'BMDC34567', '01711000003');
+INSERT INTO `doctors` (`id`, `user_id`, `specialization`, `chamber_name`, `chamber_address`, `bmdc_reg_no`, `photo`) VALUES
+(1, 2, 'Cardiology', 'Heart Care', 'Banani, Dhaka', 'BMDC12345', NULL),
+(2, 3, 'General Medicine', 'Health Point', 'Uttara, Dhaka', 'BMDC23456', NULL),
+(3, 6, 'Dermatology', 'Skin Plus', 'Mirpur, Dhaka', 'BMDC34567', NULL);
 
 -- --------------------------------------------------------
 
@@ -80,22 +80,44 @@ CREATE TABLE `medicines` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `generic_name` varchar(100) DEFAULT NULL,
-  `type` enum('tablet','capsule','syrup','injection','other') DEFAULT NULL,
-  `description` text DEFAULT NULL
+  `description` text DEFAULT NULL,
+  `medicine_type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `medicines`
 --
 
-INSERT INTO `medicines` (`id`, `name`, `generic_name`, `type`, `description`) VALUES
-(1, 'Napa', 'Paracetamol', 'tablet', 'Pain reliever and fever reducer'),
-(2, 'Seclo', 'Omeprazole', 'capsule', 'Reduces stomach acid'),
-(3, 'Amdocal', 'Amlodipine', 'tablet', 'Used to treat high blood pressure'),
-(4, 'Monas', 'Montelukast', 'tablet', 'For asthma and allergies'),
-(5, 'Maxpro', 'Esomeprazole', 'capsule', 'Gastric issues'),
-(6, 'Ace', 'Paracetamol', 'tablet', 'Mild pain reliever'),
-(7, 'Norflox', 'Norfloxacin', 'tablet', 'Antibiotic');
+INSERT INTO `medicines` (`id`, `name`, `generic_name`, `description`, `medicine_type_id`) VALUES
+(1, 'Napa', 'Paracetamol', 'Pain reliever and fever reducer', NULL),
+(2, 'Seclo', 'Omeprazole', 'Reduces stomach acid', NULL),
+(3, 'Amdocal', 'Amlodipine', 'Used to treat high blood pressure', NULL),
+(4, 'Monas', 'Montelukast', 'For asthma and allergies', NULL),
+(5, 'Maxpro', 'Esomeprazole', 'Gastric issues', NULL),
+(6, 'Ace', 'Paracetamol', 'Mild pain reliever', NULL),
+(7, 'Norflox', 'Norfloxacin', 'Antibiotic', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `medicine_types`
+--
+
+CREATE TABLE `medicine_types` (
+  `id` int(11) NOT NULL,
+  `type_name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `medicine_types`
+--
+
+INSERT INTO `medicine_types` (`id`, `type_name`) VALUES
+(1, 'Tablet'),
+(2, 'Capsule'),
+(3, 'Syrup'),
+(4, 'Injection'),
+(5, 'Other');
 
 -- --------------------------------------------------------
 
@@ -303,21 +325,28 @@ CREATE TABLE `users` (
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `photo` varchar(255) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `password`, `role_id`, `created_at`) VALUES
-(1, 'Admin User', 'admin@rx.com\r\n', 'adminpass', 1, '2025-09-28 19:37:48'),
-(2, 'Dr. Arefin', 'arefin@rx.com\r\n', '123456', 2, '2025-09-28 19:37:48'),
-(3, 'Dr. Tania', 'tania@rx.com\r\n', '123456', 2, '2025-09-28 19:37:48'),
-(4, 'Patient Ali', 'ali@rx.com\r\n', '123456', 3, '2025-09-28 19:37:48'),
-(5, 'Patient Jannat', 'jannat@rx.com\r\n', '123456', 3, '2025-09-28 19:37:48'),
-(6, 'Dr. Azad', 'azad@rx.com\r\n', '123456', 2, '2025-09-28 19:37:48'),
-(7, 'Patient Rafi', 'rafi@rx.com\r\n', '123456', 3, '2025-09-28 19:37:48');
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `role_id`, `created_at`, `photo`, `phone`) VALUES
+(1, 'Admin User', 'admin@rx.com\r\n', 'adminpass', 1, '2025-09-28 19:37:48', NULL, NULL),
+(2, 'Dr. Arefin', 'arefin@rx.com\r\n', '123456', 2, '2025-09-28 19:37:48', NULL, NULL),
+(3, 'Dr. Tania', 'tania@rx.com\r\n', '123456', 2, '2025-09-28 19:37:48', NULL, NULL),
+(4, 'Patient Ali', 'ali@rx.com\r\n', '123456', 3, '2025-09-28 19:37:48', NULL, NULL),
+(5, 'Patient Jannat', 'jannat@rx.com\r\n', '123456', 3, '2025-09-28 19:37:48', NULL, NULL),
+(6, 'Dr. Azad', 'azad@rx.com\r\n', '123456', 2, '2025-09-28 19:37:48', NULL, NULL),
+(7, 'Patient Rafi', 'rafi@rx.com\r\n', '123456', 3, '2025-09-28 19:37:48', NULL, NULL),
+(11, 'Sohel Rana', 'sdds@gmail.com', '', 3, '2025-10-06 15:04:54', 'uploads/users/20251006-170454.png', '25455554'),
+(13, 'Sohel Rana', 'ssssds@gmail.com', '', 3, '2025-10-06 15:22:21', '', '25455554'),
+(15, 'Sohel Rana', 'sss2ds@gmail.com', '', 3, '2025-10-06 15:27:02', 'uploads/users/20251006-172702.png', '25455554'),
+(16, 'Mina', 'mina3@gmail.com', '', 3, '2025-10-06 16:48:54', 'uploads/users/20251006-184854.jpg', '015875548554'),
+(17, 'Mina2', 'min1a@gmail.com', '', 3, '2025-10-06 17:08:00', 'uploads/users/20251006-190800.png', '015875548554');
 
 --
 -- Indexes for dumped tables
@@ -342,6 +371,13 @@ ALTER TABLE `doctors`
 -- Indexes for table `medicines`
 --
 ALTER TABLE `medicines`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `medicines_ibfk_medicine_type` (`medicine_type_id`);
+
+--
+-- Indexes for table `medicine_types`
+--
+ALTER TABLE `medicine_types`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -437,6 +473,12 @@ ALTER TABLE `medicines`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
+-- AUTO_INCREMENT for table `medicine_types`
+--
+ALTER TABLE `medicine_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT for table `patients`
 --
 ALTER TABLE `patients`
@@ -488,7 +530,7 @@ ALTER TABLE `tests`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Constraints for dumped tables
@@ -506,6 +548,12 @@ ALTER TABLE `appointments`
 --
 ALTER TABLE `doctors`
   ADD CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `medicines`
+--
+ALTER TABLE `medicines`
+  ADD CONSTRAINT `medicines_ibfk_medicine_type` FOREIGN KEY (`medicine_type_id`) REFERENCES `medicine_types` (`id`);
 
 --
 -- Constraints for table `patients`
