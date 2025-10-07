@@ -18,15 +18,24 @@ import Tests from './components/pages/doctors/Tests.tsx';
 import DoctorPrescriptionHistory from './components/pages/doctors/DoctorPrescriptionHistory.tsx';
 import UpdateUser from './components/pages/users/UpdateUser.tsx';
 import DetailsUser from './components/pages/users/DetailsUser.tsx';
+import MedicineTypeList from './components/pages/doctors/medicine-types/MedicineTypeList.tsx';
+import CreateMedicineType from './components/pages/doctors/medicine-types/CreateMedicineType.tsx';
+import UpdateMedicineType from './components/pages/doctors/medicine-types/UpdateMedicineType.tsx';
 
 const AppRouter =createBrowserRouter([
   {path:"/" ,element:<App/>,
     children:[
       {path:"/dashboard" ,element: <DoctorsDashboard/>},
+      //Users
       {path:"/users" ,element: <Users/>},
       {path:"/create-user" ,element: <CreateUser/>},
       {path:"/user/edit/:id" ,element: <UpdateUser/>},
       {path:"/user/details-user/:id" ,element: <DetailsUser/>},
+      //medicine Type
+      {path:"/medicine-types" ,element: <MedicineTypeList/>},
+      {path:"/medicine-types/create-medicine-type" ,element: <CreateMedicineType/>},
+      {path:"/medicine-types/edit/:id" ,element: <UpdateMedicineType/>},
+
       {path:"/createPrescription" ,element: <CreatePrescription/>},
       {path:"/patients/patient-list" ,element: <PatientsList/>},
       {path:"/patients/patient-medical-history" ,element: <MedicalHistory/>},

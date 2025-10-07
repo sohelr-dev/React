@@ -29,18 +29,25 @@ if(isset($_GET['method'])) {
           // print_r( $data);
         }elseif($endpoint =="users" && $method == 'GET'){
             getUsers();
-        }
-        elseif($endpoint =="create-user" && $method == 'POST'){
+        }elseif($endpoint =="create-user" && $method == 'POST'){
             createUser($_POST,$_FILES);
-        }
-        elseif($endpoint =="delete-user" && $method == 'DELETE'){
+        }elseif($endpoint =="delete-user" && $method == 'DELETE'){
             deleteUser($_GET['id']);
-        }
-        elseif($endpoint =="details-user" && $method == 'GET'){
+        }elseif($endpoint =="details-user" && $method == 'GET'){
             getUserId($_GET['id']);
-        }
-        elseif($endpoint =="edit-user" && $method == 'POST'){
+        }elseif($endpoint =="edit-user" && $method == 'POST'){
             getUpdateUser($_POST,$_FILES);
+        }
+        //medicine-types
+        elseif($endpoint =="medicine-types" && $method == 'GET'){
+            getMedicineTypes();
+        }elseif($endpoint =="delete-medicine-type" && $method == 'DELETE'){
+            deleteMedicineTypeId($_GET['id']);
+        }elseif($endpoint =="create-medicine-type" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createMedicineType($data);
+        }elseif($endpoint =="details-medicine-type" && $method == 'GET'){
+            getMedicineTypeById($_GET['id']);
         }
         // role
         elseif($endpoint =="roles" && $method == 'GET'){

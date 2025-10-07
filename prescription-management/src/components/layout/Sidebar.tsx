@@ -14,6 +14,8 @@ import {
     FaChevronLeft
 } from 'react-icons/fa'
 import { MdUpcoming } from "react-icons/md";
+import { RiMedicineBottleFill } from "react-icons/ri";
+import { GiMedicines } from "react-icons/gi";
 
 function Sidebar() {
     return (
@@ -128,14 +130,36 @@ function Sidebar() {
                                 </ul>
                             </div>
                         </li>
-                        <li className="nav-item">
-                            <NavLink
-                                to="/medicines"
-                                className={({ isActive }) =>
-                                    isActive ? 'nav-link text-light link-navbar active' : 'nav-link text-light link-navbar'}>
+                        <li>
+                            <a className="nav-link item-nav text-white dropdown-toggle"
+                                href="#medcinesubmenu" data-bs-toggle="collapse"
+                                role="button" aria-expanded="false" aria-controls="medcinesubmenu">
                                 <FaPills className="me-2 fa-lg" />
                                 Medicines
-                            </NavLink>
+                            </a>
+                            <div className="collapse" id="medcinesubmenu">
+                                <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li>
+                                        <NavLink
+                                            to="/medicine-types"
+                                            className={({ isActive }) =>
+                                                isActive ? 'nav-link text-white ps-4 active' : 'nav-link text-white ps-4'}>
+                                            <RiMedicineBottleFill className="me-2" />
+                                            
+                                            Medicine Types
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
+                                            to="/medicines"
+                                            className={({ isActive }) =>
+                                                isActive ? 'nav-link text-white ps-4 active fs-6' : 'fs-6 nav-link text-white ps-4'}>
+                                            <GiMedicines className="me-2" />
+                                            Medicine
+                                        </NavLink>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
 
                         <li className="nav-item">
