@@ -57,7 +57,7 @@ class Users {
     public static function readById($id) {
         global $db;
         $id = (int)$id;
-        $sql = "SELECT * FROM users WHERE id = $id";
+        $sql = "SELECT u.*,r.role_name FROM users u ,roles r where u.role_id = r.id and u.id = $id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_assoc();
