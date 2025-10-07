@@ -22,30 +22,48 @@ function Users() {
       })
   })
 
-// for delete 
-const [userId,setUserId]=useState<number>(0);
-  const handleModal=(id:any)=>{
+  // for delete 
+  const [userId, setUserId] = useState<number>(0);
+  const handleModal = (id: any) => {
     // alert(id + "hello bangladesh");
     setUserId(id);
   }
 
   //api delete call 
-  const handleDelete=(deleteId:any)=>{
+  const handleDelete = (deleteId: any) => {
     api.delete(`delete-user?id=${deleteId}`)
-    .then((response)=>{
-      // console.log(JSON.stringify(response.data) + "id Number : "+deleteId);
-      alert(JSON.stringify(response.data));
-      getUsers();
-    })
-    .catch((error)=>{
-      console.log(error);
-    })
+      .then((response) => {
+        // console.log(JSON.stringify(response.data) + "id Number : "+deleteId);
+        alert(JSON.stringify(response.data));
+        getUsers();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
 
   }
 
   return (
     <>
-      <h4 className="fw-bold py-3 mb-4"><Link to={'/users'} className="text-muted fw-light text-decoration-none">Users /</Link> Manage</h4>
+      <div className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4" style={{ border: '1px solid #dee2e6' }}>
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb mb-0 fs-5">
+            <li className="breadcrumb-item">
+              <Link to="/users" className="text-primary text-decoration-none fw-semibold">
+                Users
+              </Link>
+            </li>
+            <li className="breadcrumb-item active text-secondary fw-bold" aria-current="page">
+              User Manage
+            </li>
+          </ol>
+        </nav>
+        <button className="btn btn-primary fw-semibold">
+          <i className="fa-solid fa-print me-1"></i>
+          Print
+        </button>
+      </div>
+
       <Link to="/create-user" className="btn btn-primary mb-4">Create </Link>
       <div className="containe">
         <div className="card">
@@ -80,15 +98,15 @@ const [userId,setUserId]=useState<number>(0);
                         <td>{item.phone}</td>
                         <th>
                           <div className="d-flex gap-2">
-                            <Link to={`/users/${item.id}`} type="button" className="btn btn-icon btn-outline-primary">
+                            <Link to={`/user/details-user/${item.id}`} type="button" className="btn btn-icon btn-outline-primary">
                               <i className="fas fa-eye"></i>
                             </Link>
                             <Link to={`/user/edit/${item.id}`} type="button" className="btn btn-icon btn-primary">
 
                               <i className="fas fa-edit"></i>
                             </Link>
-                            <button type="button" className="btn btn-icon btn-danger" 
-                            onClick={()=>handleModal(item.id)} data-bs-toggle="modal" data-bs-target="#modalDelete"
+                            <button type="button" className="btn btn-icon btn-danger"
+                              onClick={() => handleModal(item.id)} data-bs-toggle="modal" data-bs-target="#modalDelete"
                             >
                               <i className="fas fa-trash"></i>
                             </button>
@@ -108,7 +126,7 @@ const [userId,setUserId]=useState<number>(0);
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-body text-center fs-1">
-               <i className="fas fa-trash fs-3 text-danger"></i>
+              <i className="fas fa-trash fs-3 text-danger"></i>
 
             </div>
             <div className="modal-body text-center">
@@ -121,7 +139,7 @@ const [userId,setUserId]=useState<number>(0);
           </div>
         </div>
       </div>
-      
+
     </>
   )
 }

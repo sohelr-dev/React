@@ -9,6 +9,7 @@ export interface User {
   file?: File | null,
   password?: string,
   role_name?: string,
+  created_at?: string,
 }
 const userDefault: User = { 
   id: 0,
@@ -19,7 +20,8 @@ const userDefault: User = {
   photo: "",
   file: null,
   password: "", 
-  phone:""
+  phone:"",
+  created_at:""
 };
 
 export default userDefault;

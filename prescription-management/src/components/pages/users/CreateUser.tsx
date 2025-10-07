@@ -7,9 +7,9 @@ import userDefault from "../../interfaces/user.interface";
 
 function CreateUser() {
     // const [selectedRole, setSelectedRole] = useState<string>("");
-    const navigate =useNavigate();
+    const navigate = useNavigate();
     const [roles, setRoles] = useState<Roles[]>([]);
-    const [user,setUser] =useState<User>(userDefault);
+    const [user, setUser] = useState<User>(userDefault);
     useEffect(() => {
         document.title = "Create User";
         getRoles();
@@ -31,39 +31,59 @@ function CreateUser() {
 
     //api call post method
 
-    const handleSubmit=((e:React.FormEvent)=>{
+    const handleSubmit = ((e: React.FormEvent) => {
         e.preventDefault();
         // console.log(user);
         const formdata = new FormData();
-        formdata.append("name",user.name);
-        formdata.append("email",user.email);
-        formdata.append("role_id",user.role_id.toString());
-        formdata.append("phone",user.phone??"");
-        if(user.file)formdata.append('photo',user.file);
+        formdata.append("name", user.name);
+        formdata.append("email", user.email);
+        formdata.append("role_id", user.role_id.toString());
+        formdata.append("phone", user.phone ?? "");
+        if (user.file) formdata.append('photo', user.file);
 
-        api.post('create-user',formdata,{
-            headers:{
-                "Content-Type":"multipart/form-data"
+        api.post('create-user', formdata, {
+            headers: {
+                "Content-Type": "multipart/form-data"
             }
         })
-        .then((response)=>{
-            console.log(response);
-            if(response.status === 200 || response.status===201){
-                setUser(userDefault);
-                navigate('/users');
-            }
-        })
-        .catch((error)=>{
-            console.log(error);
-            alert("Something Wrong !");
-        })
-        
+            .then((response) => {
+                console.log(response);
+                if (response.status === 200 || response.status === 201) {
+                    setUser(userDefault);
+                    navigate('/users');
+                    alert(JSON.stringify("Data Save Successfull id no. " + response.data));
+                } else {
+                    alert("Something Wrong !");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Something Wrong !");
+            })
+
     })
 
 
     return (
         <>
-            <h4 className="fw-bold py-3 mb-4"><Link to={'/users'} className="text-muted fw-light text-decoration-none">Users /</Link> Create User</h4>
+            <div className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4" style={{ border: '1px solid #dee2e6' }}>
+                <nav aria-label="breadcrumb">
+                    <ol className="breadcrumb mb-0 fs-5">
+                        <li className="breadcrumb-item">
+                            <Link to="/users" className="text-primary text-decoration-none fw-semibold">
+                                Users
+                            </Link>
+                        </li>
+                        <li className="breadcrumb-item active text-secondary fw-bold" aria-current="page">
+                            Create User
+                        </li>
+                    </ol>
+                </nav>
+                <Link to="/users" className="btn btn-primary fw-semibold">
+                    ← Back
+                </Link>
+            </div>
+            
             <div className="conatiner">
                 <div className="card mt-3">
                     <h5 className="card-header text-center fs-3">Create User</h5>
@@ -71,35 +91,35 @@ function CreateUser() {
                         <form onSubmit={handleSubmit}>
                             <div className="mb-3">
                                 <label htmlFor="name" className="form-label">Name</label>
-                                <input type="text" name="name" id="name" className="form-control" value={user.name} onChange={(e)=>setUser({...user,name:e.target.value})}/>
+                                <input type="text" name="name" id="name" className="form-control" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="email" className="form-label">Email</label>
-                                <input type="email" name="email" id="email" className="form-control" value={user.email} onChange={(e)=>setUser({...user, email:e.target.value})}/>
+                                <input type="email" name="email" id="email" className="form-control" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="role" className="form-label">Role</label>
-                                <select name="role_id" id="role" className="form-control" value={user.role_id} onChange={(e) => setUser({...user,role_id:parseInt(e.target.value)})}>
+                                <select name="role_id" id="role" className="form-control" value={user.role_id} onChange={(e) => setUser({ ...user, role_id: parseInt(e.target.value) })}>
                                     <option value="" className="text-center" selected hidden>-----Select One-----</option>
-                                    { roles.map((item) => (
-                                            <option value={item.id} key={item.id}>{item.role_name}</option>
-                                        ))
+                                    {roles.map((item) => (
+                                        <option value={item.id} key={item.id}>{item.role_name}</option>
+                                    ))
                                     }
                                 </select>
 
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="phone" className="form-label">Phone</label>
-                                <input type="text" id="phone" name="phone" className="form-control" value={user.phone} onChange={(e)=>setUser({...user, phone:e.target.value})} />
+                                <input type="text" id="phone" name="phone" className="form-control" value={user.phone} onChange={(e) => setUser({ ...user, phone: e.target.value })} />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="photo" className="form-label">Photo</label>
                                 <input type="file" id="photo" name="file" className="form-control"
-                                onChange={(e)=>{
-                                    if(e.target.files){
-                                        setUser({...user, file:e.target.files[0]} )
-                                    }
-                                }} />
+                                    onChange={(e) => {
+                                        if (e.target.files) {
+                                            setUser({ ...user, file: e.target.files[0] })
+                                        }
+                                    }} />
                             </div>
 
                             <button type="submit" className="btn btn-primary">Submit</button>
