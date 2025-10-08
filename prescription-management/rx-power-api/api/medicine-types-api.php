@@ -13,8 +13,14 @@ function createMedicineType($data){
      echo json_encode($MedicineType->create());
      
 }
+function updateMedicineTypeById($data){
+     // echo "Create Working";
+     $updateMedicineType= new MedicineTypes($data['id'],$data["type_name"]);
+     echo json_encode($updateMedicineType->update($data['id']));
+     
+}
 function getMedicineTypeById($_id){
-      $medicineId = Users :: readById($_id);
+      $medicineId = MedicineTypes :: readById($_id);
      echo json_encode($medicineId);
 }
 

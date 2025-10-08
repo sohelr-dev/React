@@ -48,6 +48,9 @@ if(isset($_GET['method'])) {
             createMedicineType($data);
         }elseif($endpoint =="details-medicine-type" && $method == 'GET'){
             getMedicineTypeById($_GET['id']);
+        }elseif($endpoint =="edit-medicine-type" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateMedicineTypeById($data);
         }
         // role
         elseif($endpoint =="roles" && $method == 'GET'){
