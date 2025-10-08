@@ -52,10 +52,49 @@ if(isset($_GET['method'])) {
             $data = json_decode(file_get_contents("php://input"),true);
             updateMedicineTypeById($data);
         }
-        // role
+        //Tests
+        elseif($endpoint =="tests" && $method == 'GET'){
+            getTests();
+        }elseif($endpoint =="delete-test" && $method == 'DELETE'){
+            deleteTestsId($_GET['id']);
+        }elseif($endpoint =="create-test" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createTests($data);
+        }elseif($endpoint =="details-test" && $method == 'GET'){
+            getTestsById($_GET['id']);
+        }elseif($endpoint =="edit-test" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateTestsById($data);
+        }
+        // Roles
         elseif($endpoint =="roles" && $method == 'GET'){
             getRoles();
+        }elseif($endpoint =="delete-role" && $method == 'DELETE'){
+            deleteRolesId($_GET['id']);
+        }elseif($endpoint =="create-role" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createRoles($data);
+        }elseif($endpoint =="details-role" && $method == 'GET'){
+            getRolesById($_GET['id']);
+        }elseif($endpoint =="edit-role" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateRolesById($data);
         }
+        // Medicines
+        elseif($endpoint =="medicines" && $method == 'GET'){
+            getMedicines();
+        }elseif($endpoint =="delete-medicine" && $method == 'DELETE'){
+            deleteMedicinesId($_GET['id']);
+        }elseif($endpoint =="create-medicine" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createMedicines($data);
+        }elseif($endpoint =="details-medicine" && $method == 'GET'){
+            getMedicinesById($_GET['id']);
+        }elseif($endpoint =="edit-medicine" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateMedicinesById($data);
+        }
+        
 
 
         else{

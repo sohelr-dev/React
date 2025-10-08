@@ -21,7 +21,7 @@ class Roles {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM roles";
+        $sql = "SELECT * FROM roles order by id desc";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);

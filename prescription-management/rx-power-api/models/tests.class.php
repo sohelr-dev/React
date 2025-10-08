@@ -23,7 +23,7 @@ class Tests {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM tests";
+        $sql = "SELECT * FROM tests order by id desc";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);

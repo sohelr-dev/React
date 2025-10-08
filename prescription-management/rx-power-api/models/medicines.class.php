@@ -27,7 +27,7 @@ class Medicines {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM medicines";
+        $sql = "SELECT * FROM medicines order by id desc";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);
