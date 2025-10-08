@@ -87,7 +87,7 @@ function MedicineTypeList() {
                                                 <Link to={`/medicine-types/details-user/${item.id}`} className="btn btn-outline-primary btn-sm">
                                                     <i className="fas fa-eye"></i>
                                                 </Link>
-                                                <Link to={`/medicine-types/edit/${item.id}`} className="btn btn-primary btn-sm" >
+                                                <Link to={`/medicine-types/edit-medicine-type/${item.id}`} className="btn btn-primary btn-sm" >
                                                     <i className="fas fa-edit"></i>
                                                 </Link>
                                                 <button type="button" className="btn btn-danger btn-sm" onClick={() => handleModal(item.id)} data-bs-toggle="modal" data-bs-target="#modalDelete">

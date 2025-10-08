@@ -1,28 +1,42 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import type { medicineTypes } from "../../../interfaces/medicineTypes.interface";
 import medicineTypesDefault from "../../../interfaces/medicineTypes.interface";
 import api from "../../../../config";
 
 function UpdateMedicineType() {
-    const queryId =useParams();
-    const paramId = queryId ?.id;
-    const [medicineTypeId,setMedicineTypeId] =useState<medicineTypes | null>(null);
+    const navigate =useNavigate();
+    const [medicineTypeId,setMedicineTypeId] =useState<medicineTypes>(medicineTypesDefault);
     useEffect(()=>{
         document.title ="Update Medicine Type";
         getMedicineTypeID();
     },[]);
+    const queryId =useParams();
+    const paramId = queryId ?.id;
+    // console.log(paramId)
     const getMedicineTypeID=(()=>{
         api.get(`details-medicine-type?id=${paramId}`)
         .then((res)=>{
-            console.log(res.data);
+            // console.log(res.data);
             setMedicineTypeId(res.data);
+            // console.log(medicineTypeId);
         })
     })
 
     const handleSubmit=((e:React.FormEvent)=>{
         e.preventDefault();
+
+        api.put("edit-medicine-type",medicineTypeId)
+        .then((response)=>{
+            alert(response.data);
+            navigate("/medicine-types");
+        })
+        .catch((error)=>{
+            alert("Something Went Wrong" + error)
+        })
+
+
 
     })
     return (
@@ -53,6 +67,7 @@ function UpdateMedicineType() {
                             <div className="card-body">
                                 <form onSubmit={handleSubmit}>
                                     <div className="mb-3">
+                                        <input type="hidden" name="id" id="id" value={medicineTypeId.id} onChange={(e) => setMedicineTypeId({ ...medicineTypeId, id: parseInt(e.target.value) })}/>
                                         <label htmlFor="type_name" className="form-label mb-4">Medicine Type Name</label>
                                         <input type="text" id="type_name" name="type_name" className="form-control" placeholder="Enter medicine type"
                                             value={medicineTypeId.type_name} onChange={(e) => setMedicineTypeId({ ...medicineTypeId, type_name: e.target.value })}

@@ -34,7 +34,7 @@ const AppRouter =createBrowserRouter([
       //medicine Type
       {path:"/medicine-types" ,element: <MedicineTypeList/>},
       {path:"/medicine-types/create-medicine-type" ,element: <CreateMedicineType/>},
-      {path:"/medicine-types/edit/:id" ,element: <UpdateMedicineType/>},
+      {path:"/medicine-types/edit-medicine-type/:id" ,element: <UpdateMedicineType/>},
 
       {path:"/createPrescription" ,element: <CreatePrescription/>},
       {path:"/patients/patient-list" ,element: <PatientsList/>},

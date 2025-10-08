@@ -5,7 +5,7 @@ export interface medicineTypes {
 
 const medicineTypesDefault: medicineTypes = {
     id: 0,
-    type_name: ""
+    type_name:""
 };
 
 export default medicineTypesDefault;
