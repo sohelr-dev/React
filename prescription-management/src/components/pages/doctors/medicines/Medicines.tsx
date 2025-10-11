@@ -10,7 +10,7 @@ function Medicines() {
         getMedicines();
     }, []);
 
-    const getMedicines = (() => {
+    const getMedicines = () => {
         api.get("medicines")
             .then((response) => {
                 // console.log(response.data);
@@ -20,7 +20,7 @@ function Medicines() {
                 console.log(error);
                 alert("Something Wrong !");
             })
-    })
+    };
 
     // for delete 
     const [medicineId, setMedicineId] = useState<number>(0);
@@ -34,8 +34,11 @@ function Medicines() {
         api.delete(`delete-medicine?id=${deleteId}`)
             .then((response) => {
                 // console.log(JSON.stringify(response.data) + "id Number : "+deleteId);
-                alert(JSON.stringify(response.data));
-                getMedicines();
+                if(response.status ===200 || response.status===201){
+                    alert(JSON.stringify(response.data));
+                    getMedicines();
+
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -84,7 +87,7 @@ function Medicines() {
                                     <tr key={item.id} className="text-center">
                                         <td >{item.id}</td>
                                         <td>{item.name}</td>
-                                        <td>{item.medicine_type_id}</td>
+                                        <td>{item.type_name ?? ""}</td>
                                         <td >
                                             <div className="d-flex justify-content-center gap-2">
                                                 <Link to={`/medicines/details-medicine/${item.id}`} className="btn btn-outline-primary btn-sm">
@@ -106,7 +109,7 @@ function Medicines() {
                 </div>
             </div>
 
-            <div className="modal" id="modalDelete" tab-index="-1">
+            <div className="modal" id="modalDelete" tabIndex={-1}>
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-body text-center fs-1">

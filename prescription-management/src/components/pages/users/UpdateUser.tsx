@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import type { Roles } from "../../interfaces/role.interface";
+import type { role } from "../../interfaces/role.interface";
 import api from "../../../config";
 import type { User } from "../../interfaces/user.interface";
 import userDefault from "../../interfaces/user.interface";
@@ -8,7 +8,7 @@ import userDefault from "../../interfaces/user.interface";
 function UpdateUser() {
 
     const navigate = useNavigate();
-    const [roles, setRoles] = useState<Roles[]>([]);
+    const [roles, setRoles] = useState<role[]>([]);
     const [user, setUser] = useState<User>(userDefault);
     useEffect(() => {
         document.title = "Update User";

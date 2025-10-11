@@ -29,6 +29,8 @@ import CreateRole from './components/pages/doctors/roles/CreateRole.tsx';
 import UpdateRole from './components/pages/doctors/roles/UpdateRole.tsx';
 import Medicines from './components/pages/doctors/medicines/Medicines.tsx';
 import CreateMedicine from './components/pages/doctors/medicines/CreateMedicine.tsx';
+import UpdateMedicine from './components/pages/doctors/medicines/UpdateMedicine.tsx';
+import DetailsMedicine from './components/pages/doctors/medicines/DetailsMedicine.tsx';
 
 
 
@@ -57,6 +59,8 @@ const AppRouter =createBrowserRouter([
       //medicine
       {path:"/medicines" ,element: <Medicines/>},
       {path:"/medicines/create-medicine" ,element: <CreateMedicine/>},
+      {path:"/medicines/edit-medicine/:id" ,element: <UpdateMedicine/>},
+      {path:"/medicines/details-medicine/:id" ,element: <DetailsMedicine/>},
 
       {path:"/createPrescription" ,element: <CreatePrescription/>},
       {path:"/patients/patient-list" ,element: <PatientsList/>},

@@ -13,7 +13,7 @@ function Roles() {
     const getRoles = (() => {
         api.get("roles")
             .then((response) => {
-                // console.log(response.data);
+                console.log(response.data);
                 setRoles(response.data);
             })
             .catch((error) => {
