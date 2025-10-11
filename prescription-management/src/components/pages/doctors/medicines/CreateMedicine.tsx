@@ -4,15 +4,34 @@ import { Link, useNavigate } from "react-router-dom"
 import api from "../../../../config";
 import type { medicine } from "../../../interfaces/medicine.interface";
 import medicineDefault from "../../../interfaces/medicine.interface";
+import type { medicineTypes } from "../../../interfaces/medicineTypes.interface";
 
 
 
 function CreateMedicine() {
     const navigate =useNavigate();
     const[medicine,setMedicine]=useState<medicine>(medicineDefault);
+    const [medicineTypes, setmedicineTypes] = useState<medicineTypes[]>([]);
     useEffect (()=>{
         document.title ="Create Medicine";
     },[]);
+
+    //get medicine Type 
+    useEffect(() => {
+        getMedicineType();
+    }, []);
+
+    const getMedicineType = (() => {
+        api.get("medicine-types")
+            .then((response) => {
+                // console.log(response.data);
+                setmedicineTypes(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("Something Wrong !");
+            })
+    });
 
     const handleSubmit=(e:React.FormEvent)=>{
         e.preventDefault();
@@ -77,9 +96,18 @@ function CreateMedicine() {
                                     </div>
                                     <div className="mb-3">
                                         <label htmlFor="medicine_type_id" className="form-label mb-4"> Medicine Type</label>
-                                        <input type="number" id="medicine_type_id" name="medicine_type_id" className="form-control"  placeholder="Enter medicine" 
+                                        <select defaultValue={"Select One"} name="medicine_type_id" id="medicine_type_id" className="form-control"  value={medicine.medicine_type_id} onChange={(e)=>setMedicine({...medicine,medicine_type_id:parseInt(e.target.value)})}>
+                                            
+                                            {
+                                                medicineTypes.map((item)=>
+                                                    <option value={item.id} key={item.id}> {item.type_name}</option>
+                                                    
+                                                )
+                                            }
+                                        </select>
+                                        {/* <input type="number" id="medicine_type_id" name="medicine_type_id" className="form-control"  placeholder="Enter medicine" 
                                         value={medicine.medicine_type_id} onChange={(e)=>setMedicine({...medicine,medicine_type_id:parseInt(e.target.value)})}
-                                        required/>
+                                        required/> */}
                                     </div>
                                     <button type="submit" className="btn btn-primary mt-3 w-100">
                                         Submit
