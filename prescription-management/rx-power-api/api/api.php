@@ -94,6 +94,21 @@ if(isset($_GET['method'])) {
             $data = json_decode(file_get_contents("php://input"),true);
             updateMedicinesById($data);
         }
+
+        // Doctors
+        elseif($endpoint =="doctors" && $method == 'GET'){
+            getMedicines();
+        }elseif($endpoint =="delete-doctor" && $method == 'DELETE'){
+            deleteMedicinesId($_GET['id']);
+        }elseif($endpoint =="create-doctor" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createMedicines($data);
+        }elseif($endpoint =="details-doctor" && $method == 'GET'){
+            getMedicinesById($_GET['id']);
+        }elseif($endpoint =="edit-doctor" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateMedicinesById($data);
+        }
         
 
 

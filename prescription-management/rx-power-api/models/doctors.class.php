@@ -31,7 +31,8 @@ class Doctors {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM doctors";
+        $sql = "SELECT d.*u.name FROM doctors d,users u 
+        where d.user_id = u.id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);

@@ -27,7 +27,9 @@ class Medicines {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM medicines order by id desc";
+        $sql = "SELECT m.*,mt.type_name FROM medicines m ,medicine_types mt 
+        where m.medicine_type_id = mt.id
+        order by id desc";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);
@@ -39,7 +41,8 @@ class Medicines {
     public static function readById($id) {
         global $db;
         $id = (int)$id;
-        $sql = "SELECT * FROM medicines WHERE id = $id";
+        $sql = "SELECT m.*,mt.type_name FROM medicines m ,medicine_types mt 
+        where m.medicine_type_id = mt.id and m.id = $id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_assoc();
