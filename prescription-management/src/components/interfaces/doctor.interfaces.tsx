@@ -4,8 +4,9 @@ export interface doctor {
     specialization: string,
     chamber_name: string,
     chamber_address: string,
-    bmdc_reg_no: number,
+    bmdc_reg_no: string,
     photo: null,
+    name?: string,
 }
 
 const doctorDefault: doctor = {
@@ -14,7 +15,7 @@ const doctorDefault: doctor = {
     specialization: "",
     chamber_name: "",
     chamber_address: "",
-    bmdc_reg_no: 0,
+    bmdc_reg_no: "",
     photo: null,
 };
 

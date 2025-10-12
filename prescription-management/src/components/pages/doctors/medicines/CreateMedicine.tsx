@@ -97,7 +97,7 @@ function CreateMedicine() {
                                     <div className="mb-3">
                                         <label htmlFor="medicine_type_id" className="form-label mb-4"> Medicine Type</label>
                                         <select defaultValue={"Select One"} name="medicine_type_id" id="medicine_type_id" 
-                                        className="form-control"  
+                                        className="form-select"  
                                         onChange={(e)=>setMedicine({...medicine,medicine_type_id:parseInt(e.target.value)})}>
                                             <option value={medicine.medicine_type_id} > Select One</option>
                                             

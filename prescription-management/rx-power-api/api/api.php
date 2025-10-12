@@ -27,6 +27,8 @@ if(isset($_GET['method'])) {
           $data = json_decode(file_get_contents("php://input"),true);
           CreatePatients($data);
           // print_r( $data);
+
+          //users
         }elseif($endpoint =="users" && $method == 'GET'){
             getUsers();
         }elseif($endpoint =="create-user" && $method == 'POST'){
@@ -97,17 +99,17 @@ if(isset($_GET['method'])) {
 
         // Doctors
         elseif($endpoint =="doctors" && $method == 'GET'){
-            getMedicines();
+            getDoctors();
         }elseif($endpoint =="delete-doctor" && $method == 'DELETE'){
-            deleteMedicinesId($_GET['id']);
+            deleteDoctorsId($_GET['id']);
         }elseif($endpoint =="create-doctor" && $method == 'POST'){
             $data = json_decode(file_get_contents("php://input"),true);
-            createMedicines($data);
+            createDoctors($data);
         }elseif($endpoint =="details-doctor" && $method == 'GET'){
-            getMedicinesById($_GET['id']);
+            getDoctorsById($_GET['id']);
         }elseif($endpoint =="edit-doctor" && $method == 'PUT'){
             $data = json_decode(file_get_contents("php://input"),true);
-            updateMedicinesById($data);
+            updateDoctorsById($data);
         }
         
 

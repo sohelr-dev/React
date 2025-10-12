@@ -199,6 +199,16 @@ function Sidebar() {
                                 Roles
                             </NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink
+                                to="/doctors"
+                                className={({ isActive }) =>
+                                    isActive ? 'nav-link text-light link-navbar active' : 'nav-link text-light link-navbar'}>
+                                {/* <FaUsers className="me-2 fa-lg" /> */}
+                                <i className="me-2 fa-solid fa-users-gear"></i>
+                                Doctors
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
             </div>

@@ -9,13 +9,13 @@ function deleteDoctorsId($id){
 }
 function createDoctors($data){
      // echo "Create Working";
-     $Doctors= new Doctors(null,$data["name"],$data['generic_name'],$data['description'],$data['medicine_type_id']);
+     $Doctors= new Doctors(null,$data["user_id"],$data['specialization'],$data['chamber_name'],$data['chamber_address'],$data['bmdc_reg_no'],'');
      echo json_encode($Doctors->create());
      
 }
 function updateDoctorsById($data){
      // echo "Create Working";
-     $updateDoctors= new Doctors($data['id'],$data["name"],$data['generic_name'],$data['description'],$data['medicine_type_id']);
+     $updateDoctors= new Doctors($data['id'],$data["user_id"],$data['specialization'],$data['chamber_name'],$data['chamber_address'],$data['bmdc_reg_no'],'');
      echo json_encode($updateDoctors->update($data['id']));
      
 }

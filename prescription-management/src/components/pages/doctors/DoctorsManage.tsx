@@ -2,23 +2,18 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
 import type { doctor } from "../../interfaces/doctor.interfaces";
-import api from "../../../config";
+import api, { baseUrl } from "../../../config";
 
 function DoctorsManage() {
-    const [doctor, setDoctor] = useState<doctor[]>([]);
-    useEffect(() => {
-        document.title = "Doctor List";
-        getDoctor();
-    }, []);
+    const [doctors, setDoctors] = useState<doctor[]>([]);
 
     const getDoctor = () => {
-        api.get("doctor")
+        api.get("doctors")
             .then((response) => {
                 if (response.status === 200 || response.status === 201) {
-                    setDoctor(response.data);
-
+                    setDoctors(response.data);
+                    console.log(response.data);
                 }
-                // console.log(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -26,11 +21,16 @@ function DoctorsManage() {
             })
     };
 
+    useEffect(() => {
+        document.title = "Doctor List";
+        getDoctor();
+    }, []);
+
     // for delete 
-    const [medicineId, setMedicineId] = useState<number>(0);
+    const [doctorId, setDoctorId] = useState<number>(0);
     const handleModal = (id: any) => {
         // alert(id + "hello bangladesh");
-        setMedicineId(id);
+        setDoctorId(id);
     }
 
     //api delete call 
@@ -57,7 +57,7 @@ function DoctorsManage() {
                 <nav aria-label="breadcrumb">
                     <ol className="breadcrumb mb-0 fs-5">
                         <li className="breadcrumb-item">
-                            <Link to="/doctor" className="text-primary text-decoration-none fw-semibold">
+                            <Link to="/doctors" className="text-primary text-decoration-none fw-semibold">
                                 Doctor
                             </Link>
                         </li>
@@ -73,75 +73,68 @@ function DoctorsManage() {
             </div>
 
             <div className="container py-4">
-                
                 <div className="d-flex justify-content-between align-items-center mb-3">
                     <h3 className="text-primary fw-bold">👨‍⚕️ Doctor Management</h3>
-                    <Link to="/doctor/doctors-list" className="btn btn-primary" >
+                    <Link to="/doctors/create-doctor" className="btn btn-primary" >
                         + Add Doctor
                     </Link>
                 </div>
+                <div className="row g-4">
+                    {doctors.map((item) => (
+                        <div key={item.id} className="col-md-4 col-lg-3 col-sm-6">
+                            <div className="card card-hover shadow-sm border-0 rounded-3">
+                                <img
+                                    src={baseUrl+item.photo || "/default-doctor.jpg"}
+                                    alt="Doctor"
+                                    className="card-img-top"
+                                    style={{ height: "220px", objectFit: "cover" }}
+                                />
+                                <div className="card-body">
+                                    <h5 className="text-primary">{item.name}</h5>
+                                    <p className="text-success">{item.specialization}</p>
+                                    <p className="small text-muted mb-2">
+                                        <strong>Chamber:</strong> {item.chamber_name}
+                                        <br />
+                                        {item.chamber_address}
+                                    </p>
+                                    <p className="small mb-2">
+                                        <strong>BMDC:</strong> {item.bmdc_reg_no}
+                                    </p>
+                                    <div className="d-flex justify-content-between">
+                                        <Link to={`/doctors/edit-doctor/${item.id}`} className="btn btn-primary btn-sm" >
+                                            <i className="fas fa-edit"></i>
+                                        </Link>
+                                        <button type="button" className="btn btn-danger btn-sm" onClick={() => handleModal(item.id)} data-bs-toggle="modal" data-bs-target="#modalDelete">
+                                            <i className="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
-                <Link to="/doctor/create-medicine" className="btn btn-primary mb-4">Create </Link>
-                <div className="container my-4">
-                    <div className="card shadow-sm">
-                        <div className="table-responsive">
-                            <table className="table table-hover table-striped border table-subtle align-middle">
-                                <thead className="table-dark">
-                                    <tr className="text-center">
-                                        <th scope="col" >#ID</th>
-                                        <th scope="col" > Medicine Name </th>
-                                        <th scope="col" >Medicine Type </th>
+            <div className="modal" id="modalDelete" tabIndex={-1}>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-body text-center fs-1">
+                            <i className="fas fa-trash fs-3 text-danger"></i>
 
-                                        <th scope="col" >Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {/* {doctor.map((item) => (
-                                        <tr key={item.id} className="text-center">
-                                            <td >{item.id}</td>
-                                            <td>{item.name}</td>
-                                            <td>{item.type_name ?? ""}</td>
-                                            <td >
-                                                <div className="d-flex justify-content-center gap-2">
-                                                    <Link to={`/doctor/details-medicine/${item.id}`} className="btn btn-outline-primary btn-sm">
-                                                        <i className="fas fa-eye"></i>
-                                                    </Link>
-                                                    <Link to={`/doctor/edit-medicine/${item.id}`} className="btn btn-primary btn-sm" >
-                                                        <i className="fas fa-edit"></i>
-                                                    </Link>
-                                                    <button type="button" className="btn btn-danger btn-sm" onClick={() => handleModal(item.id)} data-bs-toggle="modal" data-bs-target="#modalDelete">
-                                                        <i className="fas fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))} */}
-                                </tbody>
-                            </table>
+                        </div>
+                        <div className="modal-body text-center">
+                            <p>Are you Want to delete This Item {doctorId}</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => handleDelete(doctorId)} >Delete</button>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                {/* <div className="modal" id="modalDelete" tabIndex={-1}>
-                    <div className="modal-dialog">
-                        <div className="modal-content">
-                            <div className="modal-body text-center fs-1">
-                                <i className="fas fa-trash fs-3 text-danger"></i>
-
-                            </div>
-                            <div className="modal-body text-center">
-                                <p>Are you Want to delete This Item {medicineId}</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => handleDelete(medicineId)} >Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
-
-                < />
-                );
+        </>
+    );
 }
 
-                export default DoctorsManage
+export default DoctorsManage

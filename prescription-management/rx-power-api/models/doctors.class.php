@@ -31,7 +31,7 @@ class Doctors {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT d.*u.name FROM doctors d,users u 
+        $sql = "SELECT d.*,u.name,u.photo FROM doctors d,users u 
         where d.user_id = u.id";
         $res = $db->query($sql);
         if ($res) {

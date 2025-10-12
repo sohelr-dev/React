@@ -31,6 +31,9 @@ import Medicines from './components/pages/doctors/medicines/Medicines.tsx';
 import CreateMedicine from './components/pages/doctors/medicines/CreateMedicine.tsx';
 import UpdateMedicine from './components/pages/doctors/medicines/UpdateMedicine.tsx';
 import DetailsMedicine from './components/pages/doctors/medicines/DetailsMedicine.tsx';
+import DoctorsManage from './components/pages/doctors/DoctorsManage.tsx';
+import CreateDoctor from './components/pages/doctors/DoctorCreate.tsx';
+import DoctorUpdate from './components/pages/doctors/DoctorUpdate.tsx';
 
 
 
@@ -61,6 +64,13 @@ const AppRouter =createBrowserRouter([
       {path:"/medicines/create-medicine" ,element: <CreateMedicine/>},
       {path:"/medicines/edit-medicine/:id" ,element: <UpdateMedicine/>},
       {path:"/medicines/details-medicine/:id" ,element: <DetailsMedicine/>},
+      //Doctor
+      {path:"/doctors" ,element: <DoctorsManage/>},
+      {path:"/doctors/create-doctor" ,element: <CreateDoctor/>},
+      {path:"/doctors/edit-doctor/:id" ,element: <DoctorUpdate/>},
+      {path:"/doctors/details-doctor/:id" ,element: <DetailsMedicine/>},
+
+
 
       {path:"/createPrescription" ,element: <CreatePrescription/>},
       {path:"/patients/patient-list" ,element: <PatientsList/>},
