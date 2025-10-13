@@ -29,7 +29,7 @@ class Patients {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM patients";
+        $sql = "SELECT p.*,u.name FROM patients p,users u where p.user_id = u.id order by p.id desc";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);
@@ -41,12 +41,13 @@ class Patients {
     public static function readById($id) {
         global $db;
         $id = (int)$id;
-        $sql = "SELECT * FROM patients WHERE id = $id";
+        $sql = "SELECT p.*,u.name,u.email,u.created_at,u.photo FROM patients p,users u 
+        where p.user_id = u.id and p.id = $id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_assoc();
         } else {
-          return "Query failed: " . $db->error;
+          return "Query failed: " . $db->error; 
         }
     }
 

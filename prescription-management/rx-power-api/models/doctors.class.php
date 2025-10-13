@@ -44,7 +44,8 @@ class Doctors {
     public static function readById($id) {
         global $db;
         $id = (int)$id;
-        $sql = "SELECT * FROM doctors WHERE id = $id";
+        $sql = "SELECT d.*,u.name,u.photo FROM doctors d,users u 
+        where d.user_id = u.id and d.id = $id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_assoc();
