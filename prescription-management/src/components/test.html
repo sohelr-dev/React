@@ -1,151 +1,31 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Modal, Button, Form } from "react-bootstrap";
+import { useState } from "react";
 
-export default function DoctorManager() {
-  const [doctors, setDoctors] = useState([]);
-  const [show, setShow] = useState(false);
-  const [editingDoctor, setEditingDoctor] = useState(null);
-  const [formData, setFormData] = useState({
-    user_id: "",
-    specialization: "",
-    chamber_name: "",
-    chamber_address: "",
-    bmdc_reg_no: "",
-    photo: null,
-  });
-
-  const API_URL = "http://localhost/your-api-path/api/doctors.php";
-
-  // 🔹 Load all doctors
-  useEffect(() => {
-    fetchDoctors();
-  }, []);
-
-  const fetchDoctors = async () => {
-    const res = await axios.get(API_URL);
-    setDoctors(res.data);
-  };
-
-  // 🔹 Handle input change
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: files ? files[0] : value,
-    }));
-  };
-
-  // 🔹 Add / Update Doctor
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = new FormData();
-    for (const key in formData) form.append(key, formData[key]);
-    if (editingDoctor) {
-      form.append("id", editingDoctor.id);
-      form.append("_method", "PUT");
-      await axios.post(API_URL, form);
-    } else {
-      await axios.post(API_URL, form);
-    }
-    setShow(false);
-    setEditingDoctor(null);
-    setFormData({
-      user_id: "",
-      specialization: "",
-      chamber_name: "",
-      chamber_address: "",
-      bmdc_reg_no: "",
-      photo: null,
-    });
-    fetchDoctors();
-  };
-
-  // 🔹 Delete Doctor
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure to delete this doctor?")) {
-      await axios.delete(`${API_URL}?id=${id}`);
-      fetchDoctors();
-    }
-  };
-
-  // 🔹 Edit Doctor
-  const handleEdit = (doctor) => {
-    setEditingDoctor(doctor);
-    setFormData({
-      user_id: doctor.user_id,
-      specialization: doctor.specialization,
-      chamber_name: doctor.chamber_name,
-      chamber_address: doctor.chamber_address,
-      bmdc_reg_no: doctor.bmdc_reg_no,
-      photo: null,
-    });
-    setShow(true);
-  };
-
-  // 🔹 Open Add Modal
-  const handleAdd = () => {
-    setEditingDoctor(null);
-    setFormData({
-      user_id: "",
-      specialization: "",
-      chamber_name: "",
-      chamber_address: "",
-      bmdc_reg_no: "",
-      photo: null,
-    });
-    setShow(true);
-  };
+function RadioExample() {
+const [selectedOption, setSelectedOption] = useState<string>("flexRadioDefault2");
 
   return (
+  <>
+    <div className="form-check">
+      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+        value="flexRadioDefault1" checked={selectedOption==="flexRadioDefault1" } onChange={(e)=>
+      setSelectedOption(e.target.value)}
+      />
+      <label className="form-check-label" htmlFor="flexRadioDefault1">
+        Default radio
+      </label>
+    </div>
 
+    <div className="form-check">
+      <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+        value="flexRadioDefault2" checked={selectedOption==="flexRadioDefault2" } onChange={(e)=>
+      setSelectedOption(e.target.value)}
+      />
+      <label className="form-check-label" htmlFor="flexRadioDefault2">
+        Default checked radio
+      </label>
+    </div>
+  </>
+  );
+  }
 
-
-
-      {/* Modal */}
-      <Modal show={show} onHide={() => setShow(false)} centered>
-        <Form onSubmit={handleSubmit}>
-          <Modal.Header closeButton className="bg-primary text-white">
-            <Modal.Title>
-              {editingDoctor ? "Edit Doctor" : "Add Doctor"}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <Form.Group className="mb-3">
-              <Form.Label>Specialization</Form.Label>
-              <Form.Control
-                type="text"
-                name="specialization"
-                value={formData.specialization}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Chamber Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="chamber_name"
-                value={formData.chamber_name}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>Chamber Address</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={2}
-                name="chamber_address"
-                value={formData.chamber_address}
-                onChange={handleChange}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3">
-              <Form.Label>BMDC Registration No.</Form.Label>
-              <Form.Control
-                type="text"
-                name="bmdc_reg_no"
-                value={formData
+  export default RadioExample;

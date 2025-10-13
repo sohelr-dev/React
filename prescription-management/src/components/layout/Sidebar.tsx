@@ -71,13 +71,14 @@ function Sidebar() {
                                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                     <li>
                                         <NavLink
-                                            to="/patients/patient-list"
+                                            to="/patients"
                                             className={({ isActive }) =>
                                                 isActive ? 'nav-link text-white ps-4 active' : 'nav-link text-white ps-4'}>
                                             <FaCalendarCheck className="me-2" />
                                             Patients List
                                         </NavLink>
                                     </li>
+                                    
                                     <li>
                                         <NavLink
                                             to="/patients/patient-medical-history"

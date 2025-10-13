@@ -16,7 +16,7 @@ function DoctorUpdate() {
     const getDoctorId = (() => {
         api.get(`details-doctor?id=${paramId}`)
             .then((res) => {
-                // console.log(res.data);
+                console.log(res.data);
                 // console.log(doctorId);
                 if (res.status && res.data) {
                     setDoctorId(res.data);
@@ -29,7 +29,7 @@ function DoctorUpdate() {
 
 
     const getDoctors = (() => {
-        api.get("doctors")
+        api.get("users")
             .then((response) => {
                 // console.log(response.data);
                 setUsers(response.data);
@@ -99,9 +99,9 @@ function DoctorUpdate() {
                                      <div className="mb-3">
                                                   <label htmlFor="user_id" className="form-label mb-4"> Name</label>
                                                   <select defaultValue={"Select One"} name="user_id" id="user_id"
-                                                       className="form-select" 
+                                                       className="form-select" value={doctorId.user_id || ""}
                                                        onChange={(e) => setDoctorId({ ...doctorId, user_id: parseInt(e.target.value) })}>
-                                                       <option value={doctorId.user_id} > Select One</option>
+                                                       
                                                        {
                                                             users.map((item) =>
                                                                  <option value={item.id} key={item.id}> {item.name}</option>

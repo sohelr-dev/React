@@ -5,6 +5,7 @@ import api, { baseUrl } from "../../../config";
 
 function Users() {
   const [users, setUsers] = useState<User[]>([]);
+  const [search,setSearch]=useState("");
   useEffect(() => {
     document.title = "Users List";
     getUsers();
@@ -42,6 +43,10 @@ function Users() {
       })
 
   }
+  const handleSearch =()=>{
+    console.log(search);
+
+  }
 
   return (
     <>
@@ -65,7 +70,24 @@ function Users() {
       </div>
 
       <Link to="/create-user" className="btn btn-primary mb-4">Create </Link>
-      <div className="containe">
+      <div className="container">
+        <div className="card">
+          <div className="card-header">
+            <form >
+              <div className="row">
+                <div className="col-auto">
+                  <div className="input-group input-group-merge">
+                    <input type="text" className="form-control" placeholder="Search....." value={search}
+                    onChange={(e)=>setSearch(e.target.value)} onKeyUp={handleSearch}/>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+      <div className="container">
         <div className="card">
           <div className="table-responsive">
             <table className="table">

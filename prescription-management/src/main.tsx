@@ -34,6 +34,10 @@ import DetailsMedicine from './components/pages/doctors/medicines/DetailsMedicin
 import DoctorsManage from './components/pages/doctors/DoctorsManage.tsx';
 import CreateDoctor from './components/pages/doctors/DoctorCreate.tsx';
 import DoctorUpdate from './components/pages/doctors/DoctorUpdate.tsx';
+import PatientDetails from './components/pages/doctors/patients/PatientDetails.tsx';
+import PatientCreate from './components/pages/doctors/patients/PatientCreate.tsx';
+import PatientUpdate from './components/pages/doctors/patients/PatientUpdate.tsx';
+
 
 
 
@@ -69,11 +73,16 @@ const AppRouter =createBrowserRouter([
       {path:"/doctors/create-doctor" ,element: <CreateDoctor/>},
       {path:"/doctors/edit-doctor/:id" ,element: <DoctorUpdate/>},
       {path:"/doctors/details-doctor/:id" ,element: <DetailsMedicine/>},
+      //Patients
+      {path:"/patients" ,element: <PatientsList/>},
+      {path:"/patients/create-patient" ,element: <PatientCreate/>},
+      {path:"/patients/edit-patient/:id" ,element: <PatientUpdate/>},
+      {path:"/patients/details-patient/:id" ,element: <PatientDetails/>},
 
 
 
       {path:"/createPrescription" ,element: <CreatePrescription/>},
-      {path:"/patients/patient-list" ,element: <PatientsList/>},
+      // {path:"/patients/patient-list" ,element: <PatientsList/>},
       {path:"/patients/patient-medical-history" ,element: <MedicalHistory/>},
       {path:"/appointments/today" ,element: <TodayAppointment/>},
       {path:"/appointments/upcoming" ,element: <Upcoming/>},
