@@ -1,8 +1,8 @@
 <?php
 // echo "API Working <br>";
 require_once('../config/db.php');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE');
+header('Access-Control-Allow-Origin:*');
+header('Access-Control-Allow-Methods: GET,POST,PUT,DELETE,OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 
 
@@ -13,6 +13,10 @@ include_once("../helper/img-upload-helper.php");
 
 foreach(glob("*-api.php") as $filename){
     include_once($filename);
+}
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
 }
 
 if(isset($_GET['method'])) {
@@ -124,6 +128,24 @@ if(isset($_GET['method'])) {
         }elseif($endpoint =="edit-patient" && $method == 'PUT'){
             $data = json_decode(file_get_contents("php://input"),true);
             updatePatientsById($data);
+        }
+        // Appointments
+        elseif($endpoint =="appointments" && $method == 'GET'){
+            if(isset($_GET['search'])){
+                getSearch($_GET['search']);
+            }else{
+                getAppointments();
+            }
+        }elseif($endpoint =="delete-appointment" && $method == 'DELETE'){
+            deleteAppointmentsId($_GET['id']);
+        }elseif($endpoint =="create-appointment" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createAppointments($data);
+        }elseif($endpoint =="details-appointment" && $method == 'GET'){
+            getAppointmentsById($_GET['id']);
+        }elseif($endpoint =="edit-appointment" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateAppointmentsById($data);
         }
         
 

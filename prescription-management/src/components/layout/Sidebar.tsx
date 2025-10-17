@@ -103,6 +103,15 @@ function Sidebar() {
                                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                     <li>
                                         <NavLink
+                                            to="/appointments"
+                                            className={({ isActive }) =>
+                                                isActive ? 'nav-link text-white ps-4 active' : 'nav-link text-white ps-4'}>
+                                            <FaCalendarCheck className="me-2" />
+                                             Appointments List
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
                                             to="/appointments/today"
                                             className={({ isActive }) =>
                                                 isActive ? 'nav-link text-white ps-4 active' : 'nav-link text-white ps-4'}>

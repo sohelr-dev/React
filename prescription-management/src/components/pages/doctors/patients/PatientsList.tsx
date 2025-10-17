@@ -6,8 +6,6 @@ import type { patient } from "../../../interfaces/patient.interfaces";
 
 function PatientsList() {
   const [patients, setPatients] = useState<patient[]>([]);
-
-
   const getPatients = () => {
     api.get("patients")
       .then((response) => {

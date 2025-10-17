@@ -15,7 +15,41 @@ class Appointments {
         $this->status = $_status;
     }
 
-    public function create() {
+    public static function readAll() {
+        global $db;
+        $sql = "SELECT 
+            a.*,
+            d.user_id AS doctor_user_id,
+            do.name AS doctor_name,
+            d.specialization,
+            d.chamber_name,
+            p.user_id AS patient_user_id,
+            pa.name AS patient_name,
+            p.age,
+            p.gender,
+            p.phone
+          FROM 
+              appointments a
+          JOIN 
+              doctors d ON a.doctor_id = d.id
+          JOIN 
+              users do ON d.user_id = do.id         
+          JOIN 
+              patients p ON a.patient_id = p.id
+          JOIN 
+              users pa ON p.user_id = pa.id       
+          ORDER BY 
+            a.id DESC;
+        ";
+        $res = $db->query($sql);
+        if ($res) {
+          return $res->fetch_all(MYSQLI_ASSOC);
+        } else {
+          return "Query failed: " . $db->error;
+        }
+    }
+
+        public function create() {
         global $db;
         $sql = "INSERT INTO appointments (id,doctor_id,patient_id,appointment_date,status) VALUES ('{$this->id}', '{$this->doctor_id}', '{$this->patient_id}', '{$this->appointment_date}', '{$this->status}')";
         if ($db->query($sql)) {
@@ -25,21 +59,31 @@ class Appointments {
         }
     }
 
-    public static function readAll() {
-        global $db;
-        $sql = "SELECT * FROM appointments";
-        $res = $db->query($sql);
-        if ($res) {
-          return $res->fetch_all(MYSQLI_ASSOC);
-        } else {
-          return "Query failed: " . $db->error;
-        }
-    }
-
     public static function readById($id) {
         global $db;
         $id = (int)$id;
-        $sql = "SELECT * FROM appointments WHERE id = $id";
+        $sql = "SELECT 
+            a.*,
+            d.user_id AS doctor_user_id,
+            do.name AS doctor_name,
+            d.specialization,
+            d.chamber_name,
+            p.user_id AS patient_user_id,
+            pa.name AS patient_name,
+            p.age,
+            p.gender,
+            p.phone
+        FROM 
+            appointments a
+        JOIN 
+            doctors d ON a.doctor_id = d.id
+        JOIN 
+            users do ON d.user_id = do.id         
+        JOIN 
+            patients p ON a.patient_id = p.id
+        JOIN 
+            users pa ON p.user_id = pa.id
+        Where a.id = $id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_assoc();
@@ -47,6 +91,45 @@ class Appointments {
           return "Query failed: " . $db->error;
         }
     }
+
+    public static function readBySearch($search) {
+      global $db;
+      $sql = "SELECT 
+          a.*,
+          d.user_id AS doctor_user_id,
+          do.name AS doctor_name,
+          d.specialization,
+          d.chamber_name,
+          p.user_id AS patient_user_id,
+          pa.name AS patient_name,
+          p.age,
+          p.gender,
+          p.phone
+        FROM 
+            appointments a
+        JOIN 
+            doctors d ON a.doctor_id = d.id
+        JOIN 
+            users do ON d.user_id = do.id         
+        JOIN 
+            patients p ON a.patient_id = p.id
+        JOIN 
+            users pa ON p.user_id = pa.id       
+        WHERE pa.name LIKE '%$search%' 
+        OR do.name LIKE '%$search%'
+        OR d.chamber_name LIKE '%$search%'
+        OR p.age LIKE '%$search%'
+        OR a.appointment_date LIKE '%$search%'
+        OR a.id LIKE '%$search%'
+      ";
+      $res = $db->query($sql);
+      if ($res) {
+        return $res->fetch_all(MYSQLI_ASSOC);
+      } else {
+            return "Query failed: " . $db->error;
+      }
+    }
+
 
     public function update($id) {
         global $db;

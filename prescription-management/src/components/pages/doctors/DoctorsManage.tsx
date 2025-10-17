@@ -6,7 +6,6 @@ import api, { baseUrl } from "../../../config";
 
 function DoctorsManage() {
     const [doctors, setDoctors] = useState<doctor[]>([]);
-
     const getDoctor = () => {
         api.get("doctors")
             .then((response) => {

@@ -37,6 +37,10 @@ import DoctorUpdate from './components/pages/doctors/DoctorUpdate.tsx';
 import PatientDetails from './components/pages/doctors/patients/PatientDetails.tsx';
 import PatientCreate from './components/pages/doctors/patients/PatientCreate.tsx';
 import PatientUpdate from './components/pages/doctors/patients/PatientUpdate.tsx';
+import AppointmentList from './components/pages/doctors/appointments/AppointmentList.tsx';
+import AppointmentDetails from './components/pages/doctors/appointments/AppointmentDetails.tsx';
+import AppointmentCreate from './components/pages/doctors/appointments/AppointmentCreate.tsx';
+import AppointmentUpdate from './components/pages/doctors/appointments/AppointmentUpdate.tsx';
 
 
 
@@ -78,6 +82,11 @@ const AppRouter =createBrowserRouter([
       {path:"/patients/create-patient" ,element: <PatientCreate/>},
       {path:"/patients/edit-patient/:id" ,element: <PatientUpdate/>},
       {path:"/patients/details-patient/:id" ,element: <PatientDetails/>},
+      //Appointment
+      {path:"/appointments" ,element: <AppointmentList/>},
+      {path:"/appointments/create-appointment" ,element: <AppointmentCreate/>},
+      {path:"/appointments/edit-appointment/:id" ,element: <AppointmentUpdate/>},
+      {path:"/appointments/details-appointment/:id" ,element: <AppointmentDetails/>},
 
 
 

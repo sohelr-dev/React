@@ -1,334 +1,372 @@
-// import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
+// Types
+interface Medicine {
+  name: string;
+  generic: string;
+  dosage: string;
+  duration: string;
+  instructions: string;
+}
 
-// Example medicines database
-// const MEDICINES_DB = [
-//   { name: "Paracetamol", generic: "Acetaminophen" },
-//   { name: "Amoxicillin", generic: "Amoxicillin" },
-//   { name: "Omeprazole", generic: "Omeprazole" },
-//   { name: "Ibuprofen", generic: "Ibuprofen" }
-// ];
+type PrescriptionTest = string;
 
-// Simulating tests table data
-// const TESTS_DB = [
-//   "CBC",
-//   "X-Ray Chest",
-//   "Blood Sugar",
-//   "ECG",
-//   "Creatinine",
-//   "LFT",
-//   "Urine R/M/E"
-// ];
+interface Prescription {
+  diagnosis: string;
+  notes: string;
+  advice: string;
+  followUp: string;
+  medicines: Medicine[];
+  tests: PrescriptionTest[];
+}
 
-// Example previous prescriptions
+// Dummy data
+const MEDICINES_DB: Medicine[] = [
+  { name: "Paracetamol", generic: "Acetaminophen", dosage: "", duration: "", instructions: "" },
+  { name: "Amoxicillin", generic: "Amoxicillin", dosage: "", duration: "", instructions: "" },
+  { name: "Omeprazole", generic: "Omeprazole", dosage: "", duration: "", instructions: "" },
+  { name: "Ibuprofen", generic: "Ibuprofen", dosage: "", duration: "", instructions: "" },
+];
 
-// const PREVIOUS_PRESCRIPTIONS = {
-//   1: [
-//     {
-//       diagnosis: "Fever",
-//       notes: "Take rest",
-//       advice: "Drink water",
-//       medicines: [
-//         {
-//           name: "Paracetamol",
-//           generic: "Acetaminophen",
-//           dosage: "500mg",
-//           duration: "5 days",
-//           instructions: "After food"
-//         }
-//       ],
-//       tests: ["CBC", "Blood Sugar"]
-//     }
-//   ],
-//   2: []
-// };
+const TESTS_DB: string[] = [
+  "CBC",
+  "X-Ray Chest",
+  "Blood Sugar",
+  "ECG",
+  "Creatinine",
+  "LFT",
+  "Urine R/M/E"
+];
 
-// const initialMedicine = { name: "", generic: "", dosage: "", duration: "", instructions: "" };
-// const initialTest = "";
+const PREVIOUS_PRESCRIPTIONS: Record<number, Prescription[]> = {
+  1: [
+    {
+      diagnosis: "Fever",
+      notes: "Take rest",
+      advice: "Drink water",
+      followUp: "",
+      medicines: [
+        {
+          name: "Paracetamol",
+          generic: "Acetaminophen",
+          dosage: "500mg",
+          duration: "5 days",
+          instructions: "After food"
+        }
+      ],
+      tests: ["CBC", "Blood Sugar"]
+    }
+  ],
+  2: []
+};
+
+const initialMedicine: Medicine = {
+  name: "",
+  generic: "",
+  dosage: "",
+  duration: "",
+  instructions: ""
+};
+
+const initialTest = "";
 
 function CreatePrescription() {
-  // const [patient, setPatient] = useState("");
-  // const [appointment, setAppointment] = useState("");
-  // const [diagnosis, setDiagnosis] = useState("");
-  // const [notes, setNotes] = useState("");
-  // const [advice, setAdvice] = useState("");
-  // const [tests, setTests] = useState([initialTest]);
-  // const [followUp, setFollowUp] = useState("");
-  // const [medicines, setMedicines] = useState([initialMedicine]);
+  const [patient, setPatient] = useState<string>("");
+  const [appointment, setAppointment] = useState<string>("");
+  const [diagnosis, setDiagnosis] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
+  const [advice, setAdvice] = useState<string>("");
+  const [followUp, setFollowUp] = useState<string>("");
+  const [medicines, setMedicines] = useState<Medicine[]>([initialMedicine]);
+  const [tests, setTests] = useState<PrescriptionTest[]>([initialTest]);
 
-  // Load previous prescription when patient changes
-  // useEffect(() => {
-  //   if (patient && PREVIOUS_PRESCRIPTIONS[patient]) {
-  //     const lastPrescription = PREVIOUS_PRESCRIPTIONS[patient][PREVIOUS_PRESCRIPTIONS[patient].length - 1];
-  //     if (lastPrescription) {
-  //       setDiagnosis(lastPrescription.diagnosis);
-  //       setNotes(lastPrescription.notes);
-  //       setAdvice(lastPrescription.advice);
-  //       setMedicines(lastPrescription.medicines.length ? lastPrescription.medicines : [initialMedicine]);
-  //       setTests(lastPrescription.tests.length ? lastPrescription.tests : [initialTest]);
-  //     } else {
-  //       setDiagnosis("");
-  //       setNotes("");
-  //       setAdvice("");
-  //       setMedicines([initialMedicine]);
-  //       setTests([initialTest]);
-  //     }
-  //   } else {
-  //     setDiagnosis("");
-  //     setNotes("");
-  //     setAdvice("");
-  //     setMedicines([initialMedicine]);
-  //     setTests([initialTest]);
-  //   }
-  // }, [patient]);
+  // Load previous prescriptions when patient changes
+  useEffect(() => {
+    const id = Number(patient);
+    if (id && PREVIOUS_PRESCRIPTIONS[id]?.length > 0) {
+      const last = PREVIOUS_PRESCRIPTIONS[id].slice(-1)[0];
+      setDiagnosis(last.diagnosis);
+      setNotes(last.notes);
+      setAdvice(last.advice);
+      setFollowUp(last.followUp);
+      setMedicines(last.medicines.length ? last.medicines : [initialMedicine]);
+      setTests(last.tests.length ? last.tests : [initialTest]);
+    } else {
+      setDiagnosis("");
+      setNotes("");
+      setAdvice("");
+      setFollowUp("");
+      setMedicines([initialMedicine]);
+      setTests([initialTest]);
+    }
+  }, [patient]);
 
-  // Medicines handlers
-  // const addMedicine = () => setMedicines([...medicines, initialMedicine]);
-  // const removeMedicine = (index) => setMedicines(medicines.filter((_, i) => i !== index));
-  // const handleMedicineChange = (index, field, value) => {
-  //   const newMeds = [...medicines];
-  //   newMeds[index][field] = value;
+  // Handlers
+  const addMedicine = () => setMedicines([...medicines, initialMedicine]);
+  const removeMedicine = (index: number) =>
+    setMedicines(medicines.filter((_, i) => i !== index));
 
-  //   // Auto-fill generic if name matches
-  //   if (field === "name") {
-  //     const med = MEDICINES_DB.find(m => m.name.toLowerCase() === value.toLowerCase());
-  //     if (med) newMeds[index]["generic"] = med.generic;
-  //     else newMeds[index]["generic"] = "";
-  //   }
+  const handleMedicineChange = (index: number, field: keyof Medicine, value: string) => {
+    const updated = [...medicines];
+    updated[index][field] = value;
 
-  //   setMedicines(newMeds);
-  // };
+    if (field === "name") {
+      const med = MEDICINES_DB.find(m => m.name.toLowerCase() === value.toLowerCase());
+      updated[index].generic = med ? med.generic : "";
+    }
 
-  // Tests handlers
-  // const addTest = () => setTests([...tests, initialTest]);
-  // const removeTest = (index) => setTests(tests.filter((_, i) => i !== index));
-  // const handleTestChange = (index, value) => {
-  //   const updatedTests = [...tests];
-  //   updatedTests[index] = value;
-  //   setTests(updatedTests);
-  // };
+    setMedicines(updated);
+  };
 
-  // Submit handler
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   const payload = { patient, appointment, diagnosis, notes, advice, tests, followUp, medicines };
-  //   console.log("Prescription Data:", payload);
-  //   alert("Prescription Saved! Check console for data.");
-  //   // TODO: Call API to save prescription
-  // };
+  const addTest = () => setTests([...tests, ""]);
+  const removeTest = (index: number) => setTests(tests.filter((_, i) => i !== index));
+  const handleTestChange = (index: number, value: string) => {
+    const updated = [...tests];
+    updated[index] = value;
+    setTests(updated);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload = {
+      patient,
+      appointment,
+      diagnosis,
+      notes,
+      advice,
+      followUp,
+      medicines,
+      tests
+    };
+    console.log("Prescription Saved:", payload);
+    alert("Prescription Saved! Check console.");
+  };
 
   return (
-    <>
+    <div className="container mt-4">
+      <div className="card">
+        <div className="card-header text-center">
+          <h3>Create Prescription</h3>
+        </div>
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="row mb-3">
+              <div className="col-md-6">
+                <label>Patient</label>
+                <select
+                  className="form-select"
+                  value={patient}
+                  onChange={(e) => setPatient(e.target.value)}
+                  required
+                >
+                  <option value="">Select Patient</option>
+                  <option value="1">Ali Hossain</option>
+                  <option value="2">Tanjiya Sultana</option>
+                </select>
+              </div>
+              <div className="col-md-6">
+                <label>Appointment</label>
+                <select
+                  className="form-select"
+                  value={appointment}
+                  onChange={(e) => setAppointment(e.target.value)}
+                  required
+                >
+                  <option value="">Select Appointment</option>
+                  <option value="1">2025-09-28 10:00 AM</option>
+                  <option value="2">2025-09-28 11:30 AM</option>
+                </select>
+              </div>
+            </div>
 
-      <div className="container mt-4">
-        <div className="card">
-          <div className="card-header">
-            <h3 className="text-center">Create Prescription</h3>
-            <div className="card-body">
-              {/* onSubmit={handleSubmit} */}
-              <form >
-                {/* Patient & Appointment */}
-                <div className="row mb-3">
-                  <div className="col-md-6">
-                    <label>Patient</label>
-                    {/* value={patient} onChange={(e) => setPatient(e.target.value)} required */}
-                    <select className="form-select" >
-                      <option value="">Select Patient</option>
-                      <option value="1">Ali Hossain</option>
-                      <option value="2">Tanjiya Sultana</option>
-                    </select>
-                  </div>
-                  <div className="col-md-6">
-                    <label>Appointment</label>
-                    {/* value={appointment} onChange={(e) => setAppointment(e.target.value)} required */}
-                    <select className="form-select" >
-                      <option value="">Select Appointment</option>
-                      <option value="1">2025-09-28 10:00 AM</option>
-                      <option value="2">2025-09-28 11:30 AM</option>
-                    </select>
-                  </div>
-                </div>
+            <div className="mb-3">
+              <label>Diagnosis</label>
+              <textarea
+                className="form-control"
+                value={diagnosis}
+                onChange={(e) => setDiagnosis(e.target.value)}
+                rows={2}
+                required
+              />
+            </div>
 
-                {/* Diagnosis */}
-                <div className="mb-3">
-                  <label>Diagnosis</label>
-                  {/* value={diagnosis} onChange={(e) => setDiagnosis(e.target.value)} rows="2" required */}
-                  <textarea className="form-control" ></textarea>
-                </div>
-               
-                {/* Medicines Table */}
-                <div className="mb-3 ">
-                  <label>Medicines</label>
-                  <div className="table-responsive">
-                    <table className="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Medicine Name</th>
-                          <th>Generic Name</th>
-                          <th>Dosage</th>
-                          <th>Duration</th>
-                          <th>Instructions</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {/* {medicines.map((med, index) => ( */}
-
-                        {/* key={index} */}
-                        <tr >
-                          <td>
-                            {/* value={med.name}
-                      onChange={(e) => handleMedicineChange(index, "name", e.target.value)}
-                      list="medicines-list"
-                      required */}
-                            <input
-                              type="text"
-                              className="form-control"
-
-                            />
-                            {/* <datalist id="medicines-list">
-                      {MEDICINES_DB.map((m) => (
-                        <option key={m.name} value={m.name} />
-                      ))}
-                    </datalist> */}
-                          </td>
-                          <td>
-                            {/* value={med.generic} readOnly */}
-                            <input type="text" className="form-control" />
-                          </td>
-                          <td>
-                            {/* value={med.dosage}
-                      onChange={(e) => handleMedicineChange(index, "dosage", e.target.value)}
-                      required */}
-                            <input
-                              type="text"
-                              className="form-control"
-
-                            />
-                          </td>
-                          <td>
-                            {/*  value={med.duration}
-                      onChange={(e) => handleMedicineChange(index, "duration", e.target.value)}
-                      required */}
-                            <input
-                              type="text"
-                              className="form-control"
-
-                            />
-                          </td>
-                          <td>
-                            {/*  value={med.instructions}
-                      onChange={(e) => handleMedicineChange(index, "instructions", e.target.value)} */}
-                            <input
-                              type="text"
-                              className="form-control"
-
-                            />
-                          </td>
-                          <td>
-                            {/*  onClick={() => removeMedicine(index)}
-                      disabled={medicines.length === 1} */}
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-sm"
-
-                            >
-                              Remove
-                            </button>
-                          </td>
-                        </tr>
-                        {/* ))} */}
-                      </tbody>
-                    </table>
-
-                  </div>
-                  {/* onClick={addMedicine} */}
-                  <button type="button" className="btn btn-primary btn-sm" >
-                    Add Medicine
-                  </button>
-                </div>
-
-                {/* Tests Table */}
-                <div className="mb-3">
-                  <label>Tests</label>
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>Test Name</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* {tests.map((test, index) => ( */}
-
-                      {/* key={index} */}
-                      <tr >
+            <div className="mb-3">
+              <label>Medicines</label>
+              <div className="table-responsive">
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Generic</th>
+                      <th>Dosage</th>
+                      <th>Duration</th>
+                      <th>Instructions</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {medicines.map((med, index) => (
+                      <tr key={index}>
                         <td>
-                          {/* value={test}
-                      onChange={(e) => handleTestChange(index, e.target.value)}
-                      required */}
                           <input
                             type="text"
                             className="form-control"
-                            list="test-list"
-
+                            value={med.name}
+                            onChange={(e) => handleMedicineChange(index, "name", e.target.value)}
+                            list="medicines-list"
+                            required
                           />
-                          {/* <datalist id="test-list">
-                      {TESTS_DB.map((testName, i) => (
-                        <option key={i} value={testName} />
-                      ))}
-                    </datalist> */}
                         </td>
                         <td>
-                          {/* onClick={() => removeTest(index)}
-                      disabled={tests.length === 1} */}
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={med.generic}
+                            readOnly
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={med.dosage}
+                            onChange={(e) => handleMedicineChange(index, "dosage", e.target.value)}
+                            required
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={med.duration}
+                            onChange={(e) => handleMedicineChange(index, "duration", e.target.value)}
+                            required
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={med.instructions}
+                            onChange={(e) => handleMedicineChange(index, "instructions", e.target.value)}
+                          />
+                        </td>
+                        <td>
                           <button
                             type="button"
                             className="btn btn-danger btn-sm"
-
+                            onClick={() => removeMedicine(index)}
+                            disabled={medicines.length === 1}
                           >
                             Remove
                           </button>
                         </td>
                       </tr>
-                      {/* ))} */}
-                    </tbody>
-                  </table>
-                  {/* onClick={addTest} */}
-                  <button type="button" className="btn btn-primary btn-sm" >
-                    Add Test
-                  </button>
-                </div>
-
-                {/* Advice */}
-                <div className="mb-3">
-                  <label>Advice / Instructions</label>
-                  {/* value={advice} onChange={(e) => setAdvice(e.target.value)} rows="2" */}
-                  <textarea className="form-control" ></textarea>
-                </div>
-                {/* Notes */}
-                <div className="mb-3">
-                  <label>Notes</label>
-                  {/* value={notes} onChange={(e) => setNotes(e.target.value)} rows="2" */}
-                  <textarea className="form-control" ></textarea>
-                </div>               
-                {/* Follow-up Date */}
-                <div className="mb-3">
-                  <label>Follow-Up Date</label>
-                  {/* value={followUp} onChange={(e) => setFollowUp(e.target.value)} */}
-                  <input type="date" className="form-control" />
-                </div>
-
-                {/* Submit */}
-                <button type="submit" className="btn btn-success">
-                  Save Prescription
+                    ))}
+                  </tbody>
+                </table>
+                <button
+                  type="button"
+                  className="btn btn-primary btn-sm"
+                  onClick={addMedicine}
+                >
+                  Add Medicine
                 </button>
-              </form>
+              </div>
+              <datalist id="medicines-list">
+                {MEDICINES_DB.map((m) => (
+                  <option key={m.name} value={m.name} />
+                ))}
+              </datalist>
             </div>
-          </div>
+
+            <div className="mb-3">
+              <label>Tests</label>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Test Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {tests.map((test, index) => (
+                    <tr key={index}>
+                      <td>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={test}
+                          onChange={(e) => handleTestChange(index, e.target.value)}
+                          list="test-list"
+                          required
+                        />
+                      </td>
+                      <td>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => removeTest(index)}
+                          disabled={tests.length === 1}
+                        >
+                          Remove
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                onClick={addTest}
+              >
+                Add Test
+              </button>
+              <datalist id="test-list">
+                {TESTS_DB.map((test, i) => (
+                  <option key={i} value={test} />
+                ))}
+              </datalist>
+            </div>
+
+            <div className="mb-3">
+              <label>Advice / Instructions</label>
+              <textarea
+                className="form-control"
+                value={advice}
+                onChange={(e) => setAdvice(e.target.value)}
+                rows={2}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label>Notes</label>
+              <textarea
+                className="form-control"
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                rows={2}
+              />
+            </div>
+
+            <div className="mb-3">
+              <label>Follow-Up Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={followUp}
+                onChange={(e) => setFollowUp(e.target.value)}
+              />
+            </div>
+
+            <button type="submit" className="btn btn-success">
+              Save Prescription
+            </button>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
