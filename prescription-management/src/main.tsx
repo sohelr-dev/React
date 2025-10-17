@@ -41,6 +41,8 @@ import AppointmentList from './components/pages/doctors/appointments/Appointment
 import AppointmentDetails from './components/pages/doctors/appointments/AppointmentDetails.tsx';
 import AppointmentCreate from './components/pages/doctors/appointments/AppointmentCreate.tsx';
 import AppointmentUpdate from './components/pages/doctors/appointments/AppointmentUpdate.tsx';
+import DosagesList from './components/pages/doctors/medicines/dosages/DosagesList.tsx';
+import DurationsList from './components/pages/doctors/medicines/dosages/durationsList.tsx';
 
 
 
@@ -87,6 +89,11 @@ const AppRouter =createBrowserRouter([
       {path:"/appointments/create-appointment" ,element: <AppointmentCreate/>},
       {path:"/appointments/edit-appointment/:id" ,element: <AppointmentUpdate/>},
       {path:"/appointments/details-appointment/:id" ,element: <AppointmentDetails/>},
+      //dosages
+      {path:"/dosages" ,element: <DosagesList/>},
+      //dosages
+      {path:"/durations" ,element: <DurationsList/>},
+
 
 
 

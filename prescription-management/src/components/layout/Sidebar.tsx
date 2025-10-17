@@ -168,6 +168,24 @@ function Sidebar() {
                                             Medicine
                                         </NavLink>
                                     </li>
+                                    <li>
+                                        <NavLink
+                                            to="/dosages"
+                                            className={({ isActive }) =>
+                                                isActive ? 'nav-link text-white ps-4 active fs-6' : 'fs-6 nav-link text-white ps-4'}>
+                                            <GiMedicines className="me-2" />
+                                            Dosages
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
+                                            to="/durations"
+                                            className={({ isActive }) =>
+                                                isActive ? 'nav-link text-white ps-4 active fs-6' : 'fs-6 nav-link text-white ps-4'}>
+                                            <GiMedicines className="me-2" />
+                                            Duration
+                                        </NavLink>
+                                    </li>
                                 </ul>
                             </div>
                         </li>

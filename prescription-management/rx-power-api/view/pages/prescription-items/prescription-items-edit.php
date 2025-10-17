@@ -7,10 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $prescription_id = $_POST['prescription_id'];
     $medicine_id = $_POST['medicine_id'];
-    $dosage = $_POST['dosage'];
-    $duration = $_POST['duration'];
-    $instructions = $_POST['instructions'];
-    $obj = new PrescriptionItems($id, $prescription_id, $medicine_id, $dosage, $duration, $instructions);
+    $dosage_id = $_POST['dosage_id'];
+    $duration_id = $_POST['duration_id'];
+    $instruction_id = $_POST['instruction_id'];
+    $obj = new PrescriptionItems($id, $prescription_id, $medicine_id, $dosage_id, $duration_id, $instruction_id);
     $msg = $obj->update($id);
 }
 if (isset($_GET['id'])) {
@@ -52,16 +52,16 @@ if (isset($_GET['id'])) {
         <input type="text" class="form-control" name="medicine_id" id="medicine_id" value="<?php echo htmlspecialchars($res['medicine_id']); ?>">
       </div>
       <div class="form-group mb-3">
-        <label for="dosage">Dosage</label>
-        <input type="text" class="form-control" name="dosage" id="dosage" value="<?php echo htmlspecialchars($res['dosage']); ?>">
+        <label for="dosage_id">Dosage Id</label>
+        <input type="text" class="form-control" name="dosage_id" id="dosage_id" value="<?php echo htmlspecialchars($res['dosage_id']); ?>">
       </div>
       <div class="form-group mb-3">
-        <label for="duration">Duration</label>
-        <input type="text" class="form-control" name="duration" id="duration" value="<?php echo htmlspecialchars($res['duration']); ?>">
+        <label for="duration_id">Duration Id</label>
+        <input type="text" class="form-control" name="duration_id" id="duration_id" value="<?php echo htmlspecialchars($res['duration_id']); ?>">
       </div>
       <div class="form-group mb-3">
-        <label for="instructions">Instructions</label>
-        <input type="text" class="form-control" name="instructions" id="instructions" value="<?php echo htmlspecialchars($res['instructions']); ?>">
+        <label for="instruction_id">Instruction Id</label>
+        <input type="text" class="form-control" name="instruction_id" id="instruction_id" value="<?php echo htmlspecialchars($res['instruction_id']); ?>">
       </div>
     </div>
     <div class="card-footer">

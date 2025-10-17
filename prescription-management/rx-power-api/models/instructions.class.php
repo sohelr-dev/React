@@ -1,25 +1,17 @@
 <?php
 
-class PrescriptionItems {
+class Instructions {
     public $id;
-    public $prescription_id;
-    public $medicine_id;
-    public $dosage_id;
-    public $duration_id;
-    public $instruction_id;
+    public $text;
 
-    public function __construct($_id, $_prescription_id, $_medicine_id, $_dosage_id, $_duration_id, $_instruction_id) {
+    public function __construct($_id, $_text) {
         $this->id = $_id;
-        $this->prescription_id = $_prescription_id;
-        $this->medicine_id = $_medicine_id;
-        $this->dosage_id = $_dosage_id;
-        $this->duration_id = $_duration_id;
-        $this->instruction_id = $_instruction_id;
+        $this->text = $_text;
     }
 
     public function create() {
         global $db;
-        $sql = "INSERT INTO prescription_items (id,prescription_id,medicine_id,dosage_id,duration_id,instruction_id) VALUES ('{$this->id}', '{$this->prescription_id}', '{$this->medicine_id}', '{$this->dosage_id}', '{$this->duration_id}', '{$this->instruction_id}')";
+        $sql = "INSERT INTO instructions (id,text) VALUES ('{$this->id}', '{$this->text}')";
         if ($db->query($sql)) {
           return $db->insert_id;
         } else {
@@ -29,7 +21,7 @@ class PrescriptionItems {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM prescription_items";
+        $sql = "SELECT * FROM instructions";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);
@@ -41,7 +33,7 @@ class PrescriptionItems {
     public static function readById($id) {
         global $db;
         $id = (int)$id;
-        $sql = "SELECT * FROM prescription_items WHERE id = $id";
+        $sql = "SELECT * FROM instructions WHERE id = $id";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_assoc();
@@ -52,7 +44,7 @@ class PrescriptionItems {
 
     public function update($id) {
         global $db;
-        $sql = "UPDATE prescription_items SET id='{$this->id}', prescription_id='{$this->prescription_id}', medicine_id='{$this->medicine_id}', dosage_id='{$this->dosage_id}', duration_id='{$this->duration_id}', instruction_id='{$this->instruction_id}' WHERE id = $id";
+        $sql = "UPDATE instructions SET id='{$this->id}', text='{$this->text}' WHERE id = $id";
         if ($db->query($sql)) {
           if ($db->affected_rows > 0) {
             return "Update successful.";
@@ -66,7 +58,7 @@ class PrescriptionItems {
 
     public static function delete($id) {
         global $db;
-        $sql = "DELETE FROM prescription_items WHERE id = $id";
+        $sql = "DELETE FROM instructions WHERE id = $id";
         if ($db->query($sql)) {
           if ($db->affected_rows > 0) {
             return "Delete successful.";

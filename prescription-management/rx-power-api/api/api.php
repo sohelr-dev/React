@@ -147,6 +147,34 @@ if(isset($_GET['method'])) {
             $data = json_decode(file_get_contents("php://input"),true);
             updateAppointmentsById($data);
         }
+        // Dosages
+        elseif($endpoint =="dosages" && $method == 'GET'){
+            getDosages();
+        }elseif($endpoint =="delete-dosage" && $method == 'DELETE'){
+            deleteAppointmentsId($_GET['id']);
+        }elseif($endpoint =="create-dosage" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createAppointments($data);
+        }elseif($endpoint =="details-dosage" && $method == 'GET'){
+            getAppointmentsById($_GET['id']);
+        }elseif($endpoint =="edit-dosage" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateAppointmentsById($data);
+        }
+        // Durations
+        elseif($endpoint =="durations" && $method == 'GET'){
+            getDurations();
+        }elseif($endpoint =="delete-dosage" && $method == 'DELETE'){
+            deleteAppointmentsId($_GET['id']);
+        }elseif($endpoint =="create-dosage" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createAppointments($data);
+        }elseif($endpoint =="details-dosage" && $method == 'GET'){
+            getAppointmentsById($_GET['id']);
+        }elseif($endpoint =="edit-dosage" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateAppointmentsById($data);
+        }
         
 
 

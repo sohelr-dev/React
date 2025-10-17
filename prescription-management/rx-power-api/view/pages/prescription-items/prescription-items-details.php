@@ -36,16 +36,16 @@ if (isset($_GET["id"])) {
     <td><?php echo htmlspecialchars($item['medicine_id']); ?></td>
   </tr>
   <tr>
-    <th>Dosage</th>
-    <td><?php echo htmlspecialchars($item['dosage']); ?></td>
+    <th>Dosage Id</th>
+    <td><?php echo htmlspecialchars($item['dosage_id']); ?></td>
   </tr>
   <tr>
-    <th>Duration</th>
-    <td><?php echo htmlspecialchars($item['duration']); ?></td>
+    <th>Duration Id</th>
+    <td><?php echo htmlspecialchars($item['duration_id']); ?></td>
   </tr>
   <tr>
-    <th>Instructions</th>
-    <td><?php echo htmlspecialchars($item['instructions']); ?></td>
+    <th>Instruction Id</th>
+    <td><?php echo htmlspecialchars($item['instruction_id']); ?></td>
   </tr>
 </table>
 <?php } else { echo "<p>No data found.</p>"; } ?>

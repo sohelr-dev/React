@@ -1,10 +1,10 @@
 
 <?php
-require_once("models/prescription-items.class.php");
+require_once("models/dosages.class.php");
 $msg = "";
 if(isset($_POST['delete_id'])) {
   $id = $_POST['delete_id'];
-  $msg = PrescriptionItems::delete($id);
+  $msg = Dosages::delete($id);
 }
 
 ?>
@@ -13,14 +13,14 @@ if(isset($_POST['delete_id'])) {
     <div class='container-fluid'>
       <div class='row mb-2'>
         <div class='col-sm-6'>
-          <h1 class='m-0'>Manage Prescription Items</h1>
+          <h1 class='m-0'>Manage Dosages</h1>
         </div>
       </div>
     </div>
   </div>
   <section class='content'>
     <div class='container-fluid'>
-      <a href="prescription-items-create" class="btn btn-primary mb-3">Add New</a>
+      <a href="dosages-create" class="btn btn-primary mb-3">Add New</a>
 
 <?php if($msg) { ?>
 <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -33,32 +33,24 @@ if(isset($_POST['delete_id'])) {
   <thead>
   <tr>
     <th>Id</th>
-    <th>Prescription Id</th>
-    <th>Medicine Id</th>
-    <th>Dosage Id</th>
-    <th>Duration Id</th>
-    <th>Instruction Id</th>
+    <th>Name</th>
     <th>Actions</th>
   </tr>
   </thead>
   <tbody>
   <?php
-    $items = PrescriptionItems::readAll();
+    $items = Dosages::readAll();
     foreach($items as $item){
       echo "<tr>";
       echo "<td>".$item['id']."</td>";
-      echo "<td>".$item['prescription_id']."</td>";
-      echo "<td>".$item['medicine_id']."</td>";
-      echo "<td>".$item['dosage_id']."</td>";
-      echo "<td>".$item['duration_id']."</td>";
-      echo "<td>".$item['instruction_id']."</td>";
+      echo "<td>".$item['name']."</td>";
   ?>
     <td>
-      <form action="prescription-items-details" method="get">
+      <form action="dosages-details" method="get">
         <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
         <input type="submit" class="btn btn-info" value="Details">
       </form>
-      <form action="prescription-items-edit" method="get">
+      <form action="dosages-edit" method="get">
         <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
         <input type="submit" class="btn btn-primary" value="Edit">
       </form>
