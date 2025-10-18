@@ -1,7 +1,5 @@
 function MyPrescriptionsPatient() {
-  return (
-    <div>My Prescriptions Patient</div>
-  )
+  return <div>My Prescriptions Patient</div>;
 }
 
-export default MyPrescriptionsPatient
+export default MyPrescriptionsPatient;

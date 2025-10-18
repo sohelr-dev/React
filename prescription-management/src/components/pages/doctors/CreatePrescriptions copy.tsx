@@ -22,10 +22,34 @@ interface Prescription {
 
 // Dummy data
 const MEDICINES_DB: Medicine[] = [
-  { name: "Paracetamol", generic: "Acetaminophen", dosage: "", duration: "", instructions: "" },
-  { name: "Amoxicillin", generic: "Amoxicillin", dosage: "", duration: "", instructions: "" },
-  { name: "Omeprazole", generic: "Omeprazole", dosage: "", duration: "", instructions: "" },
-  { name: "Ibuprofen", generic: "Ibuprofen", dosage: "", duration: "", instructions: "" },
+  {
+    name: "Paracetamol",
+    generic: "Acetaminophen",
+    dosage: "",
+    duration: "",
+    instructions: "",
+  },
+  {
+    name: "Amoxicillin",
+    generic: "Amoxicillin",
+    dosage: "",
+    duration: "",
+    instructions: "",
+  },
+  {
+    name: "Omeprazole",
+    generic: "Omeprazole",
+    dosage: "",
+    duration: "",
+    instructions: "",
+  },
+  {
+    name: "Ibuprofen",
+    generic: "Ibuprofen",
+    dosage: "",
+    duration: "",
+    instructions: "",
+  },
 ];
 
 const TESTS_DB: string[] = [
@@ -35,7 +59,7 @@ const TESTS_DB: string[] = [
   "ECG",
   "Creatinine",
   "LFT",
-  "Urine R/M/E"
+  "Urine R/M/E",
 ];
 
 const PREVIOUS_PRESCRIPTIONS: Record<number, Prescription[]> = {
@@ -51,13 +75,13 @@ const PREVIOUS_PRESCRIPTIONS: Record<number, Prescription[]> = {
           generic: "Acetaminophen",
           dosage: "500mg",
           duration: "5 days",
-          instructions: "After food"
-        }
+          instructions: "After food",
+        },
       ],
-      tests: ["CBC", "Blood Sugar"]
-    }
+      tests: ["CBC", "Blood Sugar"],
+    },
   ],
-  2: []
+  2: [],
 };
 
 const initialMedicine: Medicine = {
@@ -65,7 +89,7 @@ const initialMedicine: Medicine = {
   generic: "",
   dosage: "",
   duration: "",
-  instructions: ""
+  instructions: "",
 };
 
 const initialTest = "";
@@ -106,12 +130,18 @@ function CreatePrescription() {
   const removeMedicine = (index: number) =>
     setMedicines(medicines.filter((_, i) => i !== index));
 
-  const handleMedicineChange = (index: number, field: keyof Medicine, value: string) => {
+  const handleMedicineChange = (
+    index: number,
+    field: keyof Medicine,
+    value: string
+  ) => {
     const updated = [...medicines];
     updated[index][field] = value;
 
     if (field === "name") {
-      const med = MEDICINES_DB.find(m => m.name.toLowerCase() === value.toLowerCase());
+      const med = MEDICINES_DB.find(
+        (m) => m.name.toLowerCase() === value.toLowerCase()
+      );
       updated[index].generic = med ? med.generic : "";
     }
 
@@ -119,7 +149,8 @@ function CreatePrescription() {
   };
 
   const addTest = () => setTests([...tests, ""]);
-  const removeTest = (index: number) => setTests(tests.filter((_, i) => i !== index));
+  const removeTest = (index: number) =>
+    setTests(tests.filter((_, i) => i !== index));
   const handleTestChange = (index: number, value: string) => {
     const updated = [...tests];
     updated[index] = value;
@@ -136,7 +167,7 @@ function CreatePrescription() {
       advice,
       followUp,
       medicines,
-      tests
+      tests,
     };
     console.log("Prescription Saved:", payload);
     alert("Prescription Saved! Check console.");
@@ -212,7 +243,13 @@ function CreatePrescription() {
                             type="text"
                             className="form-control"
                             value={med.name}
-                            onChange={(e) => handleMedicineChange(index, "name", e.target.value)}
+                            onChange={(e) =>
+                              handleMedicineChange(
+                                index,
+                                "name",
+                                e.target.value
+                              )
+                            }
                             list="medicines-list"
                             required
                           />
@@ -230,7 +267,13 @@ function CreatePrescription() {
                             type="text"
                             className="form-control"
                             value={med.dosage}
-                            onChange={(e) => handleMedicineChange(index, "dosage", e.target.value)}
+                            onChange={(e) =>
+                              handleMedicineChange(
+                                index,
+                                "dosage",
+                                e.target.value
+                              )
+                            }
                             required
                           />
                         </td>
@@ -239,7 +282,13 @@ function CreatePrescription() {
                             type="text"
                             className="form-control"
                             value={med.duration}
-                            onChange={(e) => handleMedicineChange(index, "duration", e.target.value)}
+                            onChange={(e) =>
+                              handleMedicineChange(
+                                index,
+                                "duration",
+                                e.target.value
+                              )
+                            }
                             required
                           />
                         </td>
@@ -248,7 +297,13 @@ function CreatePrescription() {
                             type="text"
                             className="form-control"
                             value={med.instructions}
-                            onChange={(e) => handleMedicineChange(index, "instructions", e.target.value)}
+                            onChange={(e) =>
+                              handleMedicineChange(
+                                index,
+                                "instructions",
+                                e.target.value
+                              )
+                            }
                           />
                         </td>
                         <td>
@@ -297,7 +352,9 @@ function CreatePrescription() {
                           type="text"
                           className="form-control"
                           value={test}
-                          onChange={(e) => handleTestChange(index, e.target.value)}
+                          onChange={(e) =>
+                            handleTestChange(index, e.target.value)
+                          }
                           list="test-list"
                           required
                         />

@@ -1,7 +1,5 @@
 function MedicalHistory() {
-  return (
-    <div>MedicalHistory</div>
-  )
+  return <div>MedicalHistory</div>;
 }
 
-export default MedicalHistory
+export default MedicalHistory;

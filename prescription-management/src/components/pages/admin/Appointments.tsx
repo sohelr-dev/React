@@ -1,7 +1,5 @@
 function Appointments() {
-  return (
-    <div>Appointments</div>
-  )
+  return <div>Appointments</div>;
 }
 
-export default Appointments
+export default Appointments;

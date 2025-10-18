@@ -1,13 +1,13 @@
 export interface duration {
-    id?: number,
-    description?: string
-    name?: string
+  id?: number;
+  description?: string;
+  name?: string;
 }
 
 const durationDefault: duration = {
-    id: 0,
-    description:"",
-    name:""
+  id: 0,
+  description: "",
+  name: "",
 };
 
 export default durationDefault;

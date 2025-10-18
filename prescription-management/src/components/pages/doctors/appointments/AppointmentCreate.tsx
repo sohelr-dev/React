@@ -6,10 +6,10 @@ import appointmentDefault from "../../../interfaces/appointment.interfaces";
 import type { patient } from "../../../interfaces/patient.interfaces";
 import type { doctor } from "../../../interfaces/doctor.interfaces";
 
-
 function AppointmentCreate() {
   const navigate = useNavigate();
-  const [appointment, setAppointment] = useState<appointment>(appointmentDefault);
+  const [appointment, setAppointment] =
+    useState<appointment>(appointmentDefault);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -21,7 +21,8 @@ function AppointmentCreate() {
   //get patient
   const [patients, setPatients] = useState<patient[]>([]);
   const getPatients = () => {
-    api.get("patients")
+    api
+      .get("patients")
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           // console.log(response.data);
@@ -31,12 +32,13 @@ function AppointmentCreate() {
       .catch((error) => {
         console.log(error);
         alert("Something Wrong !");
-      })
+      });
   };
   //get doctors
   const [doctors, setDoctors] = useState<doctor[]>([]);
   const getDoctor = () => {
-    api.get("doctors")
+    api
+      .get("doctors")
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
           setDoctors(response.data);
@@ -46,10 +48,8 @@ function AppointmentCreate() {
       .catch((error) => {
         console.log(error);
         alert("Something Wrong !");
-      })
+      });
   };
-
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,40 +93,65 @@ function AppointmentCreate() {
               {/* Patient ID */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Patient Name</label>
-                <select name="patient_id" id="patient_id" className="form-select"
+                <select
+                  name="patient_id"
+                  id="patient_id"
+                  className="form-select"
                   value={appointment.patient_id || ""}
-                  onChange={(e) => setAppointment({ ...appointment, patient_id: parseInt(e.target.value) })}>
-                  {
-                    patients.map((item) =>
-                      <option value={item.id} key={item.id}>{item.name}</option>
-                    )
+                  onChange={(e) =>
+                    setAppointment({
+                      ...appointment,
+                      patient_id: parseInt(e.target.value),
+                    })
                   }
+                >
+                  {patients.map((item) => (
+                    <option value={item.id} key={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               {/* Doctor ID */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Doctor Name</label>
-                <select name="doctor_id" id="doctor_id" className="form-select"
+                <select
+                  name="doctor_id"
+                  id="doctor_id"
+                  className="form-select"
                   value={appointment.doctor_id || ""}
-                  onChange={(e) => setAppointment({ ...appointment, doctor_id: parseInt(e.target.value) })}>
-                  {
-                    doctors.map((itemD) =>
-                      <option value={itemD.id} key={itemD.id}>{itemD.name}</option>
-                    )
+                  onChange={(e) =>
+                    setAppointment({
+                      ...appointment,
+                      doctor_id: parseInt(e.target.value),
+                    })
                   }
+                >
+                  {doctors.map((itemD) => (
+                    <option value={itemD.id} key={itemD.id}>
+                      {itemD.name}
+                    </option>
+                  ))}
                 </select>
               </div>
 
               {/* Appointment Date */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Appointment Date</label>
+                <label className="form-label fw-semibold">
+                  Appointment Date
+                </label>
                 <input
                   type="datetime-local"
                   className="form-control"
                   name="appointment_date"
                   value={appointment.appointment_date || ""}
-                  onChange={(e)=>setAppointment({...appointment,appointment_date:e.target.value})}
+                  onChange={(e) =>
+                    setAppointment({
+                      ...appointment,
+                      appointment_date: e.target.value,
+                    })
+                  }
                   required
                 />
               </div>
@@ -138,7 +163,16 @@ function AppointmentCreate() {
                   className="form-select"
                   name="status"
                   value={appointment.status || "pending"}
-                  onChange={(e)=>setAppointment({...appointment,status: e.target.value as "pending" | "confirmed" | "completed" | "cancelled"})}
+                  onChange={(e) =>
+                    setAppointment({
+                      ...appointment,
+                      status: e.target.value as
+                        | "pending"
+                        | "confirmed"
+                        | "completed"
+                        | "cancelled",
+                    })
+                  }
                   required
                 >
                   <option value={"pending"}>Pending</option>

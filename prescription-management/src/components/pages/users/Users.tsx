@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { User } from "../../interfaces/user.interface";
 import api, { baseUrl } from "../../../config";
 
 function Users() {
   const [users, setUsers] = useState<User[]>([]);
-  const [search,setSearch]=useState("");
+  const [search, setSearch] = useState("");
   useEffect(() => {
     document.title = "Users List";
     getUsers();
   }, []);
 
-  const getUsers = (() => {
-    api.get("users")
+  const getUsers = () => {
+    api
+      .get("users")
       .then((response) => {
         // console.log(response.data);
         setUsers(response.data);
@@ -20,19 +21,20 @@ function Users() {
       .catch((error) => {
         console.log(error);
         alert("Something Wrong !");
-      })
-  })
+      });
+  };
 
-  // for delete 
+  // for delete
   const [userId, setUserId] = useState<number>(0);
   const handleModal = (id: any) => {
     // alert(id + "hello bangladesh");
     setUserId(id);
-  }
+  };
 
-  //api delete call 
+  //api delete call
   const handleDelete = (deleteId: any) => {
-    api.delete(`delete-user?id=${deleteId}`)
+    api
+      .delete(`delete-user?id=${deleteId}`)
       .then((response) => {
         // console.log(JSON.stringify(response.data) + "id Number : "+deleteId);
         alert(JSON.stringify(response.data));
@@ -40,25 +42,32 @@ function Users() {
       })
       .catch((error) => {
         console.log(error);
-      })
-
-  }
-  const handleSearch =()=>{
+      });
+  };
+  const handleSearch = () => {
     console.log(search);
-
-  }
+  };
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4" style={{ border: '1px solid #dee2e6' }}>
+      <div
+        className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4"
+        style={{ border: "1px solid #dee2e6" }}
+      >
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0 fs-5">
             <li className="breadcrumb-item">
-              <Link to="/users" className="text-primary text-decoration-none fw-semibold">
+              <Link
+                to="/users"
+                className="text-primary text-decoration-none fw-semibold"
+              >
                 Users
               </Link>
             </li>
-            <li className="breadcrumb-item active text-secondary fw-bold" aria-current="page">
+            <li
+              className="breadcrumb-item active text-secondary fw-bold"
+              aria-current="page"
+            >
               User Manage
             </li>
           </ol>
@@ -69,23 +78,30 @@ function Users() {
         </button>
       </div>
 
-      <Link to="/create-user" className="btn btn-primary mb-4">Create </Link>
+      <Link to="/create-user" className="btn btn-primary mb-4">
+        Create{" "}
+      </Link>
       <div className="container">
         <div className="card">
           <div className="card-header">
-            <form >
+            <form>
               <div className="row">
                 <div className="col-auto">
                   <div className="input-group input-group-merge">
-                    <input type="text" className="form-control" placeholder="Search....." value={search}
-                    onChange={(e)=>setSearch(e.target.value)} onKeyUp={handleSearch}/>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search....."
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
+                      onKeyUp={handleSearch}
+                    />
                   </div>
                 </div>
               </div>
             </form>
           </div>
         </div>
-
       </div>
       <div className="container">
         <div className="card">
@@ -94,7 +110,7 @@ function Users() {
               <thead className="table-dark">
                 <tr>
                   <th>#ID</th>
-                  <th> Name  </th>
+                  <th> Name </th>
                   <th>Email</th>
                   <th>Role</th>
                   <th>Phone No.</th>
@@ -103,42 +119,58 @@ function Users() {
                 </tr>
               </thead>
               <tbody>
-
-                {
-                  users.map((item) => {
-                    return (
-                      <tr key={item.id}>
-                        <td>{item.id}</td>
-                        <td>{item.name}
-                          <span className="ms-2 d-inline-block">
-                            <img src={baseUrl + item.photo} alt="image" className="rounded-circle"
-                              style={{ width: "40px", height: "40px", objectFit: "cover" }} />
-                          </span>
-                        </td>
-                        <td>{item.email}</td>
-                        <td>{item.role_name}</td>
-                        <td>{item.phone}</td>
-                        <th>
-                          <div className="d-flex gap-2">
-                            <Link to={`/user/details-user/${item.id}`} type="button" className="btn btn-icon btn-outline-primary">
-                              <i className="fas fa-eye"></i>
-                            </Link>
-                            <Link to={`/user/edit/${item.id}`} type="button" className="btn btn-icon btn-primary">
-
-                              <i className="fas fa-edit"></i>
-                            </Link>
-                            <button type="button" className="btn btn-icon btn-danger"
-                              onClick={() => handleModal(item.id)} data-bs-toggle="modal" data-bs-target="#modalDelete"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
-                          </div>
-                        </th>
-                      </tr>
-                    )
-                  })
-                }
-
+                {users.map((item) => {
+                  return (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>
+                        {item.name}
+                        <span className="ms-2 d-inline-block">
+                          <img
+                            src={baseUrl + item.photo}
+                            alt="image"
+                            className="rounded-circle"
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              objectFit: "cover",
+                            }}
+                          />
+                        </span>
+                      </td>
+                      <td>{item.email}</td>
+                      <td>{item.role_name}</td>
+                      <td>{item.phone}</td>
+                      <th>
+                        <div className="d-flex gap-2">
+                          <Link
+                            to={`/user/details-user/${item.id}`}
+                            type="button"
+                            className="btn btn-icon btn-outline-primary"
+                          >
+                            <i className="fas fa-eye"></i>
+                          </Link>
+                          <Link
+                            to={`/user/edit/${item.id}`}
+                            type="button"
+                            className="btn btn-icon btn-primary"
+                          >
+                            <i className="fas fa-edit"></i>
+                          </Link>
+                          <button
+                            type="button"
+                            className="btn btn-icon btn-danger"
+                            onClick={() => handleModal(item.id)}
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalDelete"
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                      </th>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -149,21 +181,32 @@ function Users() {
           <div className="modal-content">
             <div className="modal-body text-center fs-1">
               <i className="fas fa-trash fs-3 text-danger"></i>
-
             </div>
             <div className="modal-body text-center">
               <p>Are you Want to delete This Item {userId}</p>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => handleDelete(userId)} >Delete</button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                data-bs-dismiss="modal"
+                onClick={() => handleDelete(userId)}
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>
       </div>
-
     </>
-  )
+  );
 }
 
-export default Users
+export default Users;

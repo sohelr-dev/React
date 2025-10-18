@@ -1,6 +1,11 @@
-import { FaCalendarCheck, FaUserInjured, FaFilePrescription, FaSearch } from 'react-icons/fa'
-import '../../../assets/custom.css'
-import { Link } from 'react-router-dom'
+import {
+  FaCalendarCheck,
+  FaUserInjured,
+  FaFilePrescription,
+  FaSearch,
+} from "react-icons/fa";
+import "../../../assets/custom.css";
+import { Link } from "react-router-dom";
 function DoctorsDashboard() {
   return (
     <div className="container py-4">
@@ -50,8 +55,15 @@ function DoctorsDashboard() {
         {/* Search Patients */}
         <div className="col-md-6">
           <div className="card  p-3 shadow-sm border-0">
-            <h6><FaSearch className="me-2" />Search Patients</h6>
-            <input type="text" className="form-control mt-2" placeholder="Enter patient name or ID" />
+            <h6>
+              <FaSearch className="me-2" />
+              Search Patients
+            </h6>
+            <input
+              type="text"
+              className="form-control mt-2"
+              placeholder="Enter patient name or ID"
+            />
           </div>
         </div>
 
@@ -59,7 +71,12 @@ function DoctorsDashboard() {
         <div className="col-md-6">
           <div className="card  p-3 shadow-sm border-0 d-flex flex-column justify-content-between">
             <h6>🩺 Create New Prescription</h6>
-            <Link to={'/createPrescription'} className="btn btn-primary mt-3 w-50">Create</Link>
+            <Link
+              to={"/createPrescription"}
+              className="btn btn-primary mt-3 w-50"
+            >
+              Create
+            </Link>
           </div>
         </div>
       </div>
@@ -72,20 +89,22 @@ function DoctorsDashboard() {
         <div className="card-body p-2">
           <ul className="list-group list-group-flush">
             <li className="list-group-item d-flex justify-content-between">
-              <span>Patient: Rafiq Islam</span><span>3:00 PM</span>
+              <span>Patient: Rafiq Islam</span>
+              <span>3:00 PM</span>
             </li>
             <li className="list-group-item d-flex justify-content-between">
-              <span>Patient: Salma Khatun</span><span>3:30 PM</span>
+              <span>Patient: Salma Khatun</span>
+              <span>3:30 PM</span>
             </li>
             <li className="list-group-item d-flex justify-content-between">
-              <span>Patient: Mahmud Hasan</span><span>4:00 PM</span>
+              <span>Patient: Mahmud Hasan</span>
+              <span>4:00 PM</span>
             </li>
           </ul>
         </div>
       </div>
-
     </div>
-  )
+  );
 }
 
-export default DoctorsDashboard
+export default DoctorsDashboard;

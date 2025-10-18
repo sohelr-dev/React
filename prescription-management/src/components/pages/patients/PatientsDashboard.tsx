@@ -1,7 +1,5 @@
 function PatientsDashboard() {
-  return (
-    <div>Patients Dashboard</div>
-  )
+  return <div>Patients Dashboard</div>;
 }
 
-export default PatientsDashboard
+export default PatientsDashboard;

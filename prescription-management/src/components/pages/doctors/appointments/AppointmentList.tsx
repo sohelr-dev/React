@@ -6,7 +6,7 @@ import type { appointment } from "../../../interfaces/appointment.interfaces";
 function AppointmentList() {
   const [appointmentList, setAppointmentList] = useState<appointment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [search ,setSerach] =useState("");
+  const [search, setSerach] = useState("");
 
   const getAppointmentList = () => {
     setLoading(true);
@@ -49,18 +49,19 @@ function AppointmentList() {
       });
   };
 
-  //Search 
-  const handleSearch = ()=>{
+  //Search
+  const handleSearch = () => {
     console.log(search);
-    api.get(`appointments?search=${search}`)
-    .then ((res)=>{
-      // console.log(res);
-      setAppointmentList(res.data);
-    })
-    .catch ((error)=>{
-      console.log(error);
-    })
-  }
+    api
+      .get(`appointments?search=${search}`)
+      .then((res) => {
+        // console.log(res);
+        setAppointmentList(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -87,116 +88,122 @@ function AppointmentList() {
 
       {/* ======= TABLE SECTION ======= */}
       <div className="container">
-      <div className="card border-0 shadow-sm">
-        <div className="card-body">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h5 className="fw-semibold text-secondary mb-0">
-              Appointment List
-            </h5>
-            <input
-              type="text"
-              className="form-control w-auto" 
-              placeholder="🔍 Search..." value={search} onChange={(e)=>setSerach(e.target.value)}
-              style={{ minWidth: "220px" }} onKeyUp={handleSearch}
-            />
-          </div>
+        <div className="card border-0 shadow-sm">
+          <div className="card-body">
+            <div className="d-flex justify-content-between align-items-center mb-3">
+              <h5 className="fw-semibold text-secondary mb-0">
+                Appointment List
+              </h5>
+              <input
+                type="text"
+                className="form-control w-auto"
+                placeholder="🔍 Search..."
+                value={search}
+                onChange={(e) => setSerach(e.target.value)}
+                style={{ minWidth: "220px" }}
+                onKeyUp={handleSearch}
+              />
+            </div>
 
-          <div className="table-responsive">
-            {loading ? (
-              <div className="text-center py-5">
-                <div
-                  className="spinner-border text-primary"
-                  role="status"
-                ></div>
-                <p className="mt-3 text-muted">Loading appointments...</p>
-              </div>
-            ) : (
-              <table className="table table-hover align-middle">
-                <thead className="table-primary">
-                  <tr className="text-center">
-                    <th>#ID</th>
-                    <th>Patient Name</th>
-                    <th>Age</th>
-                    <th>Gender</th>
-                    <th>Doctor</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {appointmentList.length > 0 ? (
-                    appointmentList.map((item) => (
-                      <tr key={item.id} className="text-center">
-                        <td className="fw-semibold text-secondary">{item.id}</td>
-                        <td>{item.patient_name ?? "—"}</td>
-                        <td>{item.age ?? "—"}</td>
-                        <td>
-                          {item.gender
-                            ? item.gender.charAt(0).toUpperCase() +
-                              item.gender.slice(1).toLowerCase()
-                            : "—"}
-                        </td>
-                        <td>{item.doctor_name ?? "—"}</td>
-                        <td>
-                          <span
-                            className={`badge px-3 py-2 ${
-                              item.status === "confirmed"
-                                ? "bg-success"
-                                : item.status === "pending"
-                                ? "bg-warning text-dark"
-                                : "bg-danger"
-                            }`}
-                          >
-                            {item.status ?? "Unknown"}
-                          </span>
-                        </td>
-                        <td>
-                          {item.appointment_date
-                            ? new Date(item.appointment_date).toLocaleDateString()
-                            : "—"}
-                        </td>
-                        <td>
-                          <div className="d-flex justify-content-center gap-2">
-                            <Link
-                              to={`/appointments/details-appointment/${item.id}`}
-                              className="btn btn-outline-primary btn-sm"
+            <div className="table-responsive">
+              {loading ? (
+                <div className="text-center py-5">
+                  <div
+                    className="spinner-border text-primary"
+                    role="status"
+                  ></div>
+                  <p className="mt-3 text-muted">Loading appointments...</p>
+                </div>
+              ) : (
+                <table className="table table-hover align-middle">
+                  <thead className="table-primary">
+                    <tr className="text-center">
+                      <th>#ID</th>
+                      <th>Patient Name</th>
+                      <th>Age</th>
+                      <th>Gender</th>
+                      <th>Doctor</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {appointmentList.length > 0 ? (
+                      appointmentList.map((item) => (
+                        <tr key={item.id} className="text-center">
+                          <td className="fw-semibold text-secondary">
+                            {item.id}
+                          </td>
+                          <td>{item.patient_name ?? "—"}</td>
+                          <td>{item.age ?? "—"}</td>
+                          <td>
+                            {item.gender
+                              ? item.gender.charAt(0).toUpperCase() +
+                                item.gender.slice(1).toLowerCase()
+                              : "—"}
+                          </td>
+                          <td>{item.doctor_name ?? "—"}</td>
+                          <td>
+                            <span
+                              className={`badge px-3 py-2 ${
+                                item.status === "confirmed"
+                                  ? "bg-success"
+                                  : item.status === "pending"
+                                  ? "bg-warning text-dark"
+                                  : "bg-danger"
+                              }`}
                             >
-                              <i className="fas fa-eye"></i>
-                            </Link>
-                            <Link
-                              to={`/appointments/edit-appointment/${item.id}`}
-                              className="btn btn-primary btn-sm"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </Link>
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-sm"
-                              onClick={() => handleModal(item.id)}
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalDelete"
-                            >
-                              <i className="fas fa-trash"></i>
-                            </button>
-                          </div>
+                              {item.status ?? "Unknown"}
+                            </span>
+                          </td>
+                          <td>
+                            {item.appointment_date
+                              ? new Date(
+                                  item.appointment_date
+                                ).toLocaleDateString()
+                              : "—"}
+                          </td>
+                          <td>
+                            <div className="d-flex justify-content-center gap-2">
+                              <Link
+                                to={`/appointments/details-appointment/${item.id}`}
+                                className="btn btn-outline-primary btn-sm"
+                              >
+                                <i className="fas fa-eye"></i>
+                              </Link>
+                              <Link
+                                to={`/appointments/edit-appointment/${item.id}`}
+                                className="btn btn-primary btn-sm"
+                              >
+                                <i className="fas fa-edit"></i>
+                              </Link>
+                              <button
+                                type="button"
+                                className="btn btn-danger btn-sm"
+                                onClick={() => handleModal(item.id)}
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalDelete"
+                              >
+                                <i className="fas fa-trash"></i>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={8} className="text-center py-4 text-muted">
+                          No appointments found.
                         </td>
                       </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={8} className="text-center py-4 text-muted">
-                        No appointments found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            )}
+                    )}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-
       </div>
 
       {/* ======= DELETE MODAL ======= */}

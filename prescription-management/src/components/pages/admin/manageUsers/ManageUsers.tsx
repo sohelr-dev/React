@@ -1,7 +1,5 @@
 function ManageUsers() {
-  return (
-    <div>ManageUsers</div>
-  )
+  return <div>ManageUsers</div>;
 }
 
-export default ManageUsers
+export default ManageUsers;

@@ -1,13 +1,10 @@
-import { useEffect } from "react"
-
+import { useEffect } from "react";
 
 function Dashboard() {
-  useEffect (()=>{
-        document.title ="Dashboard"
-    })
-  return (
-    <div>Dashboard</div>
-  )
+  useEffect(() => {
+    document.title = "Dashboard";
+  });
+  return <div>Dashboard</div>;
 }
 
-export default Dashboard
+export default Dashboard;

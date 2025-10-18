@@ -5,14 +5,16 @@ import appointmentDefault from "../../../interfaces/appointment.interfaces";
 import api from "../../../../config";
 
 function AppointmentDetails() {
-  const [appointment, setAppointment] = useState<appointment>(appointmentDefault);
+  const [appointment, setAppointment] =
+    useState<appointment>(appointmentDefault);
   const [loading, setLoading] = useState<boolean>(true);
 
   const navigate = useNavigate();
   const { id: paramId } = useParams<string>();
 
   const getAppointmentById = () => {
-    api.get(`details-appointment?id=${paramId}`)
+    api
+      .get(`details-appointment?id=${paramId}`)
       .then((res) => {
         if (res.status === 200 || res.status === 201) {
           setAppointment(res.data);
@@ -100,13 +102,14 @@ function AppointmentDetails() {
                         <th>Status:</th>
                         <td>
                           <span
-                            className={`badge px-3 py-2 fs-6 ${appointment.status === "Confirmed"
-                                ? "bg-success"
-                                : appointment.status === "Pending"
+                            className={`badge px-3 py-2 fs-6 
+                              ${
+                                appointment.status === "Confirmed"
+                                  ? "bg-success"
+                                  : appointment.status === "Pending"
                                   ? "bg-warning text-dark"
                                   : "bg-danger"
-                              }`}
-                          >
+                              }`}>
                             {appointment.status}
                           </span>
                         </td>
@@ -150,7 +153,8 @@ function AppointmentDetails() {
               <div className="alert alert-info border-0 shadow-sm">
                 <strong>Note:</strong> This appointment is scheduled on{" "}
                 <span className="fw-semibold">{formattedDate}</span> with{" "}
-                <span className="fw-semibold">{appointment.doctor_name}</span> at{" "}
+                <span className="fw-semibold">{appointment.doctor_name}</span>{" "}
+                at{" "}
                 <span className="fw-semibold">{appointment.chamber_name}</span>.
               </div>
             </div>
