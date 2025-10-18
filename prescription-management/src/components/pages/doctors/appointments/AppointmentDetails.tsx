@@ -104,9 +104,9 @@ function AppointmentDetails() {
                           <span
                             className={`badge px-3 py-2 fs-6 
                               ${
-                                appointment.status === "Confirmed"
+                                appointment.status === "confirmed"
                                   ? "bg-success"
-                                  : appointment.status === "Pending"
+                                  : appointment.status === "pending"
                                   ? "bg-warning text-dark"
                                   : "bg-danger"
                               }`}>

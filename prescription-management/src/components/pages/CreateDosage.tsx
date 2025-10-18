@@ -1,85 +1,258 @@
-import React, { useEffect, useState } from "react";
-import type { dosage } from "../interfaces/dosages.interfaces";
+import { useState } from "react";
 import api from "../../config";
-import type { prescription } from "../interfaces/prescription.interfaces";
+// import api from "../../../config"; // তোমার axios instance
 
 function CreateDosage() {
-  const [prescription, setPrescription] = useState<prescription>({
-    id: 0,
-    dosage_id: 0,
-    dosage_name: "",
+  const [formData, setFormData] = useState({
+    doctor_id: "",
+    patient_id: "",
+    date: "",
+    advice: "",
+    next_visit_date: "",
   });
-  const [dosages, setDosages] = useState<dosage[]>([]);
 
-  useEffect(() => {
-    document.title = "Dosages List";
-    getDosages();
-  }, []);
+  const [medicines, setMedicines] = useState([
+    { medicine_id: "", dosage_id: "", duration_id: "", instruction_id: "", note: "" },
+  ]);
 
-  const getDosages = () => {
+  const [tests, setTests] = useState([{ test_id: "", note: "" }]);
+
+  // input change handler
+  const handleChange = (e: any) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // medicine dynamic fields
+  const handleMedicineChange = (index: number, e: any) => {
+    const values = [...medicines];
+    values[index][e.target.name] = e.target.value;
+    setMedicines(values);
+  };
+
+  const addMedicine = () => {
+    setMedicines([
+      ...medicines,
+      { medicine_id: "", dosage_id: "", duration_id: "", instruction_id: "", note: "" },
+    ]);
+  };
+
+  // test dynamic fields
+  const handleTestChange = (index: number, e: any) => {
+    const values = [...tests];
+    values[index][e.target.name] = e.target.value;
+    setTests(values);
+  };
+
+  const addTest = () => {
+    setTests([...tests, { test_id: "", note: "" }]);
+  };
+
+  // submit handler
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      medicines,
+      tests,
+    };
+
     api
-      .get("dosages")
+      .post("create-prescription.php", payload)
       .then((response) => {
-        setDosages(response.data);
+        if (response.data.status === "success") {
+          alert("✅ Prescription created successfully!");
+          setFormData({
+            doctor_id: "",
+            patient_id: "",
+            date: "",
+            advice: "",
+            next_visit_date: "",
+          });
+          setMedicines([
+            { medicine_id: "", dosage_id: "", duration_id: "", instruction_id: "", note: "" },
+          ]);
+          setTests([{ test_id: "", note: "" }]);
+        } else {
+          alert("❌ " + response.data.message);
+        }
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         alert("Something went wrong!");
       });
   };
 
-  const handlePrescription = (e: React.FormEvent) => {
-    e.preventDefault();
-    const match = dosages.find((opt) => opt.name === prescription.dosage_name);
-
-    if (match) {
-      setPrescription((prev) => ({ ...prev, dosage_id: match.id }));
-    } else {
-      alert("Dosage name not found!");
-    }
-  };
-  useEffect(() => {
-    console.log("Updated prescription:", prescription);
-  }, [prescription]);
-
   return (
-    <div className="container mt-5">
-      <div className="card shadow-sm border-0">
-        <div className="card-header bg-primary text-white text-center p-3">
-          <h4 className="mb-0">Create Prescription</h4>
+    <div className="container py-4">
+      <h3 className="text-primary fw-bold mb-4">📝 Create Prescription</h3>
+
+      <form onSubmit={handleSubmit} className="card shadow-sm p-4">
+        <div className="row g-3">
+          <div className="col-md-4">
+            <label className="form-label fw-semibold">Doctor ID</label>
+            <input
+              type="number"
+              className="form-control"
+              name="doctor_id"
+              value={formData.doctor_id}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label fw-semibold">Patient ID</label>
+            <input
+              type="number"
+              className="form-control"
+              name="patient_id"
+              value={formData.patient_id}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="col-md-4">
+            <label className="form-label fw-semibold">Date</label>
+            <input
+              type="date"
+              className="form-control"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label fw-semibold">Advice</label>
+            <textarea
+              className="form-control"
+              name="advice"
+              value={formData.advice}
+              onChange={handleChange}
+            ></textarea>
+          </div>
+
+          <div className="col-md-6">
+            <label className="form-label fw-semibold">Next Visit Date</label>
+            <input
+              type="date"
+              className="form-control"
+              name="next_visit_date"
+              value={formData.next_visit_date}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
-        <div className="card-body p-4">
-          <form onSubmit={handlePrescription}>
-            <div className="row mb-4">
-              <label htmlFor="dosage_name">Dosage Name</label>
+        {/* Medicines Section */}
+        <hr />
+        <h5 className="fw-bold text-success">💊 Medicines</h5>
+        {medicines.map((m, i) => (
+          <div className="row g-3 align-items-end mt-1" key={i}>
+            <div className="col-md-2">
               <input
-                type="text"
+                type="number"
+                name="medicine_id"
                 className="form-control"
-                name="dosage_name"
-                list="dosage-list"
-                value={prescription.dosage_name}
-                onChange={(e) =>
-                  setPrescription({
-                    ...prescription,
-                    dosage_name: e.target.value,
-                  })
-                }
+                placeholder="Medicine ID"
+                value={m.medicine_id}
+                onChange={(e) => handleMedicineChange(i, e)}
                 required
               />
-              <datalist id="dosage-list">
-                {dosages.map((do_item) => (
-                  <option value={do_item.name} key={do_item.id} />
-                ))}
-              </datalist>
             </div>
+            <div className="col-md-2">
+              <input
+                type="number"
+                name="dosage_id"
+                className="form-control"
+                placeholder="Dosage ID"
+                value={m.dosage_id}
+                onChange={(e) => handleMedicineChange(i, e)}
+              />
+            </div>
+            <div className="col-md-2">
+              <input
+                type="number"
+                name="duration_id"
+                className="form-control"
+                placeholder="Duration ID"
+                value={m.duration_id}
+                onChange={(e) => handleMedicineChange(i, e)}
+              />
+            </div>
+            <div className="col-md-2">
+              <input
+                type="number"
+                name="instruction_id"
+                className="form-control"
+                placeholder="Instruction ID"
+                value={m.instruction_id}
+                onChange={(e) => handleMedicineChange(i, e)}
+              />
+            </div>
+            <div className="col-md-3">
+              <input
+                type="text"
+                name="note"
+                className="form-control"
+                placeholder="Note"
+                value={m.note}
+                onChange={(e) => handleMedicineChange(i, e)}
+              />
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="btn btn-outline-success mt-2"
+          onClick={addMedicine}
+        >
+          + Add Medicine
+        </button>
 
-            <button type="submit" className="btn btn-success px-4">
-              Save Prescription
-            </button>
-          </form>
-        </div>
-      </div>
+        {/* Tests Section */}
+        <hr />
+        <h5 className="fw-bold text-info">🧪 Tests</h5>
+        {tests.map((t, i) => (
+          <div className="row g-3 align-items-end mt-1" key={i}>
+            <div className="col-md-3">
+              <input
+                type="number"
+                name="test_id"
+                className="form-control"
+                placeholder="Test ID"
+                value={t.test_id}
+                onChange={(e) => handleTestChange(i, e)}
+              />
+            </div>
+            <div className="col-md-6">
+              <input
+                type="text"
+                name="note"
+                className="form-control"
+                placeholder="Note"
+                value={t.note}
+                onChange={(e) => handleTestChange(i, e)}
+              />
+            </div>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="btn btn-outline-info mt-2"
+          onClick={addTest}
+        >
+          + Add Test
+        </button>
+
+        {/* Submit */}
+        <hr />
+        <button type="submit" className="btn btn-primary px-4 fw-semibold">
+          Submit Prescription
+        </button>
+      </form>
     </div>
   );
 }

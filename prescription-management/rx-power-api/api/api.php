@@ -151,29 +151,43 @@ if(isset($_GET['method'])) {
         elseif($endpoint =="dosages" && $method == 'GET'){
             getDosages();
         }elseif($endpoint =="delete-dosage" && $method == 'DELETE'){
-            deleteAppointmentsId($_GET['id']);
+            deleteDosagesId($_GET['id']);
         }elseif($endpoint =="create-dosage" && $method == 'POST'){
             $data = json_decode(file_get_contents("php://input"),true);
-            createAppointments($data);
+            createDosages($data);
         }elseif($endpoint =="details-dosage" && $method == 'GET'){
-            getAppointmentsById($_GET['id']);
+            getDosagesById($_GET['id']);
         }elseif($endpoint =="edit-dosage" && $method == 'PUT'){
             $data = json_decode(file_get_contents("php://input"),true);
-            updateAppointmentsById($data);
+            updateDosagesById($data);
         }
         // Durations
         elseif($endpoint =="durations" && $method == 'GET'){
             getDurations();
-        }elseif($endpoint =="delete-dosage" && $method == 'DELETE'){
-            deleteAppointmentsId($_GET['id']);
-        }elseif($endpoint =="create-dosage" && $method == 'POST'){
+        }elseif($endpoint =="delete-duration" && $method == 'DELETE'){
+            deleteDurationsId($_GET['id']);
+        }elseif($endpoint =="create-duration" && $method == 'POST'){
             $data = json_decode(file_get_contents("php://input"),true);
-            createAppointments($data);
-        }elseif($endpoint =="details-dosage" && $method == 'GET'){
-            getAppointmentsById($_GET['id']);
-        }elseif($endpoint =="edit-dosage" && $method == 'PUT'){
+            createDurations($data);
+        }elseif($endpoint =="details-duration" && $method == 'GET'){
+            getDurationsById($_GET['id']);
+        }elseif($endpoint =="edit-duration" && $method == 'PUT'){
             $data = json_decode(file_get_contents("php://input"),true);
-            updateAppointmentsById($data);
+            updateDurationsById($data);
+        }
+        // Instructions
+        elseif($endpoint =="instructions" && $method == 'GET'){
+            getInstructions();
+        }elseif($endpoint =="delete-instruction" && $method == 'DELETE'){
+            deleteInstructionsId($_GET['id']);
+        }elseif($endpoint =="create-instruction" && $method == 'POST'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            createInstructions($data);
+        }elseif($endpoint =="details-instruction" && $method == 'GET'){
+            getInstructionsById($_GET['id']);
+        }elseif($endpoint =="edit-instruction" && $method == 'PUT'){
+            $data = json_decode(file_get_contents("php://input"),true);
+            updateInstructionsById($data);
         }
         
 
