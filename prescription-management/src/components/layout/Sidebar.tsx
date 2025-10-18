@@ -179,6 +179,15 @@ function Sidebar() {
                                     </li>
                                     <li>
                                         <NavLink
+                                            to="/create-dosages"
+                                            className={({ isActive }) =>
+                                                isActive ? 'nav-link text-white ps-4 active fs-6' : 'fs-6 nav-link text-white ps-4'}>
+                                            <GiMedicines className="me-2" />
+                                            Create Dosage
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <NavLink
                                             to="/durations"
                                             className={({ isActive }) =>
                                                 isActive ? 'nav-link text-white ps-4 active fs-6' : 'fs-6 nav-link text-white ps-4'}>
