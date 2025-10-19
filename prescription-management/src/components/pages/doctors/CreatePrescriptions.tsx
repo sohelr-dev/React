@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { dosage } from "../../interfaces/dosages.interfaces";
-import api from  "../../../config";
+// import api from "../../../config";
 // import type { prescription } from "../../interfaces/prescription.interfaces";
 // import prescriptionDefault from "../../interfaces/prescription.interfaces";
 import type { medicine } from "../../interfaces/medicine.interface";
@@ -8,24 +8,30 @@ import type { prescriptionItem } from "../../interfaces/prescriptionItem.interfa
 import prescriptionItemDefault from "../../interfaces/prescriptionItem.interfaces";
 import type { duration } from "../../interfaces/duration.interfaces";
 import type { instruction } from "../../interfaces/instructions.interfaces";
+import api from "../../../config";
+import type { tests } from "../../interfaces/test.interfaces";
+import type { prescriptionTest } from "../../interfaces/prescriptionTests.interfaces";
+import prescriptionTestDefault from "../../interfaces/prescriptionTests.interfaces";
 
 
-function CreatePrescriptions () {
+function CreatePrescriptions() {
   // const [prescription, setPrescription] = useState<prescription>(prescriptionDefault);
-  const [prescriptionItem, setPrescriptionItem] = useState<prescriptionItem>(prescriptionItemDefault);
+  const [prescriptionItems, setPrescriptionItems] = useState<prescriptionItem[]>([]);
+  const [prescriptionTests, setPrescriptionTests] = useState<prescriptionTest[]>([]);
   const [medicineItem, setMedicineItem] = useState<prescriptionItem>(prescriptionItemDefault);
+  const [testItem, setTestItem] = useState<prescriptionTest>(prescriptionTestDefault);
   const [dosages, setDosages] = useState<dosage[]>([]);
   const [medicines, setMedicines] = useState<medicine[]>([]);
   const [durations, setDurations] = useState<duration[]>([]);
   const [instructions, setInstructions] = useState<instruction[]>([]);
+  const [tests, setTests] = useState<tests[]>([]);
+
   const getMedicines = () => {
     api
       .get("medicines")
       .then((response) => {
-        // console.log(response.data);
         if (response.status === 200 || response.status === 201) {
           setMedicines(response.data);
-          // console.log(response.data);
         }
       })
       .catch((error) => {
@@ -33,11 +39,11 @@ function CreatePrescriptions () {
         alert("Something Wrong !");
       });
   };
+
   const getDosages = () => {
     api.get("dosages")
     .then((response) => {
       if (response.status === 200 || response.status === 201) {
-        // console.log(response.data);
         setDosages(response.data);
       }
     })
@@ -46,11 +52,11 @@ function CreatePrescriptions () {
       alert("Something went wrong!");
     });
   };
+
   const getDurations = () => {
     api.get("durations")
     .then((response) => {
       if (response.status === 200 || response.status === 201) {
-        // console.log(response.data);
         setDurations(response.data);
       }
     })
@@ -59,12 +65,24 @@ function CreatePrescriptions () {
       alert("Something went wrong!");
     });
   };
+
   const getInstructions = () => {
     api.get("instructions")
     .then((response) => {
       if (response.status === 200 || response.status === 201) {
-        // console.log(response.data);
         setInstructions(response.data);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      alert("Something went wrong!");
+    });
+  };
+  const getTests = () => {
+    api.get("tests")
+    .then((response) => {
+      if (response.status === 200 || response.status === 201) {
+        setTests(response.data);
       }
     })
     .catch((error) => {
@@ -79,6 +97,7 @@ function CreatePrescriptions () {
     getDosages();
     getDurations();
     getInstructions();
+    getTests();
   },[]);
 
   const handleAddMedicine = (e: React.FormEvent) => {
@@ -104,65 +123,72 @@ function CreatePrescriptions () {
       alert("Invalid Instruction selected!");
       return;
     }
-      console.log("Before adding medicine:", prescriptionItem);
 
-      //new Item
-      const newItem: prescriptionItem = {
-        ...prescriptionItem,
-        medicine_id: matchMedicine.id,
-        dosage_id: matchDosage.id,
-        duration_id: matchDuration.id,
-        instruction_id: matchInstruction.id,
-      };
-      setPrescriptionItem(newItem);
-      console.log("New prescription item to add:", newItem);
-      setMedicineItem(prescriptionItemDefault);
+    const newItem: prescriptionItem = {
+      ...medicineItem,
+      medicine_id: matchMedicine.id,
+      dosage_id: matchDosage.id,
+      duration_id: matchDuration.id,
+      instruction_id: matchInstruction.id,
+    };
 
-
-    // if (matchMedicine) {
-    //   setPrescriptionItem((prev) => ({ ...prev, medicine_id: matchMedicine.id }));
-    // }
-    // if (matchDosage) {
-    //   // console.log("Matched dosage:", match);
-    //   setPrescriptionItem((prev) => ({ ...prev, dosage_id: matchDosage.id }));
-    // } else {
-    //   console.log("No matching dosage found.");
-    // }
-    // if (matchDuration) {
-    //   setPrescriptionItem((prev) => ({ ...prev, duration_id: matchDuration.id }));
-    // } else {
-    //   console.log("No matching duration found.");
-    // }
-    // if (matchInstruction) {
-    //   setPrescriptionItem((prev) => ({ ...prev, instruction_id: matchInstruction.id }));
-    // } else {
-    //   console.log("No matching instruction found.");
-    // }
-    
+    setPrescriptionItems([...prescriptionItems, newItem]);
+    setMedicineItem(prescriptionItemDefault);
+    console.log("Added medicine:", newItem);
   };
-  console.log("Current prescription Item:", prescriptionItem);
+
+  const handleRemoveMedicine = (index: number) => {
+    setPrescriptionItems(prescriptionItems.filter((_, i) => i !== index));
+  };
+  // console.log("Current prescription Item:", prescriptionItems);
+
   // useEffect(() => {
   //   console.log("Updated prescription Items:", prescriptionItem);
   // }, [prescriptionItem]);
 
+  const handleAddTest = (e: React.FormEvent) => {
+    e.preventDefault();
+    const matchTest = tests.find((opt) => opt.name === testItem.test_name);
+    if (!matchTest) {
+      alert("Invalid Test Selection");
+      return;
+    }
+    const newTestItem: prescriptionTest = {
+      ...testItem,
+      test_id: matchTest.id,
+    };
+    setPrescriptionTests([...prescriptionTests, newTestItem]);
+    setTestItem(prescriptionTestDefault);
+    console.log("added test", newTestItem);
+  };
+
+  const handleRemoveTest = (index: number) => {
+    setPrescriptionTests(prescriptionTests.filter((_, i) => i !== index));
+  };
+
+  console.log("current test item:", prescriptionTests);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Submit the prescriptionItem to the API or handle it as needed
-    console.log("Submitting prescription item:", prescriptionItem);
+    console.log("Submitting prescription items:", prescriptionItems);
+    console.log("Submitting prescription tests:", prescriptionTests);
   };
+
+
+
 
   return (
     <>
       <div className="container mt-5">
         <div className="card shadow-sm border-0">
           <div className="card-header bg-primary text-white text-center p-3">
-            <h4 className="mb-0">Create Prescription</h4>
+            <h4 className="mb-0"> 📝 Create Prescription</h4>
           </div>
           <div className="card-body p-4">
             <form onSubmit={handleSubmit}>
               {/* Patient & Appointment Info */}
               <div className="row mb-4">
-                {/* <div className="col-md-6">
+                <div className="col-md-6">
                   <label className="form-label fw-semibold">Patient</label>
                   <select className="form-select" required>
                     <option value="">Select Patient</option>
@@ -177,22 +203,21 @@ function CreatePrescriptions () {
                     <option value="1">2025-09-28 10:00 AM</option>
                     <option value="2">2025-09-28 11:30 AM</option>
                   </select>
-                </div> */}
+                </div>
               </div>
               {/* Diagnosis */}
-              {/* <div className="mb-4">
+              <div className="mb-4">
                 <label className="form-label fw-semibold">Diagnosis</label>
                 <textarea className="form-control" rows={2} required />
-              </div> */}
+              </div>
               {/* Medicines */}
               <div className="mb-4">
-                <label className="form-label fw-semibold">Medicines</label>
+                <label className="form-label fw-semibold text-success"> 💊 Medicines</label>
                 <div className="table-responsive">
                   <table className="table table-bordered align-middle text-center">
                     <thead className="table-light">
                       <tr>
                         <th>Medicine Name</th>
-                        {/* <th>Generic</th> */}
                         <th>Dosage</th>
                         <th>Duration</th>
                         <th>Instructions</th>
@@ -200,6 +225,7 @@ function CreatePrescriptions () {
                       </tr>
                     </thead>
                     <tbody>
+                      {/* Input Row for Adding New Medicine */}
                       <tr>
                         <td>
                           <input
@@ -213,16 +239,8 @@ function CreatePrescriptions () {
                             {medicines.map((med_item) => (
                               <option value={med_item.name} key={med_item.id} />
                             ))}
-
                             </datalist>
                         </td>
-                        {/* <td>
-                          <input
-                            type="text"
-                            className="form-control"
-                            readOnly
-                          />
-                        </td> */}
                         <td>
                           <input
                             type="text"
@@ -237,7 +255,7 @@ function CreatePrescriptions () {
                               }
                             )
                           }
-                            required/>
+                            />
                           <datalist id="dosage-list">
                             {dosages.map((do_item) => (
                               <option value={do_item.name} key={do_item.id} />
@@ -259,7 +277,7 @@ function CreatePrescriptions () {
                           </datalist>
                         </td>
                         <td>
-                          <input type="text" className="form-control" 
+                          <input type="text" className="form-control"
                           name="instruction_name"
                           list="instruction-list"
                           value={medicineItem.instruction_name ? medicineItem.instruction_name : ""}
@@ -273,85 +291,116 @@ function CreatePrescriptions () {
                         </td>
                         <td>
                           <button
-                            className="btn btn-sm btn-outline-danger"
-                            
-                            disabled
+                            type="button"
+                            className="btn btn-sm btn-primary"
+                            onClick={handleAddMedicine}
                           >
-                            Remove
+                            Add New
                           </button>
                         </td>
                       </tr>
+
+                      {/* Display Added Medicines */}
+                      {prescriptionItems.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.medicine_name}</td>
+                          <td>{item.dosage_name}</td>
+                          <td>{item.duration_name}</td>
+                          <td>{item.instruction_name}</td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => handleRemoveMedicine(index)}
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+
+                      {/* Show message if no medicines added */}
+                      {prescriptionItems.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="text-muted">
+                            No medicines added yet. Fill the form above and click "Add" to add medicines.
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </table>
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary btn-sm mt-2"
-                    onClick={handleAddMedicine}
-                  >
-                    Add Medicine
-                  </button>
                 </div>
-                {/* <datalist id="dosage-list">
-                  {dosages.map((do_item) => (
-                    <option value={do_item.name} data-dosage_id={do_item.id} />
-                  ))}
-                </datalist>
-                <datalist id="medicines-list">
-                  <option value="Paracetamol" />
-                  <option value="Amoxicillin" />
-                  <option value="Omeprazole" />
-                  <option value="Ibuprofen" />
-                </datalist> */}
               </div>
               {/* Tests */}
-              {/* <div className="mb-4">
+              <div className="mb-4">
                 <label className="form-label fw-semibold">
                   Recommended Tests
                 </label>
-                <table className="table table-bordered align-middle text-center">
-                  <thead className="table-light">
-                    <tr>
-                      <th>Test Name</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>
-                        <input
-                          type="text"
-                          className="form-control"
-                          list="test-list"
-                          required
-                        />
-                      </td>
-                      <td>
-                        <button
-                          className="btn btn-sm btn-outline-danger"
-                          disabled
-                        >
-                          Remove
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary btn-sm mt-2"
-                >
-                  Add Test
-                </button>
-                <datalist id="test-list">
-                  <option value="CBC" />
-                  <option value="X-Ray Chest" />
-                  <option value="Blood Sugar" />
-                  <option value="ECG" />
-                  <option value="Creatinine" />
-                  <option value="LFT" />
-                  <option value="Urine R/M/E" />
-                </datalist>
-              </div> */}
+                <div className="table-responsive">
+                  <table className="table table-bordered align-middle text-center">
+                    <thead className="table-light">
+                      <tr>
+                        <th>Test Name</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Input Row for Adding New Test */}
+                      <tr>
+                        <td>
+                          <input
+                            type="text"
+                            className="form-control"
+                            list="test-list"
+                            name="test_name"
+                            value={testItem.test_name ? testItem.test_name : ""}
+                            onChange={(e) => setTestItem({...testItem, test_name: e.target.value})}
+                          />
+                          <datalist id="test-list">
+                            {tests.map((test) => (
+                              <option value={test.name} key={test.id} />
+                            ))}
+                          </datalist>
+                        </td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-primary"
+                            onClick={handleAddTest}
+                          >
+                            Add
+                          </button>
+                        </td>
+                      </tr>
+
+                      {/* Display Added Tests */}
+                      {prescriptionTests.map((item, index) => (
+                        <tr key={index}>
+                          <td>{item.test_name}</td>
+                          <td>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-outline-danger"
+                              onClick={() => handleRemoveTest(index)}
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+
+                      {/* Show message if no tests added */}
+                      {prescriptionTests.length === 0 && (
+                        <tr>
+                          <td colSpan={2} className="text-muted">
+                            No tests added yet. Fill the form above and click "Add" to add tests.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
               {/* Advice & Notes */}
               <div className="mb-4">
                 <label className="form-label fw-semibold">
