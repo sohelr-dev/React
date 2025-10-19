@@ -3,6 +3,10 @@ function getAppointments(){
     $Appointments = Appointments::readAll();
     echo json_encode($Appointments);
 }
+function getAppointmentsToday(){
+    $AppointmentsToday = Appointments::readAllTodayAppointments();
+    echo json_encode($AppointmentsToday);
+}
 function deleteAppointmentsId($id){
      $deleteAppointments = Appointments :: delete($id);
      echo json_encode($deleteAppointments);
@@ -26,6 +30,10 @@ function getAppointmentsById($_id){
 function getSearch($Search){
       $searchByName = Appointments :: readBySearch($Search);
      echo json_encode($searchByName);
+}
+function getAllByPatient($patient_id){
+      $appointments = Appointments :: readAllByPatient($patient_id);
+     echo json_encode($appointments);
 }
 
 ?>

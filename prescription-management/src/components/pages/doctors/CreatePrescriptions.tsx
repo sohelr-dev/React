@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from "react";
+import api from "../../../config";
 import type { dosage } from "../../interfaces/dosages.interfaces";
-// import api from "../../../config";
-// import type { prescription } from "../../interfaces/prescription.interfaces";
-// import prescriptionDefault from "../../interfaces/prescription.interfaces";
+import type { prescription } from "../../interfaces/prescription.interfaces";
+import prescriptionDefault from "../../interfaces/prescription.interfaces";
 import type { medicine } from "../../interfaces/medicine.interface";
 import type { prescriptionItem } from "../../interfaces/prescriptionItem.interfaces";
 import prescriptionItemDefault from "../../interfaces/prescriptionItem.interfaces";
 import type { duration } from "../../interfaces/duration.interfaces";
 import type { instruction } from "../../interfaces/instructions.interfaces";
-import api from "../../../config";
 import type { tests } from "../../interfaces/test.interfaces";
 import type { prescriptionTest } from "../../interfaces/prescriptionTests.interfaces";
 import prescriptionTestDefault from "../../interfaces/prescriptionTests.interfaces";
-
+import type { appointment } from "../../interfaces/appointment.interfaces";
+import appointmentDefault from "../../interfaces/appointment.interfaces";
 
 function CreatePrescriptions() {
-  // const [prescription, setPrescription] = useState<prescription>(prescriptionDefault);
+  const [prescription, setPrescription] = useState<prescription>(prescriptionDefault);
   const [prescriptionItems, setPrescriptionItems] = useState<prescriptionItem[]>([]);
   const [prescriptionTests, setPrescriptionTests] = useState<prescriptionTest[]>([]);
   const [medicineItem, setMedicineItem] = useState<prescriptionItem>(prescriptionItemDefault);
@@ -25,192 +25,161 @@ function CreatePrescriptions() {
   const [durations, setDurations] = useState<duration[]>([]);
   const [instructions, setInstructions] = useState<instruction[]>([]);
   const [tests, setTests] = useState<tests[]>([]);
+  const [appointments, setAppointments] = useState<appointment[]>([]);
+  const [appointmentItems, setAppointmentItems] = useState<appointment>(appointmentDefault);
 
-  const getMedicines = () => {
-    api
-      .get("medicines")
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          setMedicines(response.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Something Wrong !");
-      });
-  };
+  useEffect(() => {
+    const match = appointments.find(opt => opt.patient_id === appointmentItems.patient_id);
+    if (match) {
+      setPrescription(prev => ({
+        ...prev,
+        patient_id: match.patient_id,
+        appointment_id: match.id,
+        doctor_id: match.doctor_id,
+      }));
+    }
+  }, [appointmentItems.patient_id, appointments]);
 
-  const getDosages = () => {
-    api.get("dosages")
-    .then((response) => {
-      if (response.status === 200 || response.status === 201) {
-        setDosages(response.data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Something went wrong!");
-    });
-  };
-
-  const getDurations = () => {
-    api.get("durations")
-    .then((response) => {
-      if (response.status === 200 || response.status === 201) {
-        setDurations(response.data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Something went wrong!");
-    });
-  };
-
-  const getInstructions = () => {
-    api.get("instructions")
-    .then((response) => {
-      if (response.status === 200 || response.status === 201) {
-        setInstructions(response.data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Something went wrong!");
-    });
-  };
-  const getTests = () => {
-    api.get("tests")
-    .then((response) => {
-      if (response.status === 200 || response.status === 201) {
-        setTests(response.data);
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      alert("Something went wrong!");
-    });
-  };
-
-  useEffect (() => {
+  useEffect(() => {
     document.title = "Create Prescription";
-    getMedicines();
-    getDosages();
-    getDurations();
-    getInstructions();
-    getTests();
-  },[]);
+    api.get("appointments-today").then(res => setAppointments(res.data));
+    api.get("medicines").then(res => setMedicines(res.data));
+    api.get("dosages").then(res => setDosages(res.data));
+    api.get("durations").then(res => setDurations(res.data));
+    api.get("instructions").then(res => setInstructions(res.data));
+    api.get("tests").then(res => setTests(res.data));
+  }, []);
 
   const handleAddMedicine = (e: React.FormEvent) => {
     e.preventDefault();
-    const matchDosage = dosages.find((opt) => opt.name === medicineItem.dosage_name);
-    const matchMedicine = medicines.find((opt) => opt.name === medicineItem.medicine_name);
-    const matchDuration = durations.find((opt) => opt.name === medicineItem.duration_name);
-    const matchInstruction = instructions.find((opt) => opt.text === medicineItem.instruction_name);
+    const dosageMatch = dosages.find(opt => opt.name === medicineItem.dosage_name);
+    const medMatch = medicines.find(opt => opt.name === medicineItem.medicine_name);
+    const durMatch = durations.find(opt => opt.name === medicineItem.duration_name);
+    const instrMatch = instructions.find(opt => opt.text === medicineItem.instruction_name);
 
-    if(!matchMedicine){
-      alert("Invalid Medicine selected!");
-      return;
-    }
-    if (!matchDosage) {
-      alert("Invalid Dosage selected!");
-      return;
-    }
-    if (!matchDuration) {
-      alert("Invalid Duration selected!");
-      return;
-    }
-    if (!matchInstruction) {
-      alert("Invalid Instruction selected!");
+    if (!medMatch || !dosageMatch || !durMatch || !instrMatch) {
+      alert("Invalid medicine fields.");
       return;
     }
 
-    const newItem: prescriptionItem = {
+    setPrescriptionItems([...prescriptionItems, {
       ...medicineItem,
-      medicine_id: matchMedicine.id,
-      dosage_id: matchDosage.id,
-      duration_id: matchDuration.id,
-      instruction_id: matchInstruction.id,
-    };
+      medicine_id: medMatch.id,
+      dosage_id: dosageMatch.id,
+      duration_id: durMatch.id,
+      instruction_id: instrMatch.id,
+    }]);
 
-    setPrescriptionItems([...prescriptionItems, newItem]);
     setMedicineItem(prescriptionItemDefault);
-    console.log("Added medicine:", newItem);
   };
 
   const handleRemoveMedicine = (index: number) => {
     setPrescriptionItems(prescriptionItems.filter((_, i) => i !== index));
   };
-  // console.log("Current prescription Item:", prescriptionItems);
-
-  // useEffect(() => {
-  //   console.log("Updated prescription Items:", prescriptionItem);
-  // }, [prescriptionItem]);
 
   const handleAddTest = (e: React.FormEvent) => {
     e.preventDefault();
-    const matchTest = tests.find((opt) => opt.name === testItem.test_name);
-    if (!matchTest) {
-      alert("Invalid Test Selection");
+    const testMatch = tests.find(opt => opt.name === testItem.test_name);
+    if (!testMatch) {
+      alert("Invalid test");
       return;
     }
-    const newTestItem: prescriptionTest = {
-      ...testItem,
-      test_id: matchTest.id,
-    };
-    setPrescriptionTests([...prescriptionTests, newTestItem]);
+
+    setPrescriptionTests([
+      ...prescriptionTests,
+      { ...testItem, test_id: testMatch.id },
+    ]);
     setTestItem(prescriptionTestDefault);
-    console.log("added test", newTestItem);
   };
 
   const handleRemoveTest = (index: number) => {
     setPrescriptionTests(prescriptionTests.filter((_, i) => i !== index));
   };
 
-  console.log("current test item:", prescriptionTests);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitting prescription items:", prescriptionItems);
-    console.log("Submitting prescription tests:", prescriptionTests);
+
+    if (!prescription.patient_id || !prescription.appointment_id) {
+      alert("Patient selection required.");
+      return;
+    }
+
+    try {
+      const res = await api.post("prescriptions", prescription);
+      const newPrescriptionId = res.data.id;
+
+      const items = prescriptionItems.map(item => ({
+        ...item,
+        prescription_id: newPrescriptionId,
+      }));
+
+      const testsToSend = prescriptionTests.map(test => ({
+        ...test,
+        prescription_id: newPrescriptionId,
+      }));
+
+      await api.post("prescription-items", items);
+      await api.post("prescription-tests", testsToSend);
+
+      alert("Prescription saved successfully.");
+
+      // Reset everything
+      setPrescription(prescriptionDefault);
+      setPrescriptionItems([]);
+      setPrescriptionTests([]);
+      setMedicineItem(prescriptionItemDefault);
+      setTestItem(prescriptionTestDefault);
+      setAppointmentItems(appointmentDefault);
+
+    } catch (err) {
+      console.error(err);
+      alert("Error saving prescription.");
+    }
   };
 
-
-
-
   return (
-    <>
-      <div className="container mt-5">
-        <div className="card shadow-sm border-0">
-          <div className="card-header bg-primary text-white text-center p-3">
-            <h4 className="mb-0"> 📝 Create Prescription</h4>
-          </div>
-          <div className="card-body p-4">
-            <form onSubmit={handleSubmit}>
-              {/* Patient & Appointment Info */}
-              <div className="row mb-4">
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">Patient</label>
-                  <select className="form-select" required>
-                    <option value="">Select Patient</option>
-                    <option value="1">Ali Hossain</option>
-                    <option value="2">Tanjiya Sultana</option>
-                  </select>
-                </div>
-                <div className="col-md-6">
-                  <label className="form-label fw-semibold">Appointment</label>
-                  <select className="form-select" required>
-                    <option value="">Select Appointment</option>
-                    <option value="1">2025-09-28 10:00 AM</option>
-                    <option value="2">2025-09-28 11:30 AM</option>
-                  </select>
-                </div>
-              </div>
-              {/* Diagnosis */}
-              <div className="mb-4">
-                <label className="form-label fw-semibold">Diagnosis</label>
-                <textarea className="form-control" rows={2} required />
-              </div>
-              {/* Medicines */}
+    <div className="container mt-5">
+      <div className="card shadow-sm border-0">
+        <div className="card-header bg-primary text-white text-center p-3">
+          <h4 className="mb-0">📝 Create Prescription</h4>
+        </div>
+        <div className="card-body p-4">
+          <form onSubmit={handleSubmit}>
+            {/* Patient Selection */}
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Patient</label>
+              <select
+                className="form-select"
+                value={appointmentItems.patient_id || ""}
+                onChange={(e) =>
+                  setAppointmentItems({ ...appointmentItems, patient_id: parseInt(e.target.value) })
+                }
+                required
+              >
+                <option value="">Select Patient</option>
+                {appointments.map((app) => (
+                  <option value={app.patient_id} key={app.id}>
+                    {app.patient_name} - {app.age} yrs | Serial No: {app.id}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Diagnosis */}
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Diagnosis</label>
+              <textarea
+                className="form-control"
+                value={prescription.diagnosis || ""}
+                onChange={(e) => setPrescription({ ...prescription, diagnosis: e.target.value })}
+                required
+              />
+            </div>
+
+            {/* Medicines Section */}
+            {/* ... keep your table inputs for medicineItem as is ... */}
+
+            {/* Medicines */}
               <div className="mb-4">
                 <label className="form-label fw-semibold text-success"> 💊 Medicines</label>
                 <div className="table-responsive">
@@ -401,33 +370,51 @@ function CreatePrescriptions() {
                   </table>
                 </div>
               </div>
-              {/* Advice & Notes */}
-              <div className="mb-4">
-                <label className="form-label fw-semibold">
-                  Advice / Instructions
-                </label>
-                <textarea className="form-control" rows={2} />
-              </div>
-              <div className="mb-4">
-                <label className="form-label fw-semibold">Doctor's Notes</label>
-                <textarea className="form-control" rows={2} />
-              </div>
-              {/* Follow-Up */}
-              <div className="mb-4">
-                <label className="form-label fw-semibold">Follow-Up Date</label>
-                <input type="date" className="form-control" />
-              </div>
-              {/* Submit */}
-              <div className="text-end">
-                <button type="submit" className="btn btn-success px-4">
-                  Save Prescription
-                </button>
-              </div>
-            </form>
-          </div>
+
+            {/* Tests Section */}
+            {/* ... keep your table inputs for testItem as is ... */}
+
+            {/* Advice */}
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Advice</label>
+              <textarea
+                className="form-control"
+                value={prescription.advice || ""}
+                onChange={(e) => setPrescription({ ...prescription, advice: e.target.value })}
+              />
+            </div>
+
+            {/* Notes */}
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Doctor Notes</label>
+              <textarea
+                className="form-control"
+                value={prescription.notes || ""}
+                onChange={(e) => setPrescription({ ...prescription, notes: e.target.value })}
+              />
+            </div>
+
+            {/* Follow-up */}
+            <div className="mb-3">
+              <label className="form-label fw-semibold">Follow-Up Date</label>
+              <input
+                type="date"
+                className="form-control"
+                value={prescription.follow_up_date || ""}
+                onChange={(e) => setPrescription({ ...prescription, follow_up_date: e.target.value })}
+              />
+            </div>
+
+            <div className="text-end">
+              <button type="submit" className="btn btn-success px-4">
+                Save Prescription
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 }
+
 export default CreatePrescriptions;

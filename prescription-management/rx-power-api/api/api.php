@@ -136,6 +136,8 @@ if(isset($_GET['method'])) {
             }else{
                 getAppointments();
             }
+        }elseif($endpoint =="appointments-today" && $method == 'GET'){
+            getAppointmentsToday();
         }elseif($endpoint =="delete-appointment" && $method == 'DELETE'){
             deleteAppointmentsId($_GET['id']);
         }elseif($endpoint =="create-appointment" && $method == 'POST'){
@@ -146,6 +148,8 @@ if(isset($_GET['method'])) {
         }elseif($endpoint =="edit-appointment" && $method == 'PUT'){
             $data = json_decode(file_get_contents("php://input"),true);
             updateAppointmentsById($data);
+        }elseif($endpoint =="appointments-by-patient" && $method == 'GET'){
+            getAllByPatient($_GET['patient_id']);
         }
         // Dosages
         elseif($endpoint =="dosages" && $method == 'GET'){
