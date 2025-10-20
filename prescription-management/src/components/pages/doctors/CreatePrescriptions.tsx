@@ -13,8 +13,10 @@ import type { prescriptionTest } from "../../interfaces/prescriptionTests.interf
 import prescriptionTestDefault from "../../interfaces/prescriptionTests.interfaces";
 import type { appointment } from "../../interfaces/appointment.interfaces";
 import appointmentDefault from "../../interfaces/appointment.interfaces";
+import { useNavigate } from "react-router-dom";
 
 function CreatePrescriptions() {
+  const navigate =useNavigate  ();
   const [prescription, setPrescription] = useState<prescription>(prescriptionDefault);
   const [prescriptionItems, setPrescriptionItems] = useState<prescriptionItem[]>([]);
   const [prescriptionTests, setPrescriptionTests] = useState<prescriptionTest[]>([]);
@@ -132,7 +134,17 @@ function CreatePrescriptions() {
       "tests":prescriptionTests
     })
     .then((res)=>{
-      console.log(res.data)
+      if (res.status === 201 || res.status === 200) {
+        console.log(res.data);
+        alert(res.data.message);
+        console.log(res);
+        setPrescription(prescriptionDefault);
+        setPrescriptionItems([]);
+        setPrescriptionTests([]);
+        setAppointmentItems(appointmentDefault);
+        navigate("/prescriptions/details/" + res.data.prescription_id);
+
+      }
     })
     .catch((err)=>{
       console.log(err)

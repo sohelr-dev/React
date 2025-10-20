@@ -10,4 +10,9 @@ function createPrescription($d){
      echo json_encode(Prescriptions::createPrescriptionDetails($d));
 }
 
+function readPrescription($id){
+    $prescription = Prescriptions::getPrescriptionDetailsById($id);
+    echo json_encode($prescription);
+}
+
 ?>

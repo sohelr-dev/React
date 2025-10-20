@@ -1,0 +1,100 @@
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const PrescriptionDetails = ({ prescription }) => {
+  if (!prescription) return <div className="text-center mt-5">Loading...</div>;
+
+  const { doctor, patient, diagnosis, notes, advice, tests = [], medicines = [], date } = prescription;
+
+  return (
+    <div className="container my-4 border rounded-4 p-4 shadow-sm bg-white">
+      {/* Header */}
+      <div className="d-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+        <div>
+          <h5 className="fw-bold">Doctor Details</h5>
+          <p className="mb-0">{doctor?.name}</p>
+          <p className="mb-0 small text-muted">{doctor?.speciality}</p>
+        </div>
+        <div className="text-end">
+          <small className="text-muted">Date: {date || new Date().toLocaleDateString()}</small>
+        </div>
+      </div>
+
+      {/* Patient Section */}
+      <div className="border-bottom pb-2 mb-3">
+        <h5 className="fw-bold">Patient Details</h5>
+        <p className="mb-0">{patient?.name}</p>
+        <small className="text-muted">
+          Age: {patient?.age} | Gender: {patient?.gender} | ID: {patient?.id}
+        </small>
+      </div>
+
+      {/* Main Content */}
+      <div className="row mt-3">
+        {/* Left Column */}
+        <div className="col-md-6 border-end">
+          <div className="mb-3">
+            <h6 className="fw-bold">Diagnosis</h6>
+            <p>{diagnosis || "N/A"}</p>
+          </div>
+
+          <div className="mb-3">
+            <h6 className="fw-bold">Tests</h6>
+            {tests.length > 0 ? (
+              <ul className="list-unstyled">
+                {tests.map((t, i) => (
+                  <li key={i}>• {t.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No tests prescribed.</p>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="col-md-6 ps-4">
+          <div className="mb-3">
+            <h6 className="fw-bold">Rx. Medicines</h6>
+            {medicines.length > 0 ? (
+              <table className="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Medicine</th>
+                    <th>Dosage</th>
+                    <th>Duration</th>
+                    <th>Instruction</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {medicines.map((m, i) => (
+                    <tr key={i}>
+                      <td>{m.name}</td>
+                      <td>{m.dosage}</td>
+                      <td>{m.duration}</td>
+                      <td>{m.instruction}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No medicines added.</p>
+            )}
+          </div>
+
+          <div className="mb-2">
+            <h6 className="fw-bold">Advice</h6>
+            <p>{advice || "N/A"}</p>
+          </div>
+
+          <div>
+            <h6 className="fw-bold">Note</h6>
+            <p>{notes || "N/A"}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PrescriptionDetails;

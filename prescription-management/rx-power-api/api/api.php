@@ -202,6 +202,8 @@ if(isset($_GET['method'])) {
             createPrescription($prescription);
             // createPrescriptionItem($prescription);
             // createPrescriptionTests($prescription);
+        }elseif($endpoint =="prescription-details" && $method == 'GET'){
+            readPrescription($_GET['id']);
         }
         
 

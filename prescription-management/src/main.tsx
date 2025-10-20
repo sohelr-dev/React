@@ -45,6 +45,8 @@ import DosagesList from './components/pages/doctors/medicines/dosages/DosagesLis
 // import DurationsList from './components/pages/doctors/medicines/dosages/durationsList.tsx';
 import CreateDosage from './components/pages/CreateDosage.tsx';
 import DurationsList from './components/pages/doctors/medicines/dosages/DurationsList.tsx';
+import PrescriptionDetails from './components/pages/doctors/PrescriptionDetails.tsx';
+import PrescriptionLayout from './components/pages/doctors/PrescriptionLayout.tsx';
 
 
 
@@ -97,15 +99,15 @@ const AppRouter =createBrowserRouter([
       {path:"/durations" ,element: <DurationsList/>},
       {path:"/create-dosages" ,element: <CreateDosage/>},
 
-
-
-
+      //Prescriptions
       {path:"/createPrescription" ,element: <CreatePrescription/>},
+      {path:"/prescriptions/prescription-details/:id" ,element: <PrescriptionDetails/>},
       // {path:"/patients/patient-list" ,element: <PatientsList/>},
       {path:"/patients/patient-medical-history" ,element: <MedicalHistory/>},
       {path:"/appointments/today" ,element: <TodayAppointment/>},
       {path:"/appointments/upcoming" ,element: <Upcoming/>},
       {path:"/appointments/history" ,element: <DoctorAppointmentHistory/>},
+      {path:"/prescriptionLayout" ,element: <PrescriptionLayout/>},
    
       {path:"/prescription-history" ,element: <DoctorPrescriptionHistory/>},
     ]
