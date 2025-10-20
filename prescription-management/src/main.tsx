@@ -109,7 +109,7 @@ const AppRouter =createBrowserRouter([
       {path:"/appointments/history" ,element: <DoctorAppointmentHistory/>},
       {path:"/prescriptionLayout" ,element: <PrescriptionLayout/>},
    
-      {path:"/prescription-history" ,element: <DoctorPrescriptionHistory/>},
+      {path:"/prescriptions" ,element: <DoctorPrescriptionHistory/>},
     ]
   },
   {path:'/*' ,element: <Page404/>}

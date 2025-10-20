@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import api from "../../../config";
+import "./PrescriptionLayout.css";
 
 interface PrescriptionDetailsData {
   prescription_id: number;
@@ -80,35 +81,36 @@ function PrescriptionDetails() {
       </div>
     );
   }
+  
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4 border">
-  <nav aria-label="breadcrumb">
-    <ol className="breadcrumb mb-0 fs-5">
-      <li className="breadcrumb-item">
-        <Link to="/prescriptions" className="text-primary text-decoration-none fw-semibold">
-          Prescriptions
-        </Link>
-      </li>
-      <li className="breadcrumb-item active text-secondary fw-bold" aria-current="page">
-        Prescription Details
-      </li>
-    </ol>
-  </nav>
+      <div id="prescription-container" className="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mb-4 border">
+        <nav aria-label="breadcrumb">
+          <ol className="breadcrumb mb-0 fs-5">
+            <li className="breadcrumb-item">
+              <Link to="/prescriptions" className="text-primary text-decoration-none fw-semibold">
+                Prescriptions
+              </Link>
+            </li>
+            <li className="breadcrumb-item active text-secondary fw-bold" aria-current="page">
+              Prescription Details
+            </li>
+          </ol>
+        </nav>
 
-  <div>
-    <button className="btn btn-outline-secondary me-2" onClick={() => window.print()}>
-      🖨️ Print
-    </button>
-    <Link to="/prescriptions" className="btn btn-primary fw-semibold">
-      ← Back
-    </Link>
-  </div>
-</div>
+        <div>
+          <button className="btn btn-outline-secondary me-2" onClick={() => window.print()}>
+            🖨️ Print
+          </button>
+          <Link to="/prescriptions" className="btn btn-primary fw-semibold">
+            ← Back
+          </Link>
+        </div>
+      </div>
 
 
-      <div className="container-fluid p-4 prescription-container bg-primary bg-opacity-50">
+      <div id="prescription" className="container-fluid p-4 prescription-container bg-primary bg-opacity-50">
         {/* Header */}
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h4 className="fw-bold text-primary">Prescription</h4>
@@ -142,12 +144,15 @@ function PrescriptionDetails() {
           <div className="card-body">
             <h6 className="fw-bold text-secondary border-bottom pb-2 mb-2">Patient Details</h6>
             <div className="row">
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <p className="mb-1"><strong>Name:</strong> {prescription.patient.name}</p>
-                <p className="mb-1"><strong>Age:</strong> {prescription.patient.age}</p>
                 <p className="mb-1"><strong>Gender:</strong> {prescription.patient.gender}</p>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-4">
+                <p className="mb-1"><strong>Age:</strong> {prescription.patient.age}</p>
+
+              </div>
+              <div className="col-md-4">
                 <p className="mb-1"><strong>Phone:</strong> {prescription.patient.phone}</p>
                 <p className="mb-1"><strong>Address:</strong> {prescription.patient.address}</p>
               </div>
@@ -156,7 +161,7 @@ function PrescriptionDetails() {
         </div>
 
         {/* Main Content */}
-        <div className="row">
+        <div className="row printBorder">
           {/* Left Column */}
           <div className="col-md-4 mb-3">
             <div className="card shadow-sm border-0 h-100">

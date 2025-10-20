@@ -24,3 +24,71 @@ ul {
     padding: 1rem !important;
   }
 }
+
+
+@media print {
+  /* Hide all other content */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Show only the prescription content */
+  #prescription,
+  #prescription * {
+    visibility: visible !important;
+  }
+
+  /* Ensure it’s centered and uses full width */
+  #prescription {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background: white !important;
+  }
+
+  /* Remove shadows and backgrounds for clean PDF */
+  .card, .table {
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  /* Force everything to fit in one page */
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  #prescription {
+    transform: scale(0.95); /* slightly shrink to fit */
+    transform-origin: top center;
+  }
+
+  /* Hide buttons or breadcrumb in print */
+  #prescription-container {
+    display: none !important;
+  }
+
+  /* Table formatting for print */
+  table {
+    width: 100%;
+    border-collapse: collapse !important;
+  }
+
+  th, td {
+    border: 1px solid #000 !important;
+    padding: 4px !important;
+    font-size: 12px !important;
+  }
+
+  /* Prevent content from page breaking awkwardly */
+  .card, .table, .row {
+    page-break-inside: avoid !important;
+  }
+  .printBorder {
+    border-top: 2px solid #1a1919 !important;
+  }
+}
+
