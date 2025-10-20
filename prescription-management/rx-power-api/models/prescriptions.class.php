@@ -71,7 +71,24 @@ class Prescriptions {
 
     public static function readAll() {
         global $db;
-        $sql = "SELECT * FROM prescriptions";
+        $sql = "SELECT 
+        p.id AS prescription_id,
+        p.appointment_id as serial_no,
+        p.created_at,
+        -- Doctor info
+        d.id AS doctor_id,
+        u1.name AS doctor_name,
+        d.bmdc_reg_no,
+        -- Patient info
+        pt.id AS patient_id,
+        u2.name AS patient_name
+        FROM prescriptions AS p
+        LEFT JOIN doctors AS d ON p.doctor_id = d.id
+        LEFT JOIN users AS u1 ON d.user_id = u1.id
+        LEFT JOIN patients AS pt ON p.patient_id = pt.id
+        LEFT JOIN users AS u2 ON pt.user_id = u2.id
+
+        order BY p.id DESC;";
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);
@@ -238,5 +255,37 @@ class Prescriptions {
         } else {
           return "Delete failed: " . $db->error;
         }
+    }
+
+    public static function readBySearch($search) {
+      global $db;
+      $sql = "SELECT 
+        p.id AS prescription_id,
+        p.appointment_id as serial_no,
+        p.created_at,
+        -- Doctor info
+        d.id AS doctor_id,
+        u1.name AS doctor_name,
+        d.bmdc_reg_no,
+        -- Patient info
+        pt.id AS patient_id,
+        u2.name AS patient_name
+        FROM prescriptions AS p
+        LEFT JOIN doctors AS d ON p.doctor_id = d.id
+        LEFT JOIN users AS u1 ON d.user_id = u1.id
+        LEFT JOIN patients AS pt ON p.patient_id = pt.id
+        LEFT JOIN users AS u2 ON pt.user_id = u2.id
+
+        WHERE p.id LIKE '%$search%' 
+        OR u1.name LIKE '%$search%'
+        OR u2.name LIKE '%$search%'
+        OR d.bmdc_reg_no LIKE '%$search%'
+      ";
+      $res = $db->query($sql);
+      if ($res) {
+        return $res->fetch_all(MYSQLI_ASSOC);
+      } else {
+            return "Query failed: " . $db->error;
+      }
     }
 }

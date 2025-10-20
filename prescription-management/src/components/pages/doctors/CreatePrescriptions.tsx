@@ -142,7 +142,7 @@ function CreatePrescriptions() {
         setPrescriptionItems([]);
         setPrescriptionTests([]);
         setAppointmentItems(appointmentDefault);
-        navigate("/prescriptions/details/" + res.data.prescription_id);
+        navigate("/prescriptions/prescription-details/"+res.data.prescription_id);
 
       }
     })

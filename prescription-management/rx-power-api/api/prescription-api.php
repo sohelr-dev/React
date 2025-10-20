@@ -14,5 +14,18 @@ function readPrescription($id){
     $prescription = Prescriptions::getPrescriptionDetailsById($id);
     echo json_encode($prescription);
 }
+function getPrescriptions(){
+    $prescriptions = Prescriptions::readAll();
+    echo json_encode($prescriptions);
+}
+
+function deletePrescriptionsId($id){
+     $deletePrescriptions = Prescriptions :: delete($id);
+     echo json_encode($deletePrescriptions);
+}
+function prescriptionSearch($id){
+     $searchResults = Prescriptions :: readBySearch($id);
+     echo json_encode($searchResults);
+}
 
 ?>

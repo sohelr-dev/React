@@ -204,6 +204,14 @@ if(isset($_GET['method'])) {
             // createPrescriptionTests($prescription);
         }elseif($endpoint =="prescription-details" && $method == 'GET'){
             readPrescription($_GET['id']);
+        }elseif($endpoint =="prescriptions" && $method == 'GET'){
+            if(isset($_GET['search'])){
+                prescriptionSearch($_GET['search']);
+            }else{
+                getPrescriptions();
+            }
+        }elseif($endpoint =="delete-prescription" && $method == 'DELETE'){
+            deletePrescriptionsId($_GET['id']);
         }
         
 
