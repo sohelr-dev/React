@@ -28,17 +28,40 @@ function CreatePrescriptions() {
   const [appointments, setAppointments] = useState<appointment[]>([]);
   const [appointmentItems, setAppointmentItems] = useState<appointment>(appointmentDefault);
 
-  useEffect(() => {
-    const match = appointments.find(opt => opt.patient_id === appointmentItems.patient_id);
-    if (match) {
-      setPrescription(prev => ({
-        ...prev,
-        patient_id: match.patient_id,
-        appointment_id: match.id,
-        doctor_id: match.doctor_id,
-      }));
+    // useEffect (()=>{
+    //   const match = appointments.find(opt => opt.patient_name == appointmentItems.patient_name);
+    //   if (match) {
+    //     setPrescription(prev => ({
+    //       ...prev,
+    //       patient_id: match.patient_id,
+    //       appointment_id: match.id,
+    //       doctor_id: match.doctor_id,
+    //     }));
+    //   }
+    //   console.log(prescription)
+    // },[appointmentItems.patient_name])
+    // console.log("set" + JSON.stringify(prescription));
+
+    function handlePatient(e:any){
+      // console.log(e.target.value)
+      let name = e.target.value
+      setAppointmentItems({ ...appointmentItems, patient_name: name });
+
+      const match = appointments.find(opt => opt.patient_name === name);
+      // console.log(match)
+      if (match) {
+        setPrescription(prev => ({
+          ...prev,
+          patient_id: match.patient_id,
+          appointment_id: match.id,
+          doctor_id: match.doctor_id,
+        }));
+      }
+      // console.log(prescription)
+      
     }
-  }, [appointmentItems.patient_id, appointments]);
+
+ 
 
   useEffect(() => {
     document.title = "Create Prescription";
@@ -71,6 +94,7 @@ function CreatePrescriptions() {
     }]);
 
     setMedicineItem(prescriptionItemDefault);
+    // console.log("pre" + prescription)
   };
 
   const handleRemoveMedicine = (index: number) => {
@@ -99,42 +123,21 @@ function CreatePrescriptions() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!prescription.patient_id || !prescription.appointment_id) {
-      alert("Patient selection required.");
-      return;
-    }
+    // console.log(prescription);
+    // console.log(prescriptionItems);
 
-    try {
-      const res = await api.post("prescriptions", prescription);
-      const newPrescriptionId = res.data.id;
-
-      const items = prescriptionItems.map(item => ({
-        ...item,
-        prescription_id: newPrescriptionId,
-      }));
-
-      const testsToSend = prescriptionTests.map(test => ({
-        ...test,
-        prescription_id: newPrescriptionId,
-      }));
-
-      await api.post("prescription-items", items);
-      await api.post("prescription-tests", testsToSend);
-
-      alert("Prescription saved successfully.");
-
-      // Reset everything
-      setPrescription(prescriptionDefault);
-      setPrescriptionItems([]);
-      setPrescriptionTests([]);
-      setMedicineItem(prescriptionItemDefault);
-      setTestItem(prescriptionTestDefault);
-      setAppointmentItems(appointmentDefault);
-
-    } catch (err) {
-      console.error(err);
-      alert("Error saving prescription.");
-    }
+    api.post("create-prescription",{
+      "prescription":prescription,
+      "medicine":prescriptionItems,
+      "tests":prescriptionTests
+    })
+    .then((res)=>{
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+    
   };
 
   return (
@@ -148,8 +151,13 @@ function CreatePrescriptions() {
             {/* Patient Selection */}
             <div className="mb-3">
               <label className="form-label fw-semibold">Patient</label>
-              <select
+              <input type="text" className="form-control"
+                list="ap_list"
+                value={appointmentItems.patient_name ? appointmentItems.patient_name : ""}
+                onChange={handlePatient} />
+              {/* <select
                 className="form-select"
+                list="ap_list"
                 value={appointmentItems.patient_id || ""}
                 onChange={(e) =>
                   setAppointmentItems({ ...appointmentItems, patient_id: parseInt(e.target.value) })
@@ -162,8 +170,15 @@ function CreatePrescriptions() {
                     {app.patient_name} - {app.age} yrs | Serial No: {app.id}
                   </option>
                 ))}
-              </select>
+              </select> */}
             </div>
+            <datalist id="ap_list">
+              {
+                appointments.map((a)=>
+                  <option key={a.id} value={a.patient_name } />
+                )
+              }
+            </datalist>
 
             {/* Diagnosis */}
             <div className="mb-3">
@@ -172,12 +187,11 @@ function CreatePrescriptions() {
                 className="form-control"
                 value={prescription.diagnosis || ""}
                 onChange={(e) => setPrescription({ ...prescription, diagnosis: e.target.value })}
-                required
+                // required
               />
             </div>
 
             {/* Medicines Section */}
-            {/* ... keep your table inputs for medicineItem as is ... */}
 
             {/* Medicines */}
               <div className="mb-4">
@@ -372,7 +386,7 @@ function CreatePrescriptions() {
               </div>
 
             {/* Tests Section */}
-            {/* ... keep your table inputs for testItem as is ... */}
+          
 
             {/* Advice */}
             <div className="mb-3">

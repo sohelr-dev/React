@@ -1,4 +1,6 @@
 <?php
+include_once("prescription-items.class.php");
+include_once("prescription-tests.class.php");
 
 class Prescriptions {
     public $id;
@@ -8,11 +10,11 @@ class Prescriptions {
     public $diagnosis;
     public $notes;
     public $advice;
-    public $tests;
+    // public $tests;
     public $follow_up_date;
-    public $created_at;
 
-    public function __construct($_id, $_appointment_id, $_doctor_id, $_patient_id, $_diagnosis, $_notes, $_advice, $_tests, $_follow_up_date, $_created_at) {
+
+    public function __construct($_id, $_appointment_id, $_doctor_id, $_patient_id, $_diagnosis, $_notes, $_advice,  $_follow_up_date) {
         $this->id = $_id;
         $this->appointment_id = $_appointment_id;
         $this->doctor_id = $_doctor_id;
@@ -20,14 +22,65 @@ class Prescriptions {
         $this->diagnosis = $_diagnosis;
         $this->notes = $_notes;
         $this->advice = $_advice;
-        $this->tests = $_tests;
+        // $this->tests = $_tests;
         $this->follow_up_date = $_follow_up_date;
-        $this->created_at = $_created_at;
+
+    }
+
+    public static function createPrescriptionDetails($_items) {
+        global $db;
+
+        $data = $_items["prescription"];
+        $CreatePre= new Prescriptions(null,$data["appointment_id"],$data['doctor_id'],$data['patient_id'],$data['diagnosis'],$data['notes'],$data['advice'],$data['follow_up_date']);
+        $pres_id = $CreatePre->create();
+
+        // return $pres_id;
+        $m_data = $_items["medicine"];
+        foreach($m_data as $item){
+          $createPreItem = new PrescriptionItems(null, $pres_id, $item['medicine_id'], $item['dosage_id'],$item['duration_id'],$item['instruction_id']);
+          $createPreItem->create();
+        }
+
+        $t_data = $_items["tests"];
+        foreach($t_data as $items){
+         $CreatePreTest= new PrescriptionTests(null,$pres_id,$items['test_id']);
+         $response =$CreatePreTest->create();
+         if(is_int($response)){
+          $result ="Data Save SuccessFull | " ." pres_id: ". $pres_id;
+         }else{
+          return $response;
+         }
+         return $result;
+
+        }
+        
+
+
+        // $sql = "INSERT INTO prescriptions (id,appointment_id,doctor_id,patient_id,diagnosis,notes,advice,follow_up_date) VALUES ('{$this->id}', '{$this->appointment_id}', '{$this->doctor_id}', '{$this->patient_id}', '{$this->diagnosis}', '{$this->notes}', '{$this->advice}','{$this->follow_up_date}')";
+        // if ($db->query($sql)) {
+        //   $prescriptions_id = $db->insert_id;
+        // }else{
+        //   return "Query failed: " . $db->error;
+        // }
+        // print_r($_items);
+        // foreach($_items as $item) {
+        //   // $createPreItem= new PrescriptionItems(null,$data["prescription_id"],$data['medicine_id'],$data['dosage_id'],$data['duration_id'],$data['instruction_id']);
+
+        //   $createPreItem = new PrescriptionItems(null, $prescriptions_id, $item->medicine_id, $item->dosage_id,$item->duration_id,$item->instruction_id);
+        //   $res = $createPreItem->create();
+
+        //   if(is_int($res)) {
+        //     $result = "Data saved successfully";
+        //   }else{
+        //     return $res;
+        //   }
+        // }
+        // return $result;
     }
 
     public function create() {
         global $db;
-        $sql = "INSERT INTO prescriptions (id,appointment_id,doctor_id,patient_id,diagnosis,notes,advice,tests,follow_up_date,created_at) VALUES ('{$this->id}', '{$this->appointment_id}', '{$this->doctor_id}', '{$this->patient_id}', '{$this->diagnosis}', '{$this->notes}', '{$this->advice}', '{$this->tests}', '{$this->follow_up_date}', '{$this->created_at}')";
+        $sql = "INSERT INTO prescriptions (id,appointment_id,doctor_id,patient_id,diagnosis,notes,advice,follow_up_date) VALUES ('{$this->id}', '{$this->appointment_id}', '{$this->doctor_id}', '{$this->patient_id}', '{$this->diagnosis}', '{$this->notes}', '{$this->advice}','{$this->follow_up_date}')";
         if ($db->query($sql)) {
           return $db->insert_id;
         } else {

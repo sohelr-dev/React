@@ -14,17 +14,17 @@ export interface prescription {
 }
 const prescriptionDefault: prescription = {
   id: 0,
-  dosage_id: 0,
+  // dosage_id: 0,
   appointment_id: 0,
   doctor_id: 0,
   patient_id: 0,
   diagnosis: "",
   notes: "",
   advice: "",
-  tests: "",
+  // tests: "",
   follow_up_date: "",
-  created_at: "",
-  dosage_name: "",
+  // created_at: "",
+  // dosage_name: "",
 };
 
 export default prescriptionDefault;

@@ -122,6 +122,7 @@ if(isset($_GET['method'])) {
             deletePatientsId($_GET['id']);
         }elseif($endpoint =="create-patient" && $method == 'POST'){
             $data = json_decode(file_get_contents("php://input"),true);
+            // echo json_encode($data);
             createPatients($data);
         }elseif($endpoint =="details-patient" && $method == 'GET'){
             getPatientsById($_GET['id']);
@@ -136,6 +137,7 @@ if(isset($_GET['method'])) {
             }else{
                 getAppointments();
             }
+        
         }elseif($endpoint =="appointments-today" && $method == 'GET'){
             getAppointmentsToday();
         }elseif($endpoint =="delete-appointment" && $method == 'DELETE'){
@@ -192,6 +194,14 @@ if(isset($_GET['method'])) {
         }elseif($endpoint =="edit-instruction" && $method == 'PUT'){
             $data = json_decode(file_get_contents("php://input"),true);
             updateInstructionsById($data);
+        }
+        //create prescription
+        elseif($endpoint =="create-prescription" && $method == 'POST'){
+            $prescription = json_decode(file_get_contents("php://input"),true);
+            // echo json_encode($prescription);
+            createPrescription($prescription);
+            // createPrescriptionItem($prescription);
+            // createPrescriptionTests($prescription);
         }
         
 
