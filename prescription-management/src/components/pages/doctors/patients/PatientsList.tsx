@@ -10,7 +10,7 @@ function PatientsList() {
       .get("patients")
       .then((response) => {
         if (response.status === 200 || response.status === 201) {
-          // console.log(response.data);
+          console.log(response.data);
           setPatients(response.data);
         }
       })

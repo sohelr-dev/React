@@ -2,55 +2,65 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../../../config";
 import type { appointment } from "../../../interfaces/appointment.interfaces";
-import appointmentDefault from "../../../interfaces/appointment.interfaces";
 import type { patient } from "../../../interfaces/patient.interfaces";
 import type { doctor } from "../../../interfaces/doctor.interfaces";
+import appointmentDefault from "../../../interfaces/appointment.interfaces";
 
 function AppointmentCreate() {
   const navigate = useNavigate();
-  const [appointment, setAppointment] =
-    useState<appointment>(appointmentDefault);
+
+  // Appointment state with all fields
+  const [appointment, setAppointment] = useState<appointment>(appointmentDefault);
+
   const [loading, setLoading] = useState<boolean>(false);
+
+  // Patients & Doctors
+  const [patients, setPatients] = useState<patient[]>([]);
+  const [doctors, setDoctors] = useState<doctor[]>([]);
 
   useEffect(() => {
     document.title = "Create Appointment";
     getPatients();
-    getDoctor();
+    getDoctors();
   }, []);
 
-  //get patient
-  const [patients, setPatients] = useState<patient[]>([]);
+  // Get Patients
   const getPatients = () => {
     api
       .get("patients")
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          // console.log(response.data);
-          setPatients(response.data);
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          setPatients(res.data);
+          if (res.data.length > 0 && appointment.patient_id === 0) {
+            setAppointment(prev => ({ ...prev, patient_id: res.data[0].id }));
+          }
         }
       })
-      .catch((error) => {
-        console.log(error);
-        alert("Something Wrong !");
-      });
-  };
-  //get doctors
-  const [doctors, setDoctors] = useState<doctor[]>([]);
-  const getDoctor = () => {
-    api
-      .get("doctors")
-      .then((response) => {
-        if (response.status === 200 || response.status === 201) {
-          setDoctors(response.data);
-          console.log(response.data);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Something Wrong !");
+      .catch((err) => {
+        console.error(err);
+        alert("Something went wrong while fetching patients!");
       });
   };
 
+  // Get Doctors
+  const getDoctors = () => {
+    api
+      .get("doctors")
+      .then((res) => {
+        if (res.status === 200 || res.status === 201) {
+          setDoctors(res.data);
+          if (res.data.length > 0 && appointment.doctor_id === 0) {
+            setAppointment(prev => ({ ...prev, doctor_id: res.data[0].id }));
+          }
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Something went wrong while fetching doctors!");
+      });
+  };
+
+  // Handle form submit
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -72,7 +82,7 @@ function AppointmentCreate() {
 
   return (
     <>
-      {/* ===== HEADER ===== */}
+      {/* Header */}
       <div className="d-flex justify-content-between align-items-center bg-white shadow-sm rounded-3 p-3 mb-4 border">
         <div>
           <h2 className="fw-bold mb-1 text-primary">New Appointment</h2>
@@ -85,52 +95,53 @@ function AppointmentCreate() {
         </Link>
       </div>
 
-      {/* ===== FORM CARD ===== */}
+      {/* Form Card */}
       <div className="card border-0 shadow-sm">
         <div className="card-body p-4">
           <form onSubmit={handleSubmit}>
             <div className="row g-3">
-              {/* Patient ID */}
+
+              {/* Patient Select */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Patient Name</label>
                 <select
-                  name="patient_id"
-                  id="patient_id"
                   className="form-select"
                   value={appointment.patient_id || ""}
                   onChange={(e) =>
-                    setAppointment({
-                      ...appointment,
+                    setAppointment(prev => ({
+                      ...prev,
                       patient_id: parseInt(e.target.value),
-                    })
+                    }))
                   }
+                  required
                 >
+                  <option value="">Select Patient</option>
                   {patients.map((item) => (
-                    <option value={item.id} key={item.id}>
+                    <option key={item.id} value={item.id}>
                       {item.name}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Doctor ID */}
+              {/* Doctor Select */}
               <div className="col-md-6">
                 <label className="form-label fw-semibold">Doctor Name</label>
                 <select
-                  name="doctor_id"
-                  id="doctor_id"
                   className="form-select"
                   value={appointment.doctor_id || ""}
                   onChange={(e) =>
-                    setAppointment({
-                      ...appointment,
+                    setAppointment(prev => ({
+                      ...prev,
                       doctor_id: parseInt(e.target.value),
-                    })
+                    }))
                   }
+                  required
                 >
-                  {doctors.map((itemD) => (
-                    <option value={itemD.id} key={itemD.id}>
-                      {itemD.name}
+                  <option value="">Select Doctor</option>
+                  {doctors.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
                     </option>
                   ))}
                 </select>
@@ -138,19 +149,16 @@ function AppointmentCreate() {
 
               {/* Appointment Date */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">
-                  Appointment Date
-                </label>
+                <label className="form-label fw-semibold">Appointment Date</label>
                 <input
                   type="datetime-local"
                   className="form-control"
-                  name="appointment_date"
                   value={appointment.appointment_date || ""}
                   onChange={(e) =>
-                    setAppointment({
-                      ...appointment,
+                    setAppointment(prev => ({
+                      ...prev,
                       appointment_date: e.target.value,
-                    })
+                    }))
                   }
                   required
                 />
@@ -161,29 +169,29 @@ function AppointmentCreate() {
                 <label className="form-label fw-semibold">Status</label>
                 <select
                   className="form-select"
-                  name="status"
                   value={appointment.status || "pending"}
                   onChange={(e) =>
-                    setAppointment({
-                      ...appointment,
+                    setAppointment(prev => ({
+                      ...prev,
                       status: e.target.value as
                         | "pending"
                         | "confirmed"
                         | "completed"
                         | "cancelled",
-                    })
+                    }))
                   }
                   required
                 >
-                  <option value={"pending"}>Pending</option>
-                  <option value={"confirmed"}>Confirmed</option>
-                  <option value={"completed"}>Completed</option>
-                  <option value={"cancelled"}>Cancelled</option>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
                 </select>
               </div>
+
             </div>
 
-            {/* Submit */}
+            {/* Submit Button */}
             <div className="text-end mt-4">
               <button
                 type="submit"
@@ -203,6 +211,7 @@ function AppointmentCreate() {
                 )}
               </button>
             </div>
+
           </form>
         </div>
       </div>

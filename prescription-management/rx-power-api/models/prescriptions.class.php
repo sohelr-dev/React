@@ -231,7 +231,7 @@ class Prescriptions {
 
     public function update($id) {
         global $db;
-        $sql = "UPDATE prescriptions SET id='{$this->id}', appointment_id='{$this->appointment_id}', doctor_id='{$this->doctor_id}', patient_id='{$this->patient_id}', diagnosis='{$this->diagnosis}', notes='{$this->notes}', advice='{$this->advice}', tests='{$this->tests}', follow_up_date='{$this->follow_up_date}', created_at='{$this->created_at}' WHERE id = $id";
+        $sql = "UPDATE prescriptions SET id='{$this->id}', appointment_id='{$this->appointment_id}', doctor_id='{$this->doctor_id}', patient_id='{$this->patient_id}', diagnosis='{$this->diagnosis}', notes='{$this->notes}', advice='{$this->advice}', follow_up_date='{$this->follow_up_date}' WHERE id = $id";
         if ($db->query($sql)) {
           if ($db->affected_rows > 0) {
             return "Update successful.";

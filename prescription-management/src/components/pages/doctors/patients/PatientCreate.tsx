@@ -114,6 +114,8 @@ function PatientCreate() {
                       ))}
                     </select>
                   </div>
+
+                  
                   <div className="mb-3">
                     <label htmlFor="age" className="form-label mb-4">
                       {" "}
