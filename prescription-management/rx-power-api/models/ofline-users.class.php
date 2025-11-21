@@ -1,28 +1,22 @@
 <?php
 
-class Users {
+class Ofline_users_class {
     public $id;
     public $name;
-    public $email;
-    public $password;
     public $role_id;
     public $created_at;
-    public $photo;
     public $phone;
 
-    public function __construct($_id, $_name, $_email="", $_password="", $_role_id, $_phone="", $_photo="") {
+    public function __construct($_id=null, $_name, $_role_id, $_phone="") {
         $this->id = $_id;
         $this->name = $_name;
-        $this->email = $_email;
-        $this->password = $_password;
         $this->role_id = $_role_id;
-        $this->photo = $_photo;
         $this->phone = $_phone;
     }
 
     public function create() {
         global $db;
-        $sql = "INSERT INTO users (id,name,email,password,role_id,phone,photo) VALUES ('{$this->id}', '{$this->name}', '{$this->email}', '{$this->password}', '{$this->role_id}', '{$this->phone}', '{$this->photo}')";
+        $sql = "INSERT INTO users (name,role_id,phone) VALUES ('{$this->name}', '{$this->role_id}', '{$this->phone}')";
         if ($db->query($sql)) {
           return $db->insert_id;
         } else {
@@ -42,7 +36,7 @@ class Users {
     }
     public function update($id) {
         global $db;
-        $sql = "UPDATE users SET id='{$this->id}', name='{$this->name}', email='{$this->email}', password='{$this->password}', role_id='{$this->role_id}', phone='{$this->phone}',  photo='{$this->photo}' WHERE id ={$id}";
+        $sql = "UPDATE users SET id='{$this->id}', name='{$this->name}', role_id='{$this->role_id}', phone='{$this->phone}' WHERE id ={$id}";
         if ($db->query($sql)) {
           if ($db->affected_rows > 0) {
             return "Update successful.";

@@ -13,6 +13,7 @@ import type { prescriptionTest } from "../../interfaces/prescriptionTests.interf
 import prescriptionTestDefault from "../../interfaces/prescriptionTests.interfaces";
 import type { appointment } from "../../interfaces/appointment.interfaces";
 import appointmentDefault from "../../interfaces/appointment.interfaces";
+import { useNavigate } from "react-router-dom";
 
 function CreatePrescriptions() {
   const [prescription, setPrescription] = useState<prescription>(prescriptionDefault);
@@ -119,6 +120,7 @@ function CreatePrescriptions() {
   const handleRemoveTest = (index: number) => {
     setPrescriptionTests(prescriptionTests.filter((_, i) => i !== index));
   };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,6 +135,14 @@ function CreatePrescriptions() {
     })
     .then((res)=>{
       console.log(res.data)
+      alert(res.data.message);
+      setPrescription(prescriptionDefault);
+      setPrescriptionItems([]);
+      setPrescriptionTests([]);
+      setAppointmentItems(appointmentDefault);
+      navigate("/prescriptions/prescription-details/"+res.data.prescription_id);
+
+
     })
     .catch((err)=>{
       console.log(err)

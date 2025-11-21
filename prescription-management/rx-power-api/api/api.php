@@ -138,7 +138,8 @@ if(isset($_GET['method'])) {
                 getAppointments();
             }
         
-        }elseif($endpoint =="appointments-today" && $method == 'GET'){
+        }
+        elseif($endpoint =="appointments-today" && $method == 'GET'){
             getAppointmentsToday();
         }elseif($endpoint =="delete-appointment" && $method == 'DELETE'){
             deleteAppointmentsId($_GET['id']);

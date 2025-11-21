@@ -32,7 +32,7 @@ CREATE TABLE `appointments` (
   `doctor_id` int(11) DEFAULT NULL,
   `patient_id` int(11) DEFAULT NULL,
   `appointment_date` datetime DEFAULT NULL,
-  `status` enum('pending','confirmed','completed','cancelled') DEFAULT 'pending'
+  `status` enum('pending','confirmed','completed','cancelled','offline') DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

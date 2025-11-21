@@ -1,5 +1,6 @@
 <?php
-
+include_once("../models/users.class.php");
+include_once("../models/patients.class.php");
 class Appointments {
     public $id;
     public $doctor_id;
@@ -14,6 +15,29 @@ class Appointments {
         $this->appointment_date = $_appointment_date;
         $this->status = $_status;
     }
+    public function create() {
+        global $db;
+        // $user =new Users("null",$name,$email,$password);
+
+        $sql = "INSERT INTO appointments (id,doctor_id,patient_id,appointment_date,status) VALUES ('{$this->id}', '{$this->doctor_id}', '{$this->patient_id}', '{$this->appointment_date}', '{$this->status}')";
+        if ($db->query($sql)) {
+          return $db->insert_id;
+        } else {
+          return "Query failed: " . $db->error;
+        }
+    }
+    // public static function getuserData(){
+    //   global $db;
+    //   $sql = 'select * from users';
+    //   $result = $db->query($sql);
+    //   if( $result->num_rows > 0) {
+    //     return $result->fetch_all(MYSQLI_ASSOC);
+    //   } else {
+    //     return '';
+    //   }
+
+    // }
+
 
     public static function readAll() {
         global $db;
@@ -113,16 +137,6 @@ class Appointments {
         $res = $db->query($sql);
         if ($res) {
           return $res->fetch_all(MYSQLI_ASSOC);
-        } else {
-          return "Query failed: " . $db->error;
-        }
-    }
-
-    public function create() {
-        global $db;
-        $sql = "INSERT INTO appointments (id,doctor_id,patient_id,appointment_date,status) VALUES ('{$this->id}', '{$this->doctor_id}', '{$this->patient_id}', '{$this->appointment_date}', '{$this->status}')";
-        if ($db->query($sql)) {
-          return $db->insert_id;
         } else {
           return "Query failed: " . $db->error;
         }

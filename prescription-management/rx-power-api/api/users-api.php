@@ -11,7 +11,7 @@ function createUser($data,$files){
      }else{
           $photo ="";
           echo json_encode(['success' => false, "massage" =>$image['error']]);
-          exit;
+          
      }
 
        $user = new Users (null,$data['name'],$data['email'],"",$data['role_id'],$data['phone'],$photo);
