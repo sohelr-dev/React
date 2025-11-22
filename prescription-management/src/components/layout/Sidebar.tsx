@@ -12,6 +12,7 @@ import {
   FaUsers,
   FaFileMedicalAlt,
   FaChevronLeft,
+  FaPlus
 } from "react-icons/fa";
 import { MdUpcoming } from "react-icons/md";
 import { RiMedicineBottleFill } from "react-icons/ri";
@@ -69,6 +70,21 @@ function Sidebar() {
               >
                 <FaPrescriptionBottleAlt className="me-2 fa-lg" />
                 Create Prescription
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/appointments/create-appointment"
+                className={({ isActive }) =>
+                  isActive
+                    ? "nav-link trans text-light link-navbar active"
+                    : "nav-link trans text-light link-navbar"
+                }
+              >
+                <FaPlus className="me-2 fa-lg" />
+ 
+                {/* <FaPrescriptionBottleAlt className="me-2 fa-lg" /> */}
+                New Appointment
               </NavLink>
             </li>
             <li>

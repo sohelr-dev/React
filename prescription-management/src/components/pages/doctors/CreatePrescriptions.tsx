@@ -152,14 +152,16 @@ function CreatePrescriptions() {
 
   return (
     <div className="container mt-5">
-      <div className="card shadow-sm border-0">
+      <div className="card bg-body-tertiary shadow-sm border-0">
         <div className="card-header bg-primary text-white text-center p-3">
           <h4 className="mb-0">📝 Create Prescription</h4>
         </div>
         <div className="card-body p-4">
           <form onSubmit={handleSubmit}>
             {/* Patient Selection */}
-            <div className="mb-3">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="mb-3">
               <label className="form-label fw-semibold">Patient</label>
               <input type="text" className="form-control"
                 list="ap_list"
@@ -189,8 +191,10 @@ function CreatePrescriptions() {
                 )
               }
             </datalist>
-
-            {/* Diagnosis */}
+                
+              </div>
+              <div className="col-md-6">
+                {/* Diagnosis */}
             <div className="mb-3">
               <label className="form-label fw-semibold">Diagnosis</label>
               <textarea
@@ -200,6 +204,9 @@ function CreatePrescriptions() {
                 // required
               />
             </div>
+
+              </div>
+            </div> 
 
             {/* Medicines Section */}
 
@@ -396,9 +403,10 @@ function CreatePrescriptions() {
               </div>
 
             {/* Tests Section */}
-          
 
-            {/* Advice */}
+            <div className="row">
+              <div className="col-md-4">
+                {/* Advice */}
             <div className="mb-3">
               <label className="form-label fw-semibold">Advice</label>
               <textarea
@@ -408,7 +416,9 @@ function CreatePrescriptions() {
               />
             </div>
 
-            {/* Notes */}
+              </div>
+              <div className="col-md-4">
+                {/* Notes */}
             <div className="mb-3">
               <label className="form-label fw-semibold">Doctor Notes</label>
               <textarea
@@ -418,7 +428,9 @@ function CreatePrescriptions() {
               />
             </div>
 
-            {/* Follow-up */}
+              </div>
+              <div className="col-md-4">
+                {/* Follow-up */}
             <div className="mb-3">
               <label className="form-label fw-semibold">Follow-Up Date</label>
               <input
@@ -428,7 +440,8 @@ function CreatePrescriptions() {
                 onChange={(e) => setPrescription({ ...prescription, follow_up_date: e.target.value })}
               />
             </div>
-
+              </div>
+            </div>
             <div className="text-end">
               <button type="submit" className="btn btn-success px-4">
                 Save Prescription
