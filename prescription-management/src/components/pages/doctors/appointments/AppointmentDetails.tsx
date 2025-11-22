@@ -108,7 +108,7 @@ function AppointmentDetails() {
                                   ? "bg-success"
                                   : appointment.status === "pending"
                                   ? "bg-warning text-dark"
-                                  : "bg-danger"
+                                  : "bg-secondary"
                               }`}>
                             {appointment.status}
                           </span>

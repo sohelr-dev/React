@@ -151,7 +151,7 @@ function AppointmentList() {
                                   ? "bg-success"
                                   : item.status === "pending"
                                   ? "bg-warning text-dark"
-                                  : "bg-danger"
+                                  : "bg-secondary"
                               }`}
                             >
                               {item.status ?? "Unknown"}

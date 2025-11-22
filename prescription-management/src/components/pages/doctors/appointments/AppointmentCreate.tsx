@@ -49,7 +49,7 @@ function AppointmentCreate() {
     api
       .post("create-appointment", appointment)
       .then((res) => {
-        // console.log(res.data);
+        // console.log(res);
         if (res.status === 200 || res.status === 201) {
           alert("Appointment created successfully!");
           navigate("/appointments");
@@ -85,16 +85,16 @@ function AppointmentCreate() {
 
               {/* Patient Select */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Patient Name</label>
-                <input type="text" name="name" className="form-control"
+                <label htmlFor="name" className="form-label fw-semibold">Patient Name</label>
+                <input type="text" name="name" id="name" className="form-control"
                 value={appointment.name||""}
                 onChange={(e)=>setAppointment(prev=>({...prev,name:e.target.value}))}
                 />
               </div>
               <input type="hidden" name="role_id" value={appointment.role_id} onChange={(e)=>setAppointment(prev=>({...prev,role_id:parseInt(e.target.value)}))} />
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Phone Number</label>
-                <input type="text" name="phone" className="form-control"
+                <label htmlFor="phone" className="form-label fw-semibold">Phone Number</label>
+                <input id="phone"  type="text" name="phone" className="form-control"
                 value={appointment.phone||""}
                 onChange={(e)=>setAppointment(prev=>({...prev,phone:e.target.value}))}
                 />
@@ -102,8 +102,8 @@ function AppointmentCreate() {
 
               {/* Doctor Select */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Doctor Name</label>
-                <select
+                <label htmlFor="doctor_id" className="form-label fw-semibold">Doctor Name</label>
+                <select id="doctor_id"
                   className="form-select"
                   value={appointment.doctor_id || ""}
                   onChange={(e) =>
@@ -125,8 +125,8 @@ function AppointmentCreate() {
 
               {/* gender */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Gender</label>
-                <select name="gender" className="form-select"
+                <label htmlFor="gender" className="form-label fw-semibold">Gender</label>
+                <select id="gender" name="gender" className="form-select"
                 value={appointment.gender||""} onChange={(e)=>setAppointment(prev=>({...prev,gender:e.target.value}))}>
                   <option value="">Select One</option>
                   <option value="male">Male</option>
@@ -135,19 +135,19 @@ function AppointmentCreate() {
                
               </div>
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Age</label>
-                <input type="number" step={0} name="age" className="form-control"
+                <label htmlFor="age" className="form-label fw-semibold">Age</label>
+                <input id="age" type="number"  name="age" className="form-control"
                 value={appointment.age} onChange={(e)=>setAppointment(prev=>({...prev,age:parseInt(e.target.value)}))}/>
               </div>
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Address</label>
-                <textarea className="form-control" name="address" value={appointment.address} onChange={(e)=>setAppointment(prev=>({...prev,address:e.target.value}))} ></textarea>
+                <label htmlFor="address" className="form-label fw-semibold">Address</label>
+                <textarea id="address" className="form-control" name="address" value={appointment.address} onChange={(e)=>setAppointment(prev=>({...prev,address:e.target.value}))} ></textarea>
                 
               </div>
               {/* Appointment Date */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Appointment Date</label>
-                <input
+                <label htmlFor="appointment_date" className="form-label fw-semibold">Appointment Date</label>
+                <input id="appointment_date"
                   type="datetime-local"
                   className="form-control"
                   value={appointment.appointment_date || ""}
@@ -163,10 +163,10 @@ function AppointmentCreate() {
 
               {/* Status */}
               <div className="col-md-6">
-                <label className="form-label fw-semibold">Status</label>
-                <select
+                <label htmlFor="Status" className="form-label fw-semibold">Status</label>
+                <select id="status" name="status"
                   className="form-select"
-                  value={appointment.status || "pending"}
+                  value={appointment.status || "offline"}
                   onChange={(e) =>
                     setAppointment(prev => ({
                       ...prev,
@@ -180,7 +180,7 @@ function AppointmentCreate() {
                   }
                   required
                 >
-                  <option value="pending">Offline</option>
+                  <option value="offline" >Offline</option>
                   <option value="pending">Pending</option>
                   <option value="confirmed">Confirmed</option>
                   <option value="completed">Completed</option>

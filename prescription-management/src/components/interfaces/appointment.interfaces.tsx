@@ -16,6 +16,7 @@ export interface appointment {
   specialization?: string;
   chamber_name?: string;
   gender:string;
+  patient_name?:string;
 }
 
 const appointmentDefault: appointment = {
