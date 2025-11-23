@@ -43,7 +43,7 @@ import AppointmentCreate from './components/pages/doctors/appointments/Appointme
 import AppointmentUpdate from './components/pages/doctors/appointments/AppointmentUpdate.tsx';
 import DosagesList from './components/pages/doctors/medicines/dosages/DosagesList.tsx';
 // import DurationsList from './components/pages/doctors/medicines/dosages/durationsList.tsx';
-import CreateDosage from './components/pages/CreateDosage.tsx';
+// import CreateDosage from './components/pages/CreateDosage.tsx';
 import DurationsList from './components/pages/doctors/medicines/dosages/DurationsList.tsx';
 import PrescriptionDetails from './components/pages/doctors/PrescriptionDetails.tsx';
 import PrescriptionLayout from './components/pages/doctors/PrescriptionLayout.tsx';
@@ -53,7 +53,7 @@ import PrescriptionLayout from './components/pages/doctors/PrescriptionLayout.ts
 
 
 const AppRouter =createBrowserRouter([
-  {path:"/" ,element:<App/>,
+  {path:"/dashboard" ,element:<App/>,
     children:[
       {path:"/dashboard" ,element: <DoctorsDashboard/>},
       //Users
@@ -97,7 +97,7 @@ const AppRouter =createBrowserRouter([
       {path:"/dosages" ,element: <DosagesList/>},
       //dosages
       {path:"/durations" ,element: <DurationsList/>},
-      {path:"/create-dosages" ,element: <CreateDosage/>},
+      // {path:"/create-dosages" ,element: <CreateDosage/>},
 
       //Prescriptions
       {path:"/createPrescription" ,element: <CreatePrescription/>},
