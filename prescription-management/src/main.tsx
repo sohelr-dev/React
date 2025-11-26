@@ -53,7 +53,7 @@ import PrescriptionLayout from './components/pages/doctors/PrescriptionLayout.ts
 
 
 const AppRouter =createBrowserRouter([
-  {path:"/dashboard" ,element:<App/>,
+  {path:"/" ,element:<App/>,
     children:[
       {path:"/dashboard" ,element: <DoctorsDashboard/>},
       //Users

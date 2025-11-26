@@ -52,5 +52,9 @@ function getAllByPatient($patient_id){
       $appointments = Appointments :: readAllByPatient($patient_id);
      echo json_encode($appointments);
 }
+function today_appointment(){
+      $today = Appointments :: getTOdayAppointment();
+     echo json_encode($today);
+}
 
 ?>

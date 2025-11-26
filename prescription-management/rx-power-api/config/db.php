@@ -8,8 +8,9 @@
 
 // $db = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-//server
+// $db->close();
 
+//server
 define("HOST","localhost");
 define("USER","sohelitc_sohel");
 define("PASSWORD","amisohel@715");

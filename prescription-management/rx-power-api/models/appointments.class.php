@@ -241,4 +241,20 @@ class Appointments {
           return "Delete failed: " . $db->error;
         }
     }
+    public static function getTOdayAppointment() {
+      global $db;
+      $sql = "SELECT COUNT(*) AS today_appointment 
+              FROM appointments 
+              WHERE DATE(appointment_date) = CURDATE() 
+              AND (status = 'confirmed' OR status = 'offline')";
+
+      $res = $db->query($sql);
+
+      if ($res) {
+          return $res->fetch_assoc();
+      } else {
+          return "No record Today !";
+      }
+  }
+
 }

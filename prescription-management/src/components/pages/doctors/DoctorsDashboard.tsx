@@ -5,20 +5,25 @@ import {
   FaSearch,
 } from "react-icons/fa";
 import "../../../assets/custom.css";
+import "../../../assets/dashboard.css"
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../../../config";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, BarChart, Bar, PieChart, Pie, Cell, Legend } from "recharts";
+import type { todayAppointment } from "../../interfaces/todayapp.interfaces";
+import todayAppointmentDefault from "../../interfaces/todayapp.interfaces";
+import type { totalprescripts } from "../../interfaces/totalpress.interfaces";
+import totalprescriptsDefault from "../../interfaces/totalpress.interfaces";
 
-interface TodayAppointment {
-  today_appointment: number;
-}
-interface totalprescripts {
-  total_prescriptions_last_6_months: number;
-}
+
 function DoctorsDashboard() {
-  const [appointmentToday, setAppointmentToday] =useState<TodayAppointment []>([]);
-  const [totalPres, setTotalPres] =useState<totalprescripts []>([]);
+  const [appointmentToday, setAppointmentToday] =useState<todayAppointment>(todayAppointmentDefault);
+  const [totalPres, setTotalPres] =useState<totalprescripts>(totalprescriptsDefault);
+  useEffect(()=>{
+    document.title="Dashboard";
+    getTodayAppointment();
+    getTotallPrescription();
+  },[])
   const getTodayAppointment=()=>{
     api
     .get('appointments-today-list')
@@ -41,11 +46,8 @@ function DoctorsDashboard() {
     })
 
   }
-  useEffect(()=>{
-    document.title="Dashboard";
-    getTodayAppointment();
-    getTotallPrescription();
-  },[])
+  // console.log(appointmentToday.today_appointment)
+  
 
   const dailyData = [
   { day: "Sat", count: 22 },
@@ -86,14 +88,7 @@ function DoctorsDashboard() {
               <div>
                 <h6>Today's Appointments</h6>
                 {
-                  appointmentToday.map((item)=>(
-
-                    <h5>
-                      {item.today_appointment}
-                    </h5>
-                  )
-                  )
-
+                  appointmentToday.today_appointment
                 }
                 
           
@@ -122,14 +117,7 @@ function DoctorsDashboard() {
               <div>
                 <h6>Prescriptions Given</h6>
                 {
-                  totalPres.map((item)=>(
-
-                    <h5>
-                      {item.total_prescriptions_last_6_months}
-                    </h5>
-                  )
-                  )
-
+                  totalPres.total_prescriptions_last_6_months
                 }
               </div>
             </div>
@@ -168,68 +156,85 @@ function DoctorsDashboard() {
         </div>
       </div>
       <div className="row g-4">
+
+        {/* Daily Prescriptions */}
         <div className="col-12 col-md-6 col-xl-4">
-        <div className="card shadow-lg rounded-3">
-          <div className="card-header">
-            <h5 className="card-title mb-0">Daily Prescriptions</h5>
-          </div>
-          <div className="card-body" style={{ height: "250px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={dailyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="count" stroke="#4f46e5" strokeWidth={3} />
-              </LineChart>
-            </ResponsiveContainer>
+          <div className="card shadow-lg rounded-3">
+            <div className="card-header">
+              <h5 className="card-title mb-0">Daily Prescriptions</h5>
+            </div>
+
+            {/* Fixed height */}
+            <div className="card-body" style={{ height: "300px" }}>
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1} >
+                <LineChart data={dailyData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="count" stroke="#4f46e5" strokeWidth={3} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Top Medicines */}
-      <div className="col-12 col-md-6 col-xl-4">
-        <div className="card shadow-lg rounded-3">
-          <div className="card-header">
-            <h5 className="card-title mb-0">Top Prescribed Medicines</h5>
-          </div>
-          <div className="card-body" style={{ height: "250px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={medicineData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="uses" fill="#10b981" />
-              </BarChart>
-            </ResponsiveContainer>
+        {/* Top Medicines */}
+        <div className="col-12 col-md-6 col-xl-4">
+          <div className="card shadow-lg rounded-3">
+            <div className="card-header">
+              <h5 className="card-title mb-0">Top Prescribed Medicines</h5>
+            </div>
+
+            {/* Fixed height */}
+            <div className="card-body" style={{ height: "300px" }}>
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+                <BarChart data={medicineData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="uses" fill="#10b981" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Patient Type */}
-      <div className="col-12 col-md-6 col-xl-4">
-        <div className="card shadow-lg rounded-3">
-          <div className="card-header">
-            <h5 className="card-title mb-0">Patient Type Distribution</h5>
-          </div>
-          <div className="card-body d-flex justify-content-center align-items-center" style={{ height: "250px" }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie data={patientType} dataKey="value" nameKey="name" outerRadius={90} label>
-                  <Cell fill="#6366f1" />
-                  <Cell fill="#f59e0b" />
-                </Pie>
-                <Legend />
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+        {/* Patient Type Pie Chart */}
+        <div className="col-12 col-md-6 col-xl-4">
+          <div className="card shadow-lg rounded-3">
+            <div className="card-header">
+              <h5 className="card-title mb-0">Patient Type Distribution</h5>
+            </div>
+
+            {/* Fixed height */}
+            <div 
+              className="card-body d-flex justify-content-center align-items-center"
+              style={{ height: "300px" }}
+            >
+              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+                <PieChart>
+                  <Pie 
+                    data={patientType} 
+                    dataKey="value" 
+                    nameKey="name" 
+                    outerRadius={90} 
+                    label
+                  >
+                    <Cell fill="#6366f1" />
+                    <Cell fill="#f59e0b" />
+                  </Pie>
+                  <Legend />
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
+
       </div>
 
-        
-      </div>
 
       {/* Upcoming Appointments */}
       <div className="card  mt-4 shadow-sm border-0">

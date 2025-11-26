@@ -27,5 +27,9 @@ function prescriptionSearch($id){
      $searchResults = Prescriptions :: readBySearch($id);
      echo json_encode($searchResults);
 }
+function totalPrescription(){
+     $total = Prescriptions :: totalPres();
+     echo json_encode($total);
+}
 
 ?>

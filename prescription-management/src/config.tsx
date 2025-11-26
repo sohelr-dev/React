@@ -9,6 +9,7 @@ const baseUrl ="https://sohelit.com/rx-power-api/";
 
 // const baseApiUrl ="http://localhost/rx-power-api/api/";
 // const baseUrl ="http://localhost/rx-power-api/";
+
 export {baseUrl};
 
 const api = axios.create({

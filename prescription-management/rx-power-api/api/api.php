@@ -141,7 +141,11 @@ if(isset($_GET['method'])) {
         }
         elseif($endpoint =="appointments-today" && $method == 'GET'){
             getAppointmentsToday();
-        }elseif($endpoint =="delete-appointment" && $method == 'DELETE'){
+        }
+        elseif($endpoint =="appointments-today-list" && $method == 'GET'){
+            today_appointment();
+        }
+        elseif($endpoint =="delete-appointment" && $method == 'DELETE'){
             deleteAppointmentsId($_GET['id']);
         }elseif($endpoint =="create-appointment" && $method == 'POST'){
             $data = json_decode(file_get_contents("php://input"),true);
@@ -203,9 +207,14 @@ if(isset($_GET['method'])) {
             createPrescription($prescription);
             // createPrescriptionItem($prescription);
             // createPrescriptionTests($prescription);
-        }elseif($endpoint =="prescription-details" && $method == 'GET'){
+        }
+        elseif($endpoint =="prescription-details" && $method == 'GET'){
             readPrescription($_GET['id']);
-        }elseif($endpoint =="prescriptions" && $method == 'GET'){
+        }
+        elseif($endpoint =="total-prescription" && $method == 'GET'){
+            totalPrescription();
+        }
+        elseif($endpoint =="prescriptions" && $method == 'GET'){
             if(isset($_GET['search'])){
                 prescriptionSearch($_GET['search']);
             }else{

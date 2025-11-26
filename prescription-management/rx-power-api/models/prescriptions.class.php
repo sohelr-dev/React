@@ -256,6 +256,20 @@ class Prescriptions {
           return "Delete failed: " . $db->error;
         }
     }
+    public static function totalPres() {
+        global $db;
+        $sql = "SELECT COUNT(*) AS total_prescriptions_last_6_months
+                FROM prescriptions
+                WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH);
+                ";
+        $result = $db->query($sql);
+        if ($result) {
+            return $result->fetch_assoc();
+          } else {
+            return "No record last 6 Month.";
+          }
+        
+    }
 
     public static function readBySearch($search) {
       global $db;
